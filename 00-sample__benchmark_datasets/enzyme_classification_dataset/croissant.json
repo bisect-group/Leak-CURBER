@@ -1,0 +1,2137 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "sc": "https://schema.org/",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "prov": "http://www.w3.org/ns/prov#",
+    "dct": "http://purl.org/dc/terms/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "recordSet": "cr:recordSet",
+    "field": "cr:field",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "equivalentProperty": "cr:equivalentProperty",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "source": "cr:source",
+    "fileObject": "cr:fileObject",
+    "extract": "cr:extract",
+    "fileProperty": "cr:fileProperty",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "containedIn": "cr:containedIn",
+    "fileSet": "cr:fileSet",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
+    "separator": "cr:separator",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "md5": "cr:md5",
+    "sha256": "sc:sha256",
+    "rai:dataLimitations": "rai:dataLimitations",
+    "rai:dataBiases": "rai:dataBiases",
+    "rai:personalSensitiveInformation": "rai:personalSensitiveInformation",
+    "rai:dataUseCases": "rai:dataUseCases",
+    "rai:dataSocialImpact": "rai:dataSocialImpact",
+    "rai:hasSyntheticData": "rai:hasSyntheticData",
+    "prov:wasDerivedFrom": {
+      "@type": "@id"
+    },
+    "prov:wasGeneratedBy": "prov:wasGeneratedBy"
+  },
+  "@type": "sc:Dataset",
+  "@id": "https://doi.org/10.7910/DVN/TBD_SAMPLE_ENZYME_CLASSIFICATION_DATASET",
+  "name": "Leak-CURBER Enzyme Classification Benchmark Dataset Sample",
+  "description": "Seeded reviewer/sample subset of: Processed Leak-CURBER benchmark tables and split definitions for enzyme classification from UniProt sequences, EC labels, and structure-derived metadata.",
+  "url": "https://doi.org/10.7910/DVN/TBD_SAMPLE_ENZYME_CLASSIFICATION_DATASET",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "version": "1.0.0-draft.20260507",
+  "datePublished": "2026-05-07",
+  "citeAs": "Leak-CURBER Enzyme Classification Benchmark Dataset Sample. Leak-CURBER benchmark dataset release. Draft Croissant metadata; replace this citation with the final Dataverse citation after upload.",
+  "dct:conformsTo": [
+    "http://mlcommons.org/croissant/1.1",
+    "http://mlcommons.org/croissant/RAI/1.0"
+  ],
+  "isAccessibleForFree": true,
+  "keywords": [
+    "enzyme machine learning",
+    "biochemical benchmark",
+    "reaction prediction",
+    "protein sequence",
+    "protein structure",
+    "data leakage",
+    "Leak-CURBER"
+  ],
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_enzyme_classification_dataset.parquet",
+      "name": "enzyme_classification_dataset.parquet",
+      "description": "enzyme_classification_dataset.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/enzyme_classification_dataset.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "307259",
+      "sha256": "cf300c8e888270f13986533174f0d952179cf7951ec43ce844b2e5b7276e7fe4"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_enzyme_classification_sequences.pkl",
+      "name": "enzyme_classification_sequences.pkl",
+      "description": "enzyme_classification_sequences.pkl in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/enzyme_classification_sequences.pkl",
+      "encodingFormat": "application/octet-stream",
+      "contentSize": "94872934",
+      "sha256": "3d48f4cbd3d9f6f6c5d8687d86811a81ddf782dce803fe14ca849c510d3f0245"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_enzyme_sequence_splits_full_dataset_enzyme_sequence_test_train_similarity_distribution.png",
+      "name": "enzyme_sequence_splits_full_dataset_enzyme_sequence_test_train_similarity_distribution.png",
+      "description": "enzyme_sequence_splits/full_dataset_enzyme_sequence_test_train_similarity_distribution.png in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/enzyme_sequence_splits/full_dataset_enzyme_sequence_test_train_similarity_distribution.png",
+      "encodingFormat": "image/png",
+      "contentSize": "392025",
+      "sha256": "5ff3072c3a448b1587253a1a2e0455ea261881a65ae2cd5a66f9e8bb4cfe4570"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_enzyme_sequence_splits_max_fident_similarities.tsv",
+      "name": "enzyme_sequence_splits_max_fident_similarities.tsv",
+      "description": "enzyme_sequence_splits/max_fident_similarities.tsv in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/enzyme_sequence_splits/max_fident_similarities.tsv",
+      "encodingFormat": "text/tab-separated-values",
+      "contentSize": "493186",
+      "sha256": "24239de1304d4eefc340c10dd57fe08040e75b2cc89dfc762604d955af977b66"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_enzyme_sequence_splits_threshold_0.4_test.parquet",
+      "name": "enzyme_sequence_splits_threshold_0.4_test.parquet",
+      "description": "enzyme_sequence_splits/threshold_0.4/test.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/enzyme_sequence_splits/threshold_0.4/test.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "23770",
+      "sha256": "b3d84fecbae17c7ff5571c7c175be63906baea60da594c1516284cbe9b28a562"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_enzyme_sequence_splits_threshold_0.4_train.parquet",
+      "name": "enzyme_sequence_splits_threshold_0.4_train.parquet",
+      "description": "enzyme_sequence_splits/threshold_0.4/train.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/enzyme_sequence_splits/threshold_0.4/train.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "245034",
+      "sha256": "be90346603340a24d83e697ac5b7ba0792122d4611905171281e3eae3004126a"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_enzyme_sequence_splits_threshold_0.4_val.parquet",
+      "name": "enzyme_sequence_splits_threshold_0.4_val.parquet",
+      "description": "enzyme_sequence_splits/threshold_0.4/val.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/enzyme_sequence_splits/threshold_0.4/val.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "21974",
+      "sha256": "3d737b45cb3fa35c3c1ed77dd62c862b50066f8a3fcbccc191fb2e331da4961b"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_enzyme_sequence_splits_unique_enzyme_sequence_test_train_similarity_distribution.png",
+      "name": "enzyme_sequence_splits_unique_enzyme_sequence_test_train_similarity_distribution.png",
+      "description": "enzyme_sequence_splits/unique_enzyme_sequence_test_train_similarity_distribution.png in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/enzyme_sequence_splits/unique_enzyme_sequence_test_train_similarity_distribution.png",
+      "encodingFormat": "image/png",
+      "contentSize": "201077",
+      "sha256": "8cdcc295edc0de5438cf027bec79ed822493d699e3c0594fe2ca86dbde668533"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_enzyme_sequence_splits_unique_sequences.fasta",
+      "name": "enzyme_sequence_splits_unique_sequences.fasta",
+      "description": "enzyme_sequence_splits/unique_sequences.fasta in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/enzyme_sequence_splits/unique_sequences.fasta",
+      "encodingFormat": "text/x-fasta",
+      "contentSize": "91145886",
+      "sha256": "16b551aae135d3e6bf9787599bebfded166929282004b07289e218f9c736ed11"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_enzyme_structure_splits_full_dataset_enzyme_structure_test_train_similarity_distribution.png",
+      "name": "enzyme_structure_splits_full_dataset_enzyme_structure_test_train_similarity_distribution.png",
+      "description": "enzyme_structure_splits/full_dataset_enzyme_structure_test_train_similarity_distribution.png in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/enzyme_structure_splits/full_dataset_enzyme_structure_test_train_similarity_distribution.png",
+      "encodingFormat": "image/png",
+      "contentSize": "432380",
+      "sha256": "84eda0a70c9ab550eb232b28eec0dd8f577ed2aa58ec4a9214213b09caf7d631"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_enzyme_structure_splits_max_lddt_similarities.tsv",
+      "name": "enzyme_structure_splits_max_lddt_similarities.tsv",
+      "description": "enzyme_structure_splits/max_lddt_similarities.tsv in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/enzyme_structure_splits/max_lddt_similarities.tsv",
+      "encodingFormat": "text/tab-separated-values",
+      "contentSize": "13350",
+      "sha256": "4ed409b27f056f08e46249d70eb3d266afca7c63e9d3bc2ad468f3df6a346c66"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_enzyme_structure_splits_threshold_0.9_test.parquet",
+      "name": "enzyme_structure_splits_threshold_0.9_test.parquet",
+      "description": "enzyme_structure_splits/threshold_0.9/test.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/enzyme_structure_splits/threshold_0.9/test.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "27465",
+      "sha256": "3599f2b39fcc621e7f4ab4d7ad336909a256df60db758e792aa6299a50ae0acb"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_enzyme_structure_splits_threshold_0.9_train.parquet",
+      "name": "enzyme_structure_splits_threshold_0.9_train.parquet",
+      "description": "enzyme_structure_splits/threshold_0.9/train.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/enzyme_structure_splits/threshold_0.9/train.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "254910",
+      "sha256": "21d8c3a84b36bc2ba341ad5122c44c30534354970e066046c677f930013cf6c6"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_enzyme_structure_splits_threshold_0.9_val.parquet",
+      "name": "enzyme_structure_splits_threshold_0.9_val.parquet",
+      "description": "enzyme_structure_splits/threshold_0.9/val.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/enzyme_structure_splits/threshold_0.9/val.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "25463",
+      "sha256": "3c0d418e1fb77b5836a049d695a088e127b83de9af10ba9e3f05799bdbc21144"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_enzyme_structure_splits_unique_enzyme_structure_test_train_similarity_distribution.png",
+      "name": "enzyme_structure_splits_unique_enzyme_structure_test_train_similarity_distribution.png",
+      "description": "enzyme_structure_splits/unique_enzyme_structure_test_train_similarity_distribution.png in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/enzyme_structure_splits/unique_enzyme_structure_test_train_similarity_distribution.png",
+      "encodingFormat": "image/png",
+      "contentSize": "213195",
+      "sha256": "8d6454b41c6574b7191080860c44ba0cad406b8106b8fabb8265ea3fd108a6cd"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_random_splits_grouped_sequence_test.parquet",
+      "name": "random_splits_grouped_sequence_test.parquet",
+      "description": "random_splits_grouped_sequence/test.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/random_splits_grouped_sequence/test.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "16928",
+      "sha256": "ef35bd60376c0104d9bec87717107ad321da64a8952099275e9f47aea18de2f6"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_random_splits_grouped_sequence_train.parquet",
+      "name": "random_splits_grouped_sequence_train.parquet",
+      "description": "random_splits_grouped_sequence/train.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/random_splits_grouped_sequence/train.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "277492",
+      "sha256": "91c4ee1f1c9c9cae8b8ca9c2dadd6725ece1d9b56109a0f991beb024928f89a5"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_random_splits_grouped_sequence_val.parquet",
+      "name": "random_splits_grouped_sequence_val.parquet",
+      "description": "random_splits_grouped_sequence/val.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/random_splits_grouped_sequence/val.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "17352",
+      "sha256": "90a50f0f957c092fe79f34fce78e1d170a0a19294976098d81c72791263674af"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_uniprot_time_splits_full_dataset_uniprot_time_distribution.png",
+      "name": "uniprot_time_splits_full_dataset_uniprot_time_distribution.png",
+      "description": "uniprot_time_splits/full_dataset_uniprot_time_distribution.png in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/uniprot_time_splits/full_dataset_uniprot_time_distribution.png",
+      "encodingFormat": "image/png",
+      "contentSize": "166676",
+      "sha256": "e9e318d52726a2dd2f1786cf2714c1b26b707edf5c2ff7aae2069e2a2f2d1a8d"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_uniprot_time_splits_test.parquet",
+      "name": "uniprot_time_splits_test.parquet",
+      "description": "uniprot_time_splits/test.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/uniprot_time_splits/test.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "24953",
+      "sha256": "7c9cdf62a0b665b9cf10c13f536af3c3b23270c29e65b235c2958d41c5278dc4"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_uniprot_time_splits_train.parquet",
+      "name": "uniprot_time_splits_train.parquet",
+      "description": "uniprot_time_splits/train.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/uniprot_time_splits/train.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "289627",
+      "sha256": "f162bf3432f1654ccae182f034a4f93be00bd8bccb61c917e918c1cda72593bc"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_uniprot_time_splits_unique_uniprot_time_distribution.png",
+      "name": "uniprot_time_splits_unique_uniprot_time_distribution.png",
+      "description": "uniprot_time_splits/unique_uniprot_time_distribution.png in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/uniprot_time_splits/unique_uniprot_time_distribution.png",
+      "encodingFormat": "image/png",
+      "contentSize": "139613",
+      "sha256": "3f9e836c48c920081202edef63a9508c43726514bbdd57fec3e46451b7ef2ff0"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_uniprot_time_splits_val.parquet",
+      "name": "uniprot_time_splits_val.parquet",
+      "description": "uniprot_time_splits/val.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/enzyme_classification_dataset/uniprot_time_splits/val.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "16366",
+      "sha256": "35160aaebc5d41ea525ae050b71b18efdcc9868241f920de6fd6ebe64dd22af5"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_enzyme_classification_dataset",
+      "name": "recordset_enzyme_classification_dataset",
+      "description": "Tabular records loaded from `enzyme_classification_dataset.parquet`. Source row count: 1000.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_classification_dataset_uniprot_id",
+          "name": "uniprot_id",
+          "description": "Column `uniprot_id` from `enzyme_classification_dataset.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_classification_dataset.parquet"
+            },
+            "extract": {
+              "column": "uniprot_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_classification_dataset_sequence",
+          "name": "sequence",
+          "description": "Column `sequence` from `enzyme_classification_dataset.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_classification_dataset.parquet"
+            },
+            "extract": {
+              "column": "sequence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_classification_dataset_ec_number",
+          "name": "ec_number",
+          "description": "Column `ec_number` from `enzyme_classification_dataset.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_classification_dataset.parquet"
+            },
+            "extract": {
+              "column": "ec_number"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_classification_dataset_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `enzyme_classification_dataset.parquet`.",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_classification_dataset.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_classification_dataset_pdbs",
+          "name": "pdbs",
+          "description": "Column `pdbs` from `enzyme_classification_dataset.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_classification_dataset.parquet"
+            },
+            "extract": {
+              "column": "pdbs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_classification_dataset_pdb_source",
+          "name": "pdb_source",
+          "description": "Column `pdb_source` from `enzyme_classification_dataset.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_classification_dataset.parquet"
+            },
+            "extract": {
+              "column": "pdb_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_classification_dataset_pdb_type",
+          "name": "pdb_type",
+          "description": "Column `pdb_type` from `enzyme_classification_dataset.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_classification_dataset.parquet"
+            },
+            "extract": {
+              "column": "pdb_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_classification_dataset_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `enzyme_classification_dataset.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_classification_dataset.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_enzyme_sequence_splits_max_fident_similarities",
+      "name": "recordset_enzyme_sequence_splits_max_fident_similarities",
+      "description": "Tabular TSV records loaded from `enzyme_sequence_splits/max_fident_similarities.tsv`.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_max_fident_similarities_sequence",
+          "name": "sequence",
+          "description": "Column `sequence` from `enzyme_sequence_splits/max_fident_similarities.tsv`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_max_fident_similarities.tsv"
+            },
+            "extract": {
+              "column": "sequence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_max_fident_similarities_max_similarity",
+          "name": "max_similarity",
+          "description": "Column `max_similarity` from `enzyme_sequence_splits/max_fident_similarities.tsv`.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_max_fident_similarities.tsv"
+            },
+            "extract": {
+              "column": "max_similarity"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_enzyme_sequence_splits_threshold_0.4_test",
+      "name": "recordset_enzyme_sequence_splits_threshold_0.4_test",
+      "description": "Tabular records loaded from `enzyme_sequence_splits/threshold_0.4/test.parquet`. Source row count: 50.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_test_uniprot_id",
+          "name": "uniprot_id",
+          "description": "Column `uniprot_id` from `enzyme_sequence_splits/threshold_0.4/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_test.parquet"
+            },
+            "extract": {
+              "column": "uniprot_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_test_sequence",
+          "name": "sequence",
+          "description": "Column `sequence` from `enzyme_sequence_splits/threshold_0.4/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_test.parquet"
+            },
+            "extract": {
+              "column": "sequence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_test_ec_number",
+          "name": "ec_number",
+          "description": "Column `ec_number` from `enzyme_sequence_splits/threshold_0.4/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_test.parquet"
+            },
+            "extract": {
+              "column": "ec_number"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_test_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `enzyme_sequence_splits/threshold_0.4/test.parquet`.",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_test.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_test_pdbs",
+          "name": "pdbs",
+          "description": "Column `pdbs` from `enzyme_sequence_splits/threshold_0.4/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_test.parquet"
+            },
+            "extract": {
+              "column": "pdbs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_test_pdb_source",
+          "name": "pdb_source",
+          "description": "Column `pdb_source` from `enzyme_sequence_splits/threshold_0.4/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_test.parquet"
+            },
+            "extract": {
+              "column": "pdb_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_test_pdb_type",
+          "name": "pdb_type",
+          "description": "Column `pdb_type` from `enzyme_sequence_splits/threshold_0.4/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_test.parquet"
+            },
+            "extract": {
+              "column": "pdb_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_test_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `enzyme_sequence_splits/threshold_0.4/test.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_test.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_enzyme_sequence_splits_threshold_0.4_train",
+      "name": "recordset_enzyme_sequence_splits_threshold_0.4_train",
+      "description": "Tabular records loaded from `enzyme_sequence_splits/threshold_0.4/train.parquet`. Source row count: 900.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_train_uniprot_id",
+          "name": "uniprot_id",
+          "description": "Column `uniprot_id` from `enzyme_sequence_splits/threshold_0.4/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_train.parquet"
+            },
+            "extract": {
+              "column": "uniprot_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_train_sequence",
+          "name": "sequence",
+          "description": "Column `sequence` from `enzyme_sequence_splits/threshold_0.4/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_train.parquet"
+            },
+            "extract": {
+              "column": "sequence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_train_ec_number",
+          "name": "ec_number",
+          "description": "Column `ec_number` from `enzyme_sequence_splits/threshold_0.4/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_train.parquet"
+            },
+            "extract": {
+              "column": "ec_number"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_train_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `enzyme_sequence_splits/threshold_0.4/train.parquet`.",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_train.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_train_pdbs",
+          "name": "pdbs",
+          "description": "Column `pdbs` from `enzyme_sequence_splits/threshold_0.4/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_train.parquet"
+            },
+            "extract": {
+              "column": "pdbs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_train_pdb_source",
+          "name": "pdb_source",
+          "description": "Column `pdb_source` from `enzyme_sequence_splits/threshold_0.4/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_train.parquet"
+            },
+            "extract": {
+              "column": "pdb_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_train_pdb_type",
+          "name": "pdb_type",
+          "description": "Column `pdb_type` from `enzyme_sequence_splits/threshold_0.4/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_train.parquet"
+            },
+            "extract": {
+              "column": "pdb_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_train_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `enzyme_sequence_splits/threshold_0.4/train.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_train.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_enzyme_sequence_splits_threshold_0.4_val",
+      "name": "recordset_enzyme_sequence_splits_threshold_0.4_val",
+      "description": "Tabular records loaded from `enzyme_sequence_splits/threshold_0.4/val.parquet`. Source row count: 50.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_val_uniprot_id",
+          "name": "uniprot_id",
+          "description": "Column `uniprot_id` from `enzyme_sequence_splits/threshold_0.4/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_val.parquet"
+            },
+            "extract": {
+              "column": "uniprot_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_val_sequence",
+          "name": "sequence",
+          "description": "Column `sequence` from `enzyme_sequence_splits/threshold_0.4/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_val.parquet"
+            },
+            "extract": {
+              "column": "sequence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_val_ec_number",
+          "name": "ec_number",
+          "description": "Column `ec_number` from `enzyme_sequence_splits/threshold_0.4/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_val.parquet"
+            },
+            "extract": {
+              "column": "ec_number"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_val_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `enzyme_sequence_splits/threshold_0.4/val.parquet`.",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_val.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_val_pdbs",
+          "name": "pdbs",
+          "description": "Column `pdbs` from `enzyme_sequence_splits/threshold_0.4/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_val.parquet"
+            },
+            "extract": {
+              "column": "pdbs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_val_pdb_source",
+          "name": "pdb_source",
+          "description": "Column `pdb_source` from `enzyme_sequence_splits/threshold_0.4/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_val.parquet"
+            },
+            "extract": {
+              "column": "pdb_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_val_pdb_type",
+          "name": "pdb_type",
+          "description": "Column `pdb_type` from `enzyme_sequence_splits/threshold_0.4/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_val.parquet"
+            },
+            "extract": {
+              "column": "pdb_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_sequence_splits_threshold_0.4_val_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `enzyme_sequence_splits/threshold_0.4/val.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_sequence_splits_threshold_0.4_val.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_enzyme_structure_splits_max_lddt_similarities",
+      "name": "recordset_enzyme_structure_splits_max_lddt_similarities",
+      "description": "Tabular TSV records loaded from `enzyme_structure_splits/max_lddt_similarities.tsv`.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_max_lddt_similarities_pdbs",
+          "name": "pdbs",
+          "description": "Column `pdbs` from `enzyme_structure_splits/max_lddt_similarities.tsv`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_max_lddt_similarities.tsv"
+            },
+            "extract": {
+              "column": "pdbs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_max_lddt_similarities_max_similarity",
+          "name": "max_similarity",
+          "description": "Column `max_similarity` from `enzyme_structure_splits/max_lddt_similarities.tsv`.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_max_lddt_similarities.tsv"
+            },
+            "extract": {
+              "column": "max_similarity"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_enzyme_structure_splits_threshold_0.9_test",
+      "name": "recordset_enzyme_structure_splits_threshold_0.9_test",
+      "description": "Tabular records loaded from `enzyme_structure_splits/threshold_0.9/test.parquet`. Source row count: 50.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_test_uniprot_id",
+          "name": "uniprot_id",
+          "description": "Column `uniprot_id` from `enzyme_structure_splits/threshold_0.9/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_test.parquet"
+            },
+            "extract": {
+              "column": "uniprot_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_test_sequence",
+          "name": "sequence",
+          "description": "Column `sequence` from `enzyme_structure_splits/threshold_0.9/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_test.parquet"
+            },
+            "extract": {
+              "column": "sequence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_test_ec_number",
+          "name": "ec_number",
+          "description": "Column `ec_number` from `enzyme_structure_splits/threshold_0.9/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_test.parquet"
+            },
+            "extract": {
+              "column": "ec_number"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_test_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `enzyme_structure_splits/threshold_0.9/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_test.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_test_pdb_count",
+          "name": "pdb_count",
+          "description": "Column `pdb_count` from `enzyme_structure_splits/threshold_0.9/test.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_test.parquet"
+            },
+            "extract": {
+              "column": "pdb_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_test_pdbs",
+          "name": "pdbs",
+          "description": "Column `pdbs` from `enzyme_structure_splits/threshold_0.9/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_test.parquet"
+            },
+            "extract": {
+              "column": "pdbs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_test_pdb_source",
+          "name": "pdb_source",
+          "description": "Column `pdb_source` from `enzyme_structure_splits/threshold_0.9/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_test.parquet"
+            },
+            "extract": {
+              "column": "pdb_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_test_pdb_type",
+          "name": "pdb_type",
+          "description": "Column `pdb_type` from `enzyme_structure_splits/threshold_0.9/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_test.parquet"
+            },
+            "extract": {
+              "column": "pdb_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_test_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `enzyme_structure_splits/threshold_0.9/test.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_test.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_enzyme_structure_splits_threshold_0.9_train",
+      "name": "recordset_enzyme_structure_splits_threshold_0.9_train",
+      "description": "Tabular records loaded from `enzyme_structure_splits/threshold_0.9/train.parquet`. Source row count: 900.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_train_uniprot_id",
+          "name": "uniprot_id",
+          "description": "Column `uniprot_id` from `enzyme_structure_splits/threshold_0.9/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_train.parquet"
+            },
+            "extract": {
+              "column": "uniprot_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_train_sequence",
+          "name": "sequence",
+          "description": "Column `sequence` from `enzyme_structure_splits/threshold_0.9/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_train.parquet"
+            },
+            "extract": {
+              "column": "sequence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_train_ec_number",
+          "name": "ec_number",
+          "description": "Column `ec_number` from `enzyme_structure_splits/threshold_0.9/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_train.parquet"
+            },
+            "extract": {
+              "column": "ec_number"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_train_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `enzyme_structure_splits/threshold_0.9/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_train.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_train_pdb_count",
+          "name": "pdb_count",
+          "description": "Column `pdb_count` from `enzyme_structure_splits/threshold_0.9/train.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_train.parquet"
+            },
+            "extract": {
+              "column": "pdb_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_train_pdbs",
+          "name": "pdbs",
+          "description": "Column `pdbs` from `enzyme_structure_splits/threshold_0.9/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_train.parquet"
+            },
+            "extract": {
+              "column": "pdbs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_train_pdb_source",
+          "name": "pdb_source",
+          "description": "Column `pdb_source` from `enzyme_structure_splits/threshold_0.9/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_train.parquet"
+            },
+            "extract": {
+              "column": "pdb_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_train_pdb_type",
+          "name": "pdb_type",
+          "description": "Column `pdb_type` from `enzyme_structure_splits/threshold_0.9/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_train.parquet"
+            },
+            "extract": {
+              "column": "pdb_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_train_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `enzyme_structure_splits/threshold_0.9/train.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_train.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_enzyme_structure_splits_threshold_0.9_val",
+      "name": "recordset_enzyme_structure_splits_threshold_0.9_val",
+      "description": "Tabular records loaded from `enzyme_structure_splits/threshold_0.9/val.parquet`. Source row count: 50.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_val_uniprot_id",
+          "name": "uniprot_id",
+          "description": "Column `uniprot_id` from `enzyme_structure_splits/threshold_0.9/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_val.parquet"
+            },
+            "extract": {
+              "column": "uniprot_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_val_sequence",
+          "name": "sequence",
+          "description": "Column `sequence` from `enzyme_structure_splits/threshold_0.9/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_val.parquet"
+            },
+            "extract": {
+              "column": "sequence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_val_ec_number",
+          "name": "ec_number",
+          "description": "Column `ec_number` from `enzyme_structure_splits/threshold_0.9/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_val.parquet"
+            },
+            "extract": {
+              "column": "ec_number"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_val_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `enzyme_structure_splits/threshold_0.9/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_val.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_val_pdb_count",
+          "name": "pdb_count",
+          "description": "Column `pdb_count` from `enzyme_structure_splits/threshold_0.9/val.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_val.parquet"
+            },
+            "extract": {
+              "column": "pdb_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_val_pdbs",
+          "name": "pdbs",
+          "description": "Column `pdbs` from `enzyme_structure_splits/threshold_0.9/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_val.parquet"
+            },
+            "extract": {
+              "column": "pdbs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_val_pdb_source",
+          "name": "pdb_source",
+          "description": "Column `pdb_source` from `enzyme_structure_splits/threshold_0.9/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_val.parquet"
+            },
+            "extract": {
+              "column": "pdb_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_val_pdb_type",
+          "name": "pdb_type",
+          "description": "Column `pdb_type` from `enzyme_structure_splits/threshold_0.9/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_val.parquet"
+            },
+            "extract": {
+              "column": "pdb_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_enzyme_structure_splits_threshold_0.9_val_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `enzyme_structure_splits/threshold_0.9/val.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_enzyme_structure_splits_threshold_0.9_val.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_random_splits_grouped_sequence_test",
+      "name": "recordset_random_splits_grouped_sequence_test",
+      "description": "Tabular records loaded from `random_splits_grouped_sequence/test.parquet`. Source row count: 50.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_test_uniprot_id",
+          "name": "uniprot_id",
+          "description": "Column `uniprot_id` from `random_splits_grouped_sequence/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_test.parquet"
+            },
+            "extract": {
+              "column": "uniprot_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_test_sequence",
+          "name": "sequence",
+          "description": "Column `sequence` from `random_splits_grouped_sequence/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_test.parquet"
+            },
+            "extract": {
+              "column": "sequence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_test_ec_number",
+          "name": "ec_number",
+          "description": "Column `ec_number` from `random_splits_grouped_sequence/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_test.parquet"
+            },
+            "extract": {
+              "column": "ec_number"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_test_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `random_splits_grouped_sequence/test.parquet`.",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_test.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_test_pdbs",
+          "name": "pdbs",
+          "description": "Column `pdbs` from `random_splits_grouped_sequence/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_test.parquet"
+            },
+            "extract": {
+              "column": "pdbs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_test_pdb_source",
+          "name": "pdb_source",
+          "description": "Column `pdb_source` from `random_splits_grouped_sequence/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_test.parquet"
+            },
+            "extract": {
+              "column": "pdb_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_test_pdb_type",
+          "name": "pdb_type",
+          "description": "Column `pdb_type` from `random_splits_grouped_sequence/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_test.parquet"
+            },
+            "extract": {
+              "column": "pdb_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_test_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `random_splits_grouped_sequence/test.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_test.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_random_splits_grouped_sequence_train",
+      "name": "recordset_random_splits_grouped_sequence_train",
+      "description": "Tabular records loaded from `random_splits_grouped_sequence/train.parquet`. Source row count: 900.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_train_uniprot_id",
+          "name": "uniprot_id",
+          "description": "Column `uniprot_id` from `random_splits_grouped_sequence/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_train.parquet"
+            },
+            "extract": {
+              "column": "uniprot_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_train_sequence",
+          "name": "sequence",
+          "description": "Column `sequence` from `random_splits_grouped_sequence/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_train.parquet"
+            },
+            "extract": {
+              "column": "sequence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_train_ec_number",
+          "name": "ec_number",
+          "description": "Column `ec_number` from `random_splits_grouped_sequence/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_train.parquet"
+            },
+            "extract": {
+              "column": "ec_number"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_train_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `random_splits_grouped_sequence/train.parquet`.",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_train.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_train_pdbs",
+          "name": "pdbs",
+          "description": "Column `pdbs` from `random_splits_grouped_sequence/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_train.parquet"
+            },
+            "extract": {
+              "column": "pdbs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_train_pdb_source",
+          "name": "pdb_source",
+          "description": "Column `pdb_source` from `random_splits_grouped_sequence/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_train.parquet"
+            },
+            "extract": {
+              "column": "pdb_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_train_pdb_type",
+          "name": "pdb_type",
+          "description": "Column `pdb_type` from `random_splits_grouped_sequence/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_train.parquet"
+            },
+            "extract": {
+              "column": "pdb_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_train_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `random_splits_grouped_sequence/train.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_train.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_random_splits_grouped_sequence_val",
+      "name": "recordset_random_splits_grouped_sequence_val",
+      "description": "Tabular records loaded from `random_splits_grouped_sequence/val.parquet`. Source row count: 50.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_val_uniprot_id",
+          "name": "uniprot_id",
+          "description": "Column `uniprot_id` from `random_splits_grouped_sequence/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_val.parquet"
+            },
+            "extract": {
+              "column": "uniprot_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_val_sequence",
+          "name": "sequence",
+          "description": "Column `sequence` from `random_splits_grouped_sequence/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_val.parquet"
+            },
+            "extract": {
+              "column": "sequence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_val_ec_number",
+          "name": "ec_number",
+          "description": "Column `ec_number` from `random_splits_grouped_sequence/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_val.parquet"
+            },
+            "extract": {
+              "column": "ec_number"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_val_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `random_splits_grouped_sequence/val.parquet`.",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_val.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_val_pdbs",
+          "name": "pdbs",
+          "description": "Column `pdbs` from `random_splits_grouped_sequence/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_val.parquet"
+            },
+            "extract": {
+              "column": "pdbs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_val_pdb_source",
+          "name": "pdb_source",
+          "description": "Column `pdb_source` from `random_splits_grouped_sequence/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_val.parquet"
+            },
+            "extract": {
+              "column": "pdb_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_val_pdb_type",
+          "name": "pdb_type",
+          "description": "Column `pdb_type` from `random_splits_grouped_sequence/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_val.parquet"
+            },
+            "extract": {
+              "column": "pdb_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_sequence_val_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `random_splits_grouped_sequence/val.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_sequence_val.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_uniprot_time_splits_test",
+      "name": "recordset_uniprot_time_splits_test",
+      "description": "Tabular records loaded from `uniprot_time_splits/test.parquet`. Source row count: 50.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_test_uniprot_id",
+          "name": "uniprot_id",
+          "description": "Column `uniprot_id` from `uniprot_time_splits/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_test.parquet"
+            },
+            "extract": {
+              "column": "uniprot_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_test_sequence",
+          "name": "sequence",
+          "description": "Column `sequence` from `uniprot_time_splits/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_test.parquet"
+            },
+            "extract": {
+              "column": "sequence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_test_ec_number",
+          "name": "ec_number",
+          "description": "Column `ec_number` from `uniprot_time_splits/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_test.parquet"
+            },
+            "extract": {
+              "column": "ec_number"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_test_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `uniprot_time_splits/test.parquet`.",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_test.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_test_pdbs",
+          "name": "pdbs",
+          "description": "Column `pdbs` from `uniprot_time_splits/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_test.parquet"
+            },
+            "extract": {
+              "column": "pdbs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_test_pdb_source",
+          "name": "pdb_source",
+          "description": "Column `pdb_source` from `uniprot_time_splits/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_test.parquet"
+            },
+            "extract": {
+              "column": "pdb_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_test_pdb_type",
+          "name": "pdb_type",
+          "description": "Column `pdb_type` from `uniprot_time_splits/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_test.parquet"
+            },
+            "extract": {
+              "column": "pdb_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_test_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `uniprot_time_splits/test.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_test.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_uniprot_time_splits_train",
+      "name": "recordset_uniprot_time_splits_train",
+      "description": "Tabular records loaded from `uniprot_time_splits/train.parquet`. Source row count: 900.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_train_uniprot_id",
+          "name": "uniprot_id",
+          "description": "Column `uniprot_id` from `uniprot_time_splits/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_train.parquet"
+            },
+            "extract": {
+              "column": "uniprot_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_train_sequence",
+          "name": "sequence",
+          "description": "Column `sequence` from `uniprot_time_splits/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_train.parquet"
+            },
+            "extract": {
+              "column": "sequence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_train_ec_number",
+          "name": "ec_number",
+          "description": "Column `ec_number` from `uniprot_time_splits/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_train.parquet"
+            },
+            "extract": {
+              "column": "ec_number"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_train_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `uniprot_time_splits/train.parquet`.",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_train.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_train_pdbs",
+          "name": "pdbs",
+          "description": "Column `pdbs` from `uniprot_time_splits/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_train.parquet"
+            },
+            "extract": {
+              "column": "pdbs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_train_pdb_source",
+          "name": "pdb_source",
+          "description": "Column `pdb_source` from `uniprot_time_splits/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_train.parquet"
+            },
+            "extract": {
+              "column": "pdb_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_train_pdb_type",
+          "name": "pdb_type",
+          "description": "Column `pdb_type` from `uniprot_time_splits/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_train.parquet"
+            },
+            "extract": {
+              "column": "pdb_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_train_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `uniprot_time_splits/train.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_train.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_uniprot_time_splits_val",
+      "name": "recordset_uniprot_time_splits_val",
+      "description": "Tabular records loaded from `uniprot_time_splits/val.parquet`. Source row count: 50.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_val_uniprot_id",
+          "name": "uniprot_id",
+          "description": "Column `uniprot_id` from `uniprot_time_splits/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_val.parquet"
+            },
+            "extract": {
+              "column": "uniprot_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_val_sequence",
+          "name": "sequence",
+          "description": "Column `sequence` from `uniprot_time_splits/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_val.parquet"
+            },
+            "extract": {
+              "column": "sequence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_val_ec_number",
+          "name": "ec_number",
+          "description": "Column `ec_number` from `uniprot_time_splits/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_val.parquet"
+            },
+            "extract": {
+              "column": "ec_number"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_val_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `uniprot_time_splits/val.parquet`.",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_val.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_val_pdbs",
+          "name": "pdbs",
+          "description": "Column `pdbs` from `uniprot_time_splits/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_val.parquet"
+            },
+            "extract": {
+              "column": "pdbs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_val_pdb_source",
+          "name": "pdb_source",
+          "description": "Column `pdb_source` from `uniprot_time_splits/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_val.parquet"
+            },
+            "extract": {
+              "column": "pdb_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_val_pdb_type",
+          "name": "pdb_type",
+          "description": "Column `pdb_type` from `uniprot_time_splits/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_val.parquet"
+            },
+            "extract": {
+              "column": "pdb_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_val_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `uniprot_time_splits/val.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_val.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "rai:hasSyntheticData": false,
+  "rai:personalSensitiveInformation": "This is a seeded sample of the corresponding full benchmark dataset. The dataset contains biochemical, protein, reaction, structure-derived, and literature-derived metadata. It is not a human-subject dataset and is not intended to contain demographic attributes such as gender, age, socioeconomic status, religion, political beliefs, or personal identifiers.",
+  "rai:dataUseCases": [
+    "This is a seeded sample of the corresponding full benchmark dataset. Recommended use: reproducible model development, validation, and evaluation for enzyme classification in enzyme-centered machine learning benchmarks.",
+    "The data measures curated biochemical relationships and benchmark split behavior, not direct clinical effectiveness, wet-lab success, or biological safety."
+  ],
+  "rai:dataLimitations": [
+    "The benchmark is domain-limited to curated biochemical, protein, reaction, structure, and literature sources used during construction.",
+    "It is not recommended for clinical decision-making, human-subject inference, regulatory conclusions, direct wet-lab substitution, or unsupported out-of-domain safety claims.",
+    "Coverage is constrained by upstream database availability, curation practices, reported measurements, structural availability, and time snapshots."
+  ],
+  "rai:dataBiases": [
+    "Known biases include source-selection and publication bias from public biochemical databases, with overrepresentation of heavily studied enzymes, organisms, proteins, assays, and compounds.",
+    "Structure-aware subsets may overrepresent proteins with available experimental or predicted structures. Quantitative tasks may overrepresent measurements reported in BindingDB, BRENDA, SABIO-RK, and related sources."
+  ],
+  "rai:dataSocialImpact": "Potential positive impacts include more reproducible enzyme ML evaluation, clearer benchmarking of data leakage controls, and easier comparison across reaction, sequence, structure, substrate, and time-aware splits. Potential negative impacts include overclaiming biological validity, propagating upstream database biases, and using benchmark performance as evidence for unsupported biological design or deployment decisions.",
+  "prov:wasDerivedFrom": [
+    "02_raw_sources",
+    "02_raw_sources/source_manifest.csv#AlphaFold_DB",
+    "02_raw_sources/source_manifest.csv#BindingDB",
+    "02_raw_sources/source_manifest.csv#BRENDA",
+    "02_raw_sources/source_manifest.csv#ChEBI",
+    "02_raw_sources/source_manifest.csv#KEGG",
+    "02_raw_sources/source_manifest.csv#PubChem",
+    "02_raw_sources/source_manifest.csv#PubMed_references",
+    "02_raw_sources/source_manifest.csv#Rhea",
+    "02_raw_sources/source_manifest.csv#SABIO-RK",
+    "02_raw_sources/source_manifest.csv#UniProt"
+  ],
+  "prov:wasGeneratedBy": [
+    "Leak-CURBER preprocessing integrated raw source snapshots from AlphaFold DB, BindingDB, BRENDA, ChEBI, KEGG, PubChem, PubMed references, Rhea, SABIO-RK, and UniProt; MetaCyc was used internally where applicable but excluded from the public release because of redistribution restrictions.",
+    "Benchmark construction produced modeling-ready parquet tables plus random, grouped, time-aware, sequence-similarity, structure-similarity, substrate-similarity, reaction-similarity, and conformer-similarity split artifacts depending on task."
+  ]
+}

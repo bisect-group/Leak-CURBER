@@ -1,0 +1,1140 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "sc": "https://schema.org/",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "prov": "http://www.w3.org/ns/prov#",
+    "dct": "http://purl.org/dc/terms/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "recordSet": "cr:recordSet",
+    "field": "cr:field",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "equivalentProperty": "cr:equivalentProperty",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "source": "cr:source",
+    "fileObject": "cr:fileObject",
+    "extract": "cr:extract",
+    "fileProperty": "cr:fileProperty",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "containedIn": "cr:containedIn",
+    "fileSet": "cr:fileSet",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
+    "separator": "cr:separator",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "md5": "cr:md5",
+    "sha256": "sc:sha256",
+    "rai:dataLimitations": "rai:dataLimitations",
+    "rai:dataBiases": "rai:dataBiases",
+    "rai:personalSensitiveInformation": "rai:personalSensitiveInformation",
+    "rai:dataUseCases": "rai:dataUseCases",
+    "rai:dataSocialImpact": "rai:dataSocialImpact",
+    "rai:hasSyntheticData": "rai:hasSyntheticData",
+    "prov:wasDerivedFrom": {
+      "@type": "@id"
+    },
+    "prov:wasGeneratedBy": "prov:wasGeneratedBy"
+  },
+  "@type": "sc:Dataset",
+  "@id": "https://doi.org/10.7910/DVN/TBD_SAMPLE_REACTION_OUTCOME_DATASET",
+  "name": "Leak-CURBER Reaction Outcome Benchmark Dataset Sample",
+  "description": "Seeded reviewer/sample subset of: Processed Leak-CURBER benchmark tables and split definitions for enzymatic reaction outcome prediction from reaction SMILES and time-aware metadata.",
+  "url": "https://doi.org/10.7910/DVN/TBD_SAMPLE_REACTION_OUTCOME_DATASET",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "version": "1.0.0-draft.20260507",
+  "datePublished": "2026-05-07",
+  "citeAs": "Leak-CURBER Reaction Outcome Benchmark Dataset Sample. Leak-CURBER benchmark dataset release. Draft Croissant metadata; replace this citation with the final Dataverse citation after upload.",
+  "dct:conformsTo": [
+    "http://mlcommons.org/croissant/1.1",
+    "http://mlcommons.org/croissant/RAI/1.0"
+  ],
+  "isAccessibleForFree": true,
+  "keywords": [
+    "enzyme machine learning",
+    "biochemical benchmark",
+    "reaction prediction",
+    "protein sequence",
+    "protein structure",
+    "data leakage",
+    "Leak-CURBER"
+  ],
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_drfp_tanimoto_splits_full_dataset_reaction_tanimoto_similarity_distribution.png",
+      "name": "drfp_tanimoto_splits_full_dataset_reaction_tanimoto_similarity_distribution.png",
+      "description": "drfp_tanimoto_splits/full_dataset_reaction_tanimoto_similarity_distribution.png in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/reaction_outcome_dataset/drfp_tanimoto_splits/full_dataset_reaction_tanimoto_similarity_distribution.png",
+      "encodingFormat": "image/png",
+      "contentSize": "368067",
+      "sha256": "3dfea044f255a0c1ddc3bb6b2a659c1345e24ccb0a52c61a234bc35fe6d55a0d"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_drfp_tanimoto_splits_max_tanimoto_similarities.tsv",
+      "name": "drfp_tanimoto_splits_max_tanimoto_similarities.tsv",
+      "description": "drfp_tanimoto_splits/max_tanimoto_similarities.tsv in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/reaction_outcome_dataset/drfp_tanimoto_splits/max_tanimoto_similarities.tsv",
+      "encodingFormat": "text/tab-separated-values",
+      "contentSize": "326789",
+      "sha256": "1543aa57e68645f98a11b203167ec91812b781da2abcc87326cad6f1c3c5042b"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_drfp_tanimoto_splits_tanimoto_similarity_distribution_all_thresholds.png",
+      "name": "drfp_tanimoto_splits_tanimoto_similarity_distribution_all_thresholds.png",
+      "description": "drfp_tanimoto_splits/tanimoto_similarity_distribution_all_thresholds.png in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/reaction_outcome_dataset/drfp_tanimoto_splits/tanimoto_similarity_distribution_all_thresholds.png",
+      "encodingFormat": "image/png",
+      "contentSize": "226703",
+      "sha256": "d4c77e4a3bcf0cb85b2039438af0b5f3ca519a5883add7587d65b8ede0f3c87a"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_drfp_tanimoto_splits_threshold_0.11_test.parquet",
+      "name": "drfp_tanimoto_splits_threshold_0.11_test.parquet",
+      "description": "drfp_tanimoto_splits/threshold_0.11/test.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/reaction_outcome_dataset/drfp_tanimoto_splits/threshold_0.11/test.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "22644",
+      "sha256": "224a3155eee4d83c5bd63b723026b6d7ed3a6cf2a5dd71b677c30456d2b608f0"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_drfp_tanimoto_splits_threshold_0.11_train.parquet",
+      "name": "drfp_tanimoto_splits_threshold_0.11_train.parquet",
+      "description": "drfp_tanimoto_splits/threshold_0.11/train.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/reaction_outcome_dataset/drfp_tanimoto_splits/threshold_0.11/train.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "82765",
+      "sha256": "7a8e60598e3f38a11a5973922d0dd44849ff2ee71ff86a4c87b6ce3c965b7347"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_drfp_tanimoto_splits_threshold_0.11_val.parquet",
+      "name": "drfp_tanimoto_splits_threshold_0.11_val.parquet",
+      "description": "drfp_tanimoto_splits/threshold_0.11/val.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/reaction_outcome_dataset/drfp_tanimoto_splits/threshold_0.11/val.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "17290",
+      "sha256": "a286d8c02e11cd3351003dcf5b4074a3aa2819cf8941bf974e9fea7bbc73b5b8"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_random_splits_grouped_rxn_test.parquet",
+      "name": "random_splits_grouped_rxn_test.parquet",
+      "description": "random_splits_grouped_rxn/test.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/reaction_outcome_dataset/random_splits_grouped_rxn/test.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "11641",
+      "sha256": "254fad6c84f12b1d4226f6ea92f34d748b54e42bff98ff9c5ffb3b0452c388b3"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_random_splits_grouped_rxn_train.parquet",
+      "name": "random_splits_grouped_rxn_train.parquet",
+      "description": "random_splits_grouped_rxn/train.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/reaction_outcome_dataset/random_splits_grouped_rxn/train.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "108587",
+      "sha256": "c0ea811955fbe0e56a9f852071934c4b66c550ce8b0a19bc392858a9f3c2c5ed"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_random_splits_grouped_rxn_val.parquet",
+      "name": "random_splits_grouped_rxn_val.parquet",
+      "description": "random_splits_grouped_rxn/val.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/reaction_outcome_dataset/random_splits_grouped_rxn/val.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "9579",
+      "sha256": "c8b110792308cea97f97634524002cf4ef10146a5593542402dd742b6ec7a617"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_reaction_outcome_dataset.parquet",
+      "name": "reaction_outcome_dataset.parquet",
+      "description": "reaction_outcome_dataset.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/reaction_outcome_dataset/reaction_outcome_dataset.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "110051",
+      "sha256": "42c8321d372e25a069eb6c9fee130d6e9eebee7c9ecea6abef28c23ceb26fc89"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_uniprot_time_splits_full_dataset_uniprot_time_distribution.png",
+      "name": "uniprot_time_splits_full_dataset_uniprot_time_distribution.png",
+      "description": "uniprot_time_splits/full_dataset_uniprot_time_distribution.png in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/reaction_outcome_dataset/uniprot_time_splits/full_dataset_uniprot_time_distribution.png",
+      "encodingFormat": "image/png",
+      "contentSize": "165890",
+      "sha256": "1b5a431e1ac9f3cc19b887653f7ffba546daa6ec7e9ae0a2b6047c3a81ca2de1"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_uniprot_time_splits_test.parquet",
+      "name": "uniprot_time_splits_test.parquet",
+      "description": "uniprot_time_splits/test.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/reaction_outcome_dataset/uniprot_time_splits/test.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "22020",
+      "sha256": "292562d9cbf2108d7894a2a26c8feaf2989bda6a27561c29b618879d06d9687e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_uniprot_time_splits_train.parquet",
+      "name": "uniprot_time_splits_train.parquet",
+      "description": "uniprot_time_splits/train.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/reaction_outcome_dataset/uniprot_time_splits/train.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "108796",
+      "sha256": "5bdeb63db603ad298c49a59b8609a1b6fb8ff21022058acfbd5b3a64f3b18931"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_uniprot_time_splits_unique_uniprot_time_distribution.png",
+      "name": "uniprot_time_splits_unique_uniprot_time_distribution.png",
+      "description": "uniprot_time_splits/unique_uniprot_time_distribution.png in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/reaction_outcome_dataset/uniprot_time_splits/unique_uniprot_time_distribution.png",
+      "encodingFormat": "image/png",
+      "contentSize": "141063",
+      "sha256": "195bbbecb9b751bbd744119d8104da385a4cac79e0d52c1a3258d114dde4ab42"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_uniprot_time_splits_val.parquet",
+      "name": "uniprot_time_splits_val.parquet",
+      "description": "uniprot_time_splits/val.parquet in the Leak-CURBER dataset release.",
+      "contentUrl": "00-sample__benchmark_datasets/reaction_outcome_dataset/uniprot_time_splits/val.parquet",
+      "encodingFormat": "application/vnd.apache.parquet",
+      "contentSize": "10716",
+      "sha256": "4de365a0c62690c9c1fd9efe44d8cdbeb2d11104d1bf0fa162f16ea8843f0e97"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_drfp_tanimoto_splits_max_tanimoto_similarities",
+      "name": "recordset_drfp_tanimoto_splits_max_tanimoto_similarities",
+      "description": "Tabular TSV records loaded from `drfp_tanimoto_splits/max_tanimoto_similarities.tsv`.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_drfp_tanimoto_splits_max_tanimoto_similarities_rxn_smiles",
+          "name": "rxn_smiles",
+          "description": "Column `rxn_smiles` from `drfp_tanimoto_splits/max_tanimoto_similarities.tsv`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_drfp_tanimoto_splits_max_tanimoto_similarities.tsv"
+            },
+            "extract": {
+              "column": "rxn_smiles"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_drfp_tanimoto_splits_max_tanimoto_similarities_max_tanimoto_similarity",
+          "name": "max_tanimoto_similarity",
+          "description": "Column `max_tanimoto_similarity` from `drfp_tanimoto_splits/max_tanimoto_similarities.tsv`.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileObject": {
+              "@id": "file_drfp_tanimoto_splits_max_tanimoto_similarities.tsv"
+            },
+            "extract": {
+              "column": "max_tanimoto_similarity"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_drfp_tanimoto_splits_threshold_0.11_test",
+      "name": "recordset_drfp_tanimoto_splits_threshold_0.11_test",
+      "description": "Tabular records loaded from `drfp_tanimoto_splits/threshold_0.11/test.parquet`. Source row count: 50.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_drfp_tanimoto_splits_threshold_0.11_test_rxn_smiles",
+          "name": "rxn_smiles",
+          "description": "Column `rxn_smiles` from `drfp_tanimoto_splits/threshold_0.11/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_drfp_tanimoto_splits_threshold_0.11_test.parquet"
+            },
+            "extract": {
+              "column": "rxn_smiles"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_drfp_tanimoto_splits_threshold_0.11_test_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `drfp_tanimoto_splits/threshold_0.11/test.parquet`.",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileObject": {
+              "@id": "file_drfp_tanimoto_splits_threshold_0.11_test.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_drfp_tanimoto_splits_threshold_0.11_test_reactants",
+          "name": "reactants",
+          "description": "Column `reactants` from `drfp_tanimoto_splits/threshold_0.11/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_drfp_tanimoto_splits_threshold_0.11_test.parquet"
+            },
+            "extract": {
+              "column": "reactants"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_drfp_tanimoto_splits_threshold_0.11_test_products",
+          "name": "products",
+          "description": "Column `products` from `drfp_tanimoto_splits/threshold_0.11/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_drfp_tanimoto_splits_threshold_0.11_test.parquet"
+            },
+            "extract": {
+              "column": "products"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_drfp_tanimoto_splits_threshold_0.11_test_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `drfp_tanimoto_splits/threshold_0.11/test.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_drfp_tanimoto_splits_threshold_0.11_test.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_drfp_tanimoto_splits_threshold_0.11_train",
+      "name": "recordset_drfp_tanimoto_splits_threshold_0.11_train",
+      "description": "Tabular records loaded from `drfp_tanimoto_splits/threshold_0.11/train.parquet`. Source row count: 900.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_drfp_tanimoto_splits_threshold_0.11_train_rxn_smiles",
+          "name": "rxn_smiles",
+          "description": "Column `rxn_smiles` from `drfp_tanimoto_splits/threshold_0.11/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_drfp_tanimoto_splits_threshold_0.11_train.parquet"
+            },
+            "extract": {
+              "column": "rxn_smiles"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_drfp_tanimoto_splits_threshold_0.11_train_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `drfp_tanimoto_splits/threshold_0.11/train.parquet`.",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileObject": {
+              "@id": "file_drfp_tanimoto_splits_threshold_0.11_train.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_drfp_tanimoto_splits_threshold_0.11_train_reactants",
+          "name": "reactants",
+          "description": "Column `reactants` from `drfp_tanimoto_splits/threshold_0.11/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_drfp_tanimoto_splits_threshold_0.11_train.parquet"
+            },
+            "extract": {
+              "column": "reactants"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_drfp_tanimoto_splits_threshold_0.11_train_products",
+          "name": "products",
+          "description": "Column `products` from `drfp_tanimoto_splits/threshold_0.11/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_drfp_tanimoto_splits_threshold_0.11_train.parquet"
+            },
+            "extract": {
+              "column": "products"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_drfp_tanimoto_splits_threshold_0.11_train_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `drfp_tanimoto_splits/threshold_0.11/train.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_drfp_tanimoto_splits_threshold_0.11_train.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_drfp_tanimoto_splits_threshold_0.11_val",
+      "name": "recordset_drfp_tanimoto_splits_threshold_0.11_val",
+      "description": "Tabular records loaded from `drfp_tanimoto_splits/threshold_0.11/val.parquet`. Source row count: 50.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_drfp_tanimoto_splits_threshold_0.11_val_rxn_smiles",
+          "name": "rxn_smiles",
+          "description": "Column `rxn_smiles` from `drfp_tanimoto_splits/threshold_0.11/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_drfp_tanimoto_splits_threshold_0.11_val.parquet"
+            },
+            "extract": {
+              "column": "rxn_smiles"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_drfp_tanimoto_splits_threshold_0.11_val_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `drfp_tanimoto_splits/threshold_0.11/val.parquet`.",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileObject": {
+              "@id": "file_drfp_tanimoto_splits_threshold_0.11_val.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_drfp_tanimoto_splits_threshold_0.11_val_reactants",
+          "name": "reactants",
+          "description": "Column `reactants` from `drfp_tanimoto_splits/threshold_0.11/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_drfp_tanimoto_splits_threshold_0.11_val.parquet"
+            },
+            "extract": {
+              "column": "reactants"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_drfp_tanimoto_splits_threshold_0.11_val_products",
+          "name": "products",
+          "description": "Column `products` from `drfp_tanimoto_splits/threshold_0.11/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_drfp_tanimoto_splits_threshold_0.11_val.parquet"
+            },
+            "extract": {
+              "column": "products"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_drfp_tanimoto_splits_threshold_0.11_val_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `drfp_tanimoto_splits/threshold_0.11/val.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_drfp_tanimoto_splits_threshold_0.11_val.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_random_splits_grouped_rxn_test",
+      "name": "recordset_random_splits_grouped_rxn_test",
+      "description": "Tabular records loaded from `random_splits_grouped_rxn/test.parquet`. Source row count: 50.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_rxn_test_rxn_smiles",
+          "name": "rxn_smiles",
+          "description": "Column `rxn_smiles` from `random_splits_grouped_rxn/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_rxn_test.parquet"
+            },
+            "extract": {
+              "column": "rxn_smiles"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_rxn_test_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `random_splits_grouped_rxn/test.parquet`.",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_rxn_test.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_rxn_test_reactants",
+          "name": "reactants",
+          "description": "Column `reactants` from `random_splits_grouped_rxn/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_rxn_test.parquet"
+            },
+            "extract": {
+              "column": "reactants"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_rxn_test_products",
+          "name": "products",
+          "description": "Column `products` from `random_splits_grouped_rxn/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_rxn_test.parquet"
+            },
+            "extract": {
+              "column": "products"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_rxn_test_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `random_splits_grouped_rxn/test.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_rxn_test.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_random_splits_grouped_rxn_train",
+      "name": "recordset_random_splits_grouped_rxn_train",
+      "description": "Tabular records loaded from `random_splits_grouped_rxn/train.parquet`. Source row count: 900.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_rxn_train_rxn_smiles",
+          "name": "rxn_smiles",
+          "description": "Column `rxn_smiles` from `random_splits_grouped_rxn/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_rxn_train.parquet"
+            },
+            "extract": {
+              "column": "rxn_smiles"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_rxn_train_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `random_splits_grouped_rxn/train.parquet`.",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_rxn_train.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_rxn_train_reactants",
+          "name": "reactants",
+          "description": "Column `reactants` from `random_splits_grouped_rxn/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_rxn_train.parquet"
+            },
+            "extract": {
+              "column": "reactants"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_rxn_train_products",
+          "name": "products",
+          "description": "Column `products` from `random_splits_grouped_rxn/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_rxn_train.parquet"
+            },
+            "extract": {
+              "column": "products"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_rxn_train_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `random_splits_grouped_rxn/train.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_rxn_train.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_random_splits_grouped_rxn_val",
+      "name": "recordset_random_splits_grouped_rxn_val",
+      "description": "Tabular records loaded from `random_splits_grouped_rxn/val.parquet`. Source row count: 50.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_rxn_val_rxn_smiles",
+          "name": "rxn_smiles",
+          "description": "Column `rxn_smiles` from `random_splits_grouped_rxn/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_rxn_val.parquet"
+            },
+            "extract": {
+              "column": "rxn_smiles"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_rxn_val_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `random_splits_grouped_rxn/val.parquet`.",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_rxn_val.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_rxn_val_reactants",
+          "name": "reactants",
+          "description": "Column `reactants` from `random_splits_grouped_rxn/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_rxn_val.parquet"
+            },
+            "extract": {
+              "column": "reactants"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_rxn_val_products",
+          "name": "products",
+          "description": "Column `products` from `random_splits_grouped_rxn/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_rxn_val.parquet"
+            },
+            "extract": {
+              "column": "products"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_random_splits_grouped_rxn_val_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `random_splits_grouped_rxn/val.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_random_splits_grouped_rxn_val.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_reaction_outcome_dataset",
+      "name": "recordset_reaction_outcome_dataset",
+      "description": "Tabular records loaded from `reaction_outcome_dataset.parquet`. Source row count: 1000.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_reaction_outcome_dataset_rxn_smiles",
+          "name": "rxn_smiles",
+          "description": "Column `rxn_smiles` from `reaction_outcome_dataset.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_reaction_outcome_dataset.parquet"
+            },
+            "extract": {
+              "column": "rxn_smiles"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_reaction_outcome_dataset_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `reaction_outcome_dataset.parquet`.",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileObject": {
+              "@id": "file_reaction_outcome_dataset.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_reaction_outcome_dataset_reactants",
+          "name": "reactants",
+          "description": "Column `reactants` from `reaction_outcome_dataset.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_reaction_outcome_dataset.parquet"
+            },
+            "extract": {
+              "column": "reactants"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_reaction_outcome_dataset_products",
+          "name": "products",
+          "description": "Column `products` from `reaction_outcome_dataset.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_reaction_outcome_dataset.parquet"
+            },
+            "extract": {
+              "column": "products"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_reaction_outcome_dataset_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `reaction_outcome_dataset.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_reaction_outcome_dataset.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_uniprot_time_splits_test",
+      "name": "recordset_uniprot_time_splits_test",
+      "description": "Tabular records loaded from `uniprot_time_splits/test.parquet`. Source row count: 50.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_test_rxn_smiles",
+          "name": "rxn_smiles",
+          "description": "Column `rxn_smiles` from `uniprot_time_splits/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_test.parquet"
+            },
+            "extract": {
+              "column": "rxn_smiles"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_test_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `uniprot_time_splits/test.parquet`.",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_test.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_test_reactants",
+          "name": "reactants",
+          "description": "Column `reactants` from `uniprot_time_splits/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_test.parquet"
+            },
+            "extract": {
+              "column": "reactants"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_test_products",
+          "name": "products",
+          "description": "Column `products` from `uniprot_time_splits/test.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_test.parquet"
+            },
+            "extract": {
+              "column": "products"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_test_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `uniprot_time_splits/test.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_test.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_uniprot_time_splits_train",
+      "name": "recordset_uniprot_time_splits_train",
+      "description": "Tabular records loaded from `uniprot_time_splits/train.parquet`. Source row count: 900.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_train_rxn_smiles",
+          "name": "rxn_smiles",
+          "description": "Column `rxn_smiles` from `uniprot_time_splits/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_train.parquet"
+            },
+            "extract": {
+              "column": "rxn_smiles"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_train_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `uniprot_time_splits/train.parquet`.",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_train.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_train_reactants",
+          "name": "reactants",
+          "description": "Column `reactants` from `uniprot_time_splits/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_train.parquet"
+            },
+            "extract": {
+              "column": "reactants"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_train_products",
+          "name": "products",
+          "description": "Column `products` from `uniprot_time_splits/train.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_train.parquet"
+            },
+            "extract": {
+              "column": "products"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_train_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `uniprot_time_splits/train.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_train.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordset_uniprot_time_splits_val",
+      "name": "recordset_uniprot_time_splits_val",
+      "description": "Tabular records loaded from `uniprot_time_splits/val.parquet`. Source row count: 50.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_val_rxn_smiles",
+          "name": "rxn_smiles",
+          "description": "Column `rxn_smiles` from `uniprot_time_splits/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_val.parquet"
+            },
+            "extract": {
+              "column": "rxn_smiles"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_val_uniprot_date",
+          "name": "uniprot_date",
+          "description": "Column `uniprot_date` from `uniprot_time_splits/val.parquet`.",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_val.parquet"
+            },
+            "extract": {
+              "column": "uniprot_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_val_reactants",
+          "name": "reactants",
+          "description": "Column `reactants` from `uniprot_time_splits/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_val.parquet"
+            },
+            "extract": {
+              "column": "reactants"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_val_products",
+          "name": "products",
+          "description": "Column `products` from `uniprot_time_splits/val.parquet`.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_val.parquet"
+            },
+            "extract": {
+              "column": "products"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordset_uniprot_time_splits_val_sample_source_row_index",
+          "name": "sample_source_row_index",
+          "description": "Column `sample_source_row_index` from `uniprot_time_splits/val.parquet`.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "file_uniprot_time_splits_val.parquet"
+            },
+            "extract": {
+              "column": "sample_source_row_index"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "rai:hasSyntheticData": false,
+  "rai:personalSensitiveInformation": "This is a seeded sample of the corresponding full benchmark dataset. The dataset contains biochemical, protein, reaction, structure-derived, and literature-derived metadata. It is not a human-subject dataset and is not intended to contain demographic attributes such as gender, age, socioeconomic status, religion, political beliefs, or personal identifiers.",
+  "rai:dataUseCases": [
+    "This is a seeded sample of the corresponding full benchmark dataset. Recommended use: reproducible model development, validation, and evaluation for reaction outcome prediction in enzyme-centered machine learning benchmarks.",
+    "The data measures curated biochemical relationships and benchmark split behavior, not direct clinical effectiveness, wet-lab success, or biological safety."
+  ],
+  "rai:dataLimitations": [
+    "The benchmark is domain-limited to curated biochemical, protein, reaction, structure, and literature sources used during construction.",
+    "It is not recommended for clinical decision-making, human-subject inference, regulatory conclusions, direct wet-lab substitution, or unsupported out-of-domain safety claims.",
+    "Coverage is constrained by upstream database availability, curation practices, reported measurements, structural availability, and time snapshots."
+  ],
+  "rai:dataBiases": [
+    "Known biases include source-selection and publication bias from public biochemical databases, with overrepresentation of heavily studied enzymes, organisms, proteins, assays, and compounds.",
+    "Structure-aware subsets may overrepresent proteins with available experimental or predicted structures. Quantitative tasks may overrepresent measurements reported in BindingDB, BRENDA, SABIO-RK, and related sources."
+  ],
+  "rai:dataSocialImpact": "Potential positive impacts include more reproducible enzyme ML evaluation, clearer benchmarking of data leakage controls, and easier comparison across reaction, sequence, structure, substrate, and time-aware splits. Potential negative impacts include overclaiming biological validity, propagating upstream database biases, and using benchmark performance as evidence for unsupported biological design or deployment decisions.",
+  "prov:wasDerivedFrom": [
+    "02_raw_sources",
+    "02_raw_sources/source_manifest.csv#AlphaFold_DB",
+    "02_raw_sources/source_manifest.csv#BindingDB",
+    "02_raw_sources/source_manifest.csv#BRENDA",
+    "02_raw_sources/source_manifest.csv#ChEBI",
+    "02_raw_sources/source_manifest.csv#KEGG",
+    "02_raw_sources/source_manifest.csv#PubChem",
+    "02_raw_sources/source_manifest.csv#PubMed_references",
+    "02_raw_sources/source_manifest.csv#Rhea",
+    "02_raw_sources/source_manifest.csv#SABIO-RK",
+    "02_raw_sources/source_manifest.csv#UniProt"
+  ],
+  "prov:wasGeneratedBy": [
+    "Leak-CURBER preprocessing integrated raw source snapshots from AlphaFold DB, BindingDB, BRENDA, ChEBI, KEGG, PubChem, PubMed references, Rhea, SABIO-RK, and UniProt; MetaCyc was used internally where applicable but excluded from the public release because of redistribution restrictions.",
+    "Benchmark construction produced modeling-ready parquet tables plus random, grouped, time-aware, sequence-similarity, structure-similarity, substrate-similarity, reaction-similarity, and conformer-similarity split artifacts depending on task."
+  ]
+}
