@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "clipzyme"
+version = "0.0.12"
+description = "Reaction-Conditioned Virtual Screening of Enzymes"
+authors = ["Peter G Mikhael <pgmikhael@csail.mit.edu>"]
+license = "Apache 2.0"
+readme = "README.md"
+repository = "https://github.com/pgmikhael/clipzyme"
+
+
+[tool.poetry.dependencies]
+python = "3.10"
+
+[tool.poetry.group.ci.dependencies]
+black      = "^23.3.0"
+mypy       = "^1.1.1"
+pylint     = "^2.13.0"
+pytest     = "^7.1.2"
+pytest-cov = "^3.0.0"
+rstcheck   = { version = "^6.1.2", python = "<4" }
+ruff       = "^0.0.291"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

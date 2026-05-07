@@ -1,0 +1,20 @@
+_target_: src.models.mlp_module.MLPModule
+
+log_dir: ${paths.log_dir}/mlp_module
+log_file_name: mlp_module_${now:%Y%m%d_%H%M%S}.log
+
+task_type: "regression"  # "regression" or "binary_classification"
+value_types:
+  - kcat
+  # - km
+  # - ki
+
+num_hid_layers: 10
+input_dim: null  # will be set from datamodule
+
+# use optimizer and scheduler defined in configs/optimizer and configs/scheduler
+optimizer: ${optimizer}
+scheduler: null
+
+# compile model for faster training with pytorch 2.0
+compile: false

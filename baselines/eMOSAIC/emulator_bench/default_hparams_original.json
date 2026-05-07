@@ -1,0 +1,12 @@
+{
+  "description": "Defaults matching the original eMOSAIC TrustAffinity regression setup from code/BindingAffinityModule/main.py",
+  "best_hparams": {
+    "batch_size": 256,
+    "lr": 1e-4,
+    "weight_decay": 1e-4,
+    "amsgrad": true,
+    "scheduler": "cosine_warm_restarts",
+    "cosine_t0": 10,
+    "clip_grad": 1.0
+  }
+}

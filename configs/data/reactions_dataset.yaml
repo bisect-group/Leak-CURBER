@@ -1,0 +1,30 @@
+defaults:
+  - _self_
+
+# Target function to instantiate when using hydra.utils.instantiate()
+_target_: src.data.components.unify_reactions.setup
+
+# Logging configuration
+log_dir: ${paths.log_dir}        # Directory for log files (from paths config)
+log_file_name: unify_reactions.log    # Name of the log file for KEGG processing
+
+# Base paths
+reactions_dataset_path: ${paths.reactions_dataset_path}  # Path for reactions dataset
+reaction_outcome_dataset_path: ${paths.reaction_outcome_dataset_path}
+
+# Directory paths for reaction data
+rhea_reactions_parquet_file_path: ${rhea.rhea_reactions_parquet_file_path}        # Processed Rhea reactions in Parquet format
+kegg_reactions_parquet_file_path: ${kegg.kegg_reactions_parquet_file_path}        # Processed KEGG reactions in Parquet format
+sabio_reactions_parquet_file_path: ${sabio_rk.sabio_reactions_parquet_file_path}      # Processed Sabio-RK reactions in Parquet format
+metacyc_reactions_parquet_file_path: ${metacyc.metacyc_reactions_parquet_file_path}  # Processed MetaCyc reactions in Parquet format
+
+# Output path for unified reactions
+save_1d_dataset: true
+save_3d_dataset: true
+unified_reactions_1d_parquet_file_path: ${.reactions_dataset_path}/unified_reactions_1d.parquet
+unified_reactions_3d_parquet_file_path: ${.reactions_dataset_path}/unified_reactions_3d.parquet
+unified_reactions_parquet_file_path: ${.unified_reactions_3d_parquet_file_path}  # Backward-compatible alias for the 3D dataset path
+unified_reactions_references_parquet_file_path: ${.reactions_dataset_path}/unified_reactions_references.parquet  # Path to save unified reaction references in Parquet format
+unified_reactions_sequences_pickle_path: ${.reactions_dataset_path}/unified_reactions_sequences.pkl  # Path to save unified reaction sequences in pickle format
+unified_reactions_rxn_smiles_pickle_path: ${.reactions_dataset_path}/unified_reactions_rxn_smiles.pkl  # Path to save unified reaction SMILES in pickle format
+reaction_outcome_dataset_parquet_file_path: ${.reaction_outcome_dataset_path}/reaction_outcome_dataset.parquet

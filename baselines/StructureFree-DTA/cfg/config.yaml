@@ -1,0 +1,51 @@
+# Drug-Target Interaction Model Configuration
+
+# Model Configuration
+model:
+  protein_model_name: "facebook/esm2_t6_8M_UR50D"
+  molecule_model_name: "DeepChem/ChemBERTa-77M-MLM"
+  hidden_sizes: [1024, 768, 512, 256, 1]
+  inception_out_channels: 256
+  dropout: 0.05
+
+# Data Configuration
+data:
+  path: "hf://datasets/amirhallaji/davis/davis.csv"
+  n_folds: 5
+  val_size: 0.1
+  random_state: 0
+  batch_size: 64
+  num_workers: 16
+  max_molecule_length: 128
+  max_protein_length: 128
+
+# Training Configuration
+training:
+  epochs: 150
+  learning_rate: 5.0e-5
+  weight_decay: 1.0e-5
+  scheduler_factor: 0.5
+  scheduler_patience: 5
+  scheduler_min_lr: 1.0e-7
+  loss_alpha: 0.5
+  gradient_accumulation_steps: 1
+  early_stopping_patience: 10
+  mixed_precision: true
+  clip_grad_norm: null
+
+# Logging Configuration
+logging:
+  log_dir: "logs/"
+  save_dir: "checkpoints/"
+  experiment_name: "ResidualInception-Conv1x1-base-Kiba"
+  log_interval: 50
+
+# Distributed Training Configuration
+distributed:
+  distributed_backend: "none"
+  find_unused_parameters: false
+  fsdp_config: null
+
+# Other Configuration
+seed: 42
+device: "cuda"

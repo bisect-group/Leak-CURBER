@@ -1,0 +1,24 @@
+defaults:
+  - _self_
+
+_target_: src.data.components.enzyme_retrieval_dataset.EnzymeRetrievalDatasetBuilder.setup
+
+# Logging configuration
+log_dir: ${paths.log_dir}
+log_file_name: enzyme_retrieval_dataset.log
+
+# Base paths
+enzyme_retrieval_dataset_path: ${paths.enzyme_retrieval_dataset_path}
+enzyme_retrieval_dataset_with_protein_information_path: ${.enzyme_retrieval_dataset_path}/with_protein_information
+
+# Input path
+unified_reactions_parquet_file_path: ${reactions_dataset.unified_reactions_parquet_file_path}
+
+# Build the protein-aware variant with sequence and pdbs columns.
+include_protein_information: true
+
+# Output paths
+enzyme_retrieval_dataset_parquet_file_path: ${.enzyme_retrieval_dataset_path}/enzyme_retrieval_dataset.parquet
+enzyme_retrieval_rxn_smiles_pickle_path: ${.enzyme_retrieval_dataset_path}/enzyme_retrieval_rxn_smiles.pkl
+enzyme_retrieval_dataset_with_protein_information_parquet_file_path: ${.enzyme_retrieval_dataset_with_protein_information_path}/enzyme_retrieval_dataset.parquet
+enzyme_retrieval_with_protein_information_rxn_smiles_pickle_path: ${.enzyme_retrieval_dataset_with_protein_information_path}/enzyme_retrieval_rxn_smiles.pkl

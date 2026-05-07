@@ -1,0 +1,17 @@
+defaults:
+  - _self_
+
+# Logging configuration
+log_dir: ${paths.log_dir}        # Directory for log files (from paths config)
+log_file_name: chebi.log               # Name of the log file for ChEBI processing
+
+# Directory paths for ChEBI data
+chebi_raw_path: ${paths.chebi_raw_path}      # Raw downloaded ChEBI files
+chebi_mol_path:
+  2D: ${paths.mol_path.2D}    # Directory for 2D ChEBI molecule files
+  3D: ${paths.mol_path.3D}    # Directory for 3D ChEBI molecule files
+
+# ChEBI database URLs and endpoints
+chebi_wsdl_url: https://www.ebi.ac.uk/webservices/chebi/2.0/webservice?wsdl                             # WSDL URL for ChEBI SOAP web service (Now deprecated and shutdown)
+chebi_compounds_api_url: https://www.ebi.ac.uk/chebi/backend/api/public/compounds/                      # REST API URL for ChEBI 2.0 compounds
+chebi_mol_file_api_url: https://www.ebi.ac.uk/chebi/backend/api/public/molfile/{primary_chebi_id}/      # REST API URL template for ChEBI 2.0 MOL files

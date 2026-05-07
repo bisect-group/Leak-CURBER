@@ -1,0 +1,32 @@
+defaults:
+  - _self_
+
+# Target function to instantiate when using hydra.utils.instantiate()
+_target_: src.data.generation.metacyc.setup
+
+# Logging configuration
+log_dir: ${paths.log_dir}        # Directory for log files (from paths config)
+log_file_name: metacyc.log               # Name of the log file for Metacyc processing
+
+# Directory paths for Metacyc data
+metacyc_raw_path: ${paths.metacyc_raw_path}/29.0/data      # Raw downloaded Metacyc files
+metacyc_data_path: ${paths.metacyc_data_path}    # Processed Metacyc data files
+
+# Data download URLs
+rhea_reactions_url: https://ftp.expasy.org/databases/rhea/txt/rhea-reactions.txt.gz    # Reactions data download URL
+metacyc_uniprot_url: https://ftp.expasy.org/databases/rhea/tsv/rhea2uniprot_sprot.tsv     # UniProt mapping data URL
+
+# Local file paths for downloaded data
+metacyc_enzrxns_file_path: ${.metacyc_raw_path}/enzrxns.dat
+metacyc_protseq_file_path: ${.metacyc_raw_path}/protseq.fsa
+metacyc_proteins_file_path: ${.metacyc_raw_path}/proteins.dat
+metacyc_reactions_file_path: ${.metacyc_raw_path}/reactions.dat
+metacyc_compounds_file_path: ${.metacyc_raw_path}/compounds.dat
+metacyc_atom_mapped_smiles_file_path: ${.metacyc_raw_path}/atom-mappings-smiles.dat
+metacyc_protein_seq_ids_file_path: ${.metacyc_raw_path}/protein-seq-ids-unreduced.dat
+
+# Processed data output paths
+mol_path: ${paths.mol_path.2D}                                                                  # Path to 2D molecule files
+metacyc_reactions_parquet_file_path: ${.metacyc_data_path}/metacyc_reactions.parquet            # Processed reactions in Parquet format
+metacyc_compounds_parquet_file_path: ${.metacyc_data_path}/metacyc_compounds.parquet            # Processed compounds in Parquet format
+metacyc_kinetic_params_parquet_file_path: ${.metacyc_data_path}/metacyc_kinetic_params.parquet  # Processed kinetic parameters in Parquet format

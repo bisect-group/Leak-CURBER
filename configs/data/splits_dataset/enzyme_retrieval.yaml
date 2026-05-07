@@ -1,0 +1,52 @@
+dataset_parquet_file_path: ${enzyme_retrieval_dataset.enzyme_retrieval_dataset_parquet_file_path}
+output_dir: ${paths.enzyme_retrieval_dataset_path}
+
+with_protein_information:
+  dataset_parquet_file_path: ${enzyme_retrieval_dataset.enzyme_retrieval_dataset_with_protein_information_parquet_file_path}
+  output_dir: ${enzyme_retrieval_dataset.enzyme_retrieval_dataset_with_protein_information_path}
+  sequence_split:
+    input_dataset_parquet_file_path: ${..dataset_parquet_file_path}
+    output_dir: ${..output_dir}/enzyme_sequence_splits
+    unique_similarity_plot_path: ${.output_dir}/${splits.plot_names.unique_enzyme_sequence_similarity}
+    full_dataset_similarity_plot_path: ${.output_dir}/${splits.plot_names.full_enzyme_sequence_similarity}
+    similarity_thresholds:
+      - 0.2
+      - 0.3
+      - 0.4
+  structure_split:
+    input_dataset_parquet_file_path: ${..dataset_parquet_file_path}
+    output_dir: ${..output_dir}/enzyme_structure_splits
+    unique_similarity_plot_path: ${.output_dir}/${splits.plot_names.unique_enzyme_structure_similarity}
+    full_dataset_similarity_plot_path: ${.output_dir}/${splits.plot_names.full_enzyme_structure_similarity}
+    drop_to_1d: false
+    similarity_thresholds:
+      - 0.7
+      - 0.8
+      - 0.9
+
+random:
+  input_dataset_parquet_file_path: ${..dataset_parquet_file_path}
+  output_dir: ${..output_dir}/random_splits
+  unique_cols:
+    - rxn_smiles
+
+ec_split:
+  input_dataset_parquet_file_path: ${..dataset_parquet_file_path}
+  output_dir: ${..output_dir}/ec_hierarchy_splits
+  column: ec_number
+
+time_split:
+  input_dataset_parquet_file_path: ${..dataset_parquet_file_path}
+  output_dir: ${..output_dir}/uniprot_time_splits
+
+tanimoto_split_input_dataset_parquet_file_path: ${.dataset_parquet_file_path}
+tanimoto_split_output_dir: ${.output_dir}/reaction_drfp_tanimoto_splits
+unique_tanimoto_similarity_plot_path: ${.tanimoto_split_output_dir}/tanimoto_similarity_distribution_all_thresholds.png
+full_dataset_tanimoto_similarity_plot_path: ${.tanimoto_split_output_dir}/full_dataset_reaction_tanimoto_similarity_distribution.png
+tanimoto_key_column: rxn_smiles
+tanimoto_similarity_thresholds:
+  - 0.1
+  - 0.125
+  - 0.15
+tanimoto_embeddings_store_dir: ${embeddings.drfp_embeddings_store_dir}
+tanimoto_embedding_lookup_mode: direct

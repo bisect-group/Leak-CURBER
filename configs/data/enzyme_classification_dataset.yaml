@@ -1,0 +1,21 @@
+defaults:
+  - _self_
+
+_target_: src.data.components.enzyme_clasification_dataset.EnzymeClassificationDatasetBuilder.setup
+
+# Logging configuration
+log_dir: ${paths.log_dir}
+log_file_name: enzyme_classification_dataset.log
+
+# Base paths
+enzyme_classification_dataset_path: ${paths.enzyme_classification_dataset_path}
+
+# Input path
+unified_reactions_parquet_file_path: ${reactions_dataset.unified_reactions_parquet_file_path}
+
+# Output paths
+enzyme_classification_dataset_parquet_file_path: ${.enzyme_classification_dataset_path}/enzyme_classification_dataset.parquet
+enzyme_sequences_pickle_path: ${.enzyme_classification_dataset_path}/enzyme_classification_sequences.pkl
+
+# Set to false to skip running splits after dataset creation
+run_splits: false

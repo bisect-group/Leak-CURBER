@@ -1,0 +1,50 @@
+defaults:
+  - _self_
+
+_target_: src.data.components.binding_affinity_dataset.BindingAffintyDatasetBuilder.setup
+
+# Logging configuration
+log_dir: ${paths.log_dir}                     # Directory for log files (from paths config)
+log_file_name: binding_affinity_dataset.log   # Name of the log file for binding affinity dataset
+
+# pandarallel configuration
+pandarallel:
+  progress_bar: true
+  nb_workers: 112
+
+# Base paths
+bindingdb_raw_path: ${paths.bindingdb_raw_path}                         # Path for raw BindingDB data
+bindingdb_data_path: ${paths.bindingdb_data_path}                       # Path for intermediate BindingDB data
+binding_affinity_dataset_path: ${paths.binding_affinity_dataset_path}   # Path for binding affinity dataset
+
+# Input paths for BindingDB data
+bindingdb_tsv_file_path: ${.bindingdb_raw_path}/BindingDB_All.tsv
+
+# Output paths for binding affinity dataset
+save_1d_dataset: true
+save_3d_dataset: true
+value_types: [unified, kd, ec50, ic50]
+binding_affinity_smiles_pickle_path: ${.binding_affinity_dataset_path}/binding_affinity_smiles.pkl              # Path to save binding affinity SMILES in pickle format
+binding_affinity_sequences_pickle_path: ${.binding_affinity_dataset_path}/binding_affinity_sequences.pkl        # Path to save binding affinity enzyme sequences in pickle format
+dataset_paths:
+  unified:
+    dir: ${binding_affinity_dataset.binding_affinity_dataset_path}/unified
+    parquet_1d: ${.dir}/unified_binding_affinity_dataset_1d.parquet
+    parquet_3d: ${.dir}/unified_binding_affinity_dataset_3d.parquet
+  kd:
+    dir: ${binding_affinity_dataset.binding_affinity_dataset_path}/kd
+    parquet_1d: ${.dir}/kd_binding_affinity_dataset_1d.parquet
+    parquet_3d: ${.dir}/kd_binding_affinity_dataset_3d.parquet
+  ec50:
+    dir: ${binding_affinity_dataset.binding_affinity_dataset_path}/ec50
+    parquet_1d: ${.dir}/ec50_binding_affinity_dataset_1d.parquet
+    parquet_3d: ${.dir}/ec50_binding_affinity_dataset_3d.parquet
+  ic50:
+    dir: ${binding_affinity_dataset.binding_affinity_dataset_path}/ic50
+    parquet_1d: ${.dir}/ic50_binding_affinity_dataset_1d.parquet
+    parquet_3d: ${.dir}/ic50_binding_affinity_dataset_3d.parquet
+unified_binding_affinity_1d_dataset_parquet_file_path: ${.dataset_paths.unified.parquet_1d}
+unified_binding_affinity_3d_dataset_parquet_file_path: ${.dataset_paths.unified.parquet_3d}
+binding_affinity_1d_dataset_parquet_file_path: ${.unified_binding_affinity_1d_dataset_parquet_file_path}
+binding_affinity_3d_dataset_parquet_file_path: ${.unified_binding_affinity_3d_dataset_parquet_file_path}
+binding_affinity_dataset_parquet_file_path: ${.unified_binding_affinity_3d_dataset_parquet_file_path}  # Backward-compatible alias for the 3D dataset path

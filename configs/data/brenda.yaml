@@ -1,0 +1,20 @@
+defaults:
+  - _self_
+
+# Target function to instantiate when using hydra.utils.instantiate()
+_target_: src.data.components.brenda.setup
+
+# Logging configuration
+log_dir: ${paths.log_dir}        # Directory for log files (from paths config)
+log_file_name: brenda.log               # Name of the log file for Brenda processing
+
+# Directory paths for Brenda data
+brenda_mol_path: ${paths.mol_path.2D}          # Paths for 2D molecular structures
+brenda_raw_path: ${paths.brenda_raw_path}      # Raw downloaded Brenda files
+brenda_data_path: ${paths.brenda_data_path}    # Processed Brenda data files
+
+# Local file paths for downloaded data
+brenda_dump_file_path: ${.brenda_raw_path}/brenda.txt
+
+# Processed data output paths
+brenda_kinetic_params_parquet_file_path: ${.brenda_data_path}/brenda_kinetic_params.parquet    # Processed kinetic parameters in Parquet format

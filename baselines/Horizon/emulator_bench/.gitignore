@@ -1,0 +1,10 @@
+/cache/
+/runs/
+/logs/
+*.log
+*.tmp
+*.h5
+*.ckpt
+*.npy
+__pycache__/
+*.pyc

@@ -1,0 +1,68 @@
+random_output_dir: ${kinetic_params_dataset.dataset_paths.unified.dir}/random_splits
+
+random:
+  input_dataset_parquet_file_path: ${..sequence_split.input_dataset_parquet_file_path}
+  output_dir: ${..random_output_dir}
+  unique_cols: ${splits.random_unique_cols}
+
+smiles_split:
+  input_dataset_parquet_file_path: ${kinetic_params_dataset.dataset_paths.unified.parquet_1d}
+  output_dir: ${kinetic_params_dataset.dataset_paths.unified.dir}/substrate_splits
+  unique_similarity_plot_path: ${.output_dir}/${splits.plot_names.unique_smiles_similarity}
+  full_dataset_similarity_plot_path: ${.output_dir}/${splits.plot_names.full_smiles_similarity}
+  similarity_thresholds:
+    - 0.1
+    - 0.2
+    - 0.3
+    - 0.4
+    - 0.5
+    - 0.6
+    - 0.7
+    - 0.8
+    - 0.9
+
+sequence_split:
+  input_dataset_parquet_file_path: ${kinetic_params_dataset.dataset_paths.unified.parquet_1d}
+  output_dir: ${kinetic_params_dataset.dataset_paths.unified.dir}/enzyme_sequence_splits
+  unique_similarity_plot_path: ${.output_dir}/${splits.plot_names.unique_enzyme_sequence_similarity}
+  full_dataset_similarity_plot_path: ${.output_dir}/${splits.plot_names.full_enzyme_sequence_similarity}
+  similarity_thresholds:
+    - 0.075
+    - 0.1
+    - 0.125
+    - 0.15
+    - 0.175
+    - 0.2
+
+structure_split:
+  input_dataset_parquet_file_path: ${kinetic_params_dataset.dataset_paths.unified.parquet_3d}
+  output_dir: ${kinetic_params_dataset.dataset_paths.unified.dir}/enzyme_structure_splits
+  unique_similarity_plot_path: ${.output_dir}/${splits.plot_names.unique_enzyme_structure_similarity}
+  full_dataset_similarity_plot_path: ${.output_dir}/${splits.plot_names.full_enzyme_structure_similarity}
+  # Whether to drop the 3D structure features and only keep the 1D sequence features in the output splits.
+  # Applicable for models that dint use the 3D structure features and only use the 1D sequence features.
+  # Keeping it enabled would skew the TVT ratios after dropping the 3D structure features and deduplicating.
+  drop_to_1d: true
+  similarity_thresholds:
+    - 0.075
+    - 0.1
+    - 0.125
+    - 0.15
+    - 0.175
+    - 0.2
+
+cosine_split:
+  embeddings_store_dir: ${paths.embeddings_path}/unimol_sdf/unimolv2/v1
+  input_dataset_parquet_file_path: ${kinetic_params_dataset.dataset_paths.unified.parquet_3d}
+  output_dir: ${kinetic_params_dataset.dataset_paths.unified.dir}/conformer_cosine_splits
+  key_column: smiles_hash
+  embedding_lookup_mode: conformer
+  unique_similarity_plot_path: ${.output_dir}/${splits.plot_names.unique_conformer_similarity}
+  full_dataset_similarity_plot_path: ${.output_dir}/${splits.plot_names.full_conformer_similarity}
+  similarity_thresholds:
+    - 0.5
+    - 0.6
+    - 0.7
+    - 0.8
+    - 0.9
+    - 0.95

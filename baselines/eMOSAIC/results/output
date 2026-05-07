@@ -1,0 +1,20 @@
++ python -u reproducible_run.py
+timestamp:  12-09-2025-01-01-24
+Starting Training for Anomaly Detection.....
+This is for seed: 42
+timestamp:  12-09-2025-01-01-35
+Starting Training for Anomaly Detection.....
+This is for seed: 0
+timestamp:  12-09-2025-01-01-44
+Starting Training for Anomaly Detection.....
+This is for seed: 11
+Figure saved to /results/figures/trustaffinity_vs_emosaic_test_metrics.png
+
+Formatted Test Set Metrics Table (mean ± std):
+
+Metric               | TrustAffinity (mean ± std) | eMOSAIC (mean ± std)
+---------------------+-----------------+----------------
+Pearson Correlation  | 0.7441 ± 0.0065 | 0.7896 ± 0.0288
+Spearman Correlation | 0.7344 ± 0.0048 | 0.7858 ± 0.0287
+RMSE                 | 0.9973 ± 0.0322 | 0.8838 ± 0.1059
+MAE                  | 0.7121 ± 0.0084 | 0.6488 ± 0.0610

@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Local environments and notebooks
+.ipynb_checkpoints/
+.pytest_cache/
+
+# EMULaToR generated artifacts
+emulator_bench/cache/
+emulator_bench/runs/
+emulator_bench/logs/
+emulator_bench/results_summary/
+emulator_bench/vocab/
+lightning_logs/
+wandb/
+
+# Training outputs
+*.ckpt
+*.pt.tmp
+checkpoints/
+inter_model/
+model/*.ckpt

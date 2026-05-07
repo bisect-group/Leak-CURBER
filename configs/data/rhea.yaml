@@ -1,0 +1,28 @@
+defaults:
+  - _self_
+
+# Target function to instantiate when using hydra.utils.instantiate()
+_target_: src.data.generation.rhea.setup
+
+# Logging configuration
+log_dir: ${paths.log_dir}        # Directory for log files (from paths config)
+log_file_name: rhea.log               # Name of the log file for Rhea processing
+
+# Directory paths for Rhea data
+rhea_raw_path: ${paths.rhea_raw_path}      # Raw downloaded Rhea files
+rhea_data_path: ${paths.rhea_data_path}    # Processed Rhea data files
+
+# Rhea database URLs and endpoints
+rhea_url: https://www.rhea-db.org/rhea          # Main Rhea database URL
+
+# Data download URLs
+rhea_reactions_url: https://ftp.expasy.org/databases/rhea/txt/rhea-reactions.txt.gz    # Reactions data download URL
+rhea_uniprot_url: https://ftp.expasy.org/databases/rhea/tsv/rhea2uniprot_sprot.tsv     # UniProt mapping data URL
+
+# Local file paths for downloaded data
+rhea_reactions_file_path: ${.rhea_raw_path}/rhea_reactions.txt          # Local path for reactions file
+rhea_uniprot_file_path: ${.rhea_raw_path}/rhea-swissprot.txt            # Local path for UniProt mapping file
+
+# Processed data output paths
+rhea_reactions_parquet_file_path: ${.rhea_data_path}/rhea_reactions.parquet        # Processed reactions in Parquet format
+rhea_references_parquet_file_path: ${.rhea_data_path}/rhea_references.parquet      # Processed references in Parquet format

@@ -1,0 +1,1 @@
+{"result_path": "/results/", "pretrained_model_path": "/data/pretrained_models/", "pretrained": true, "num_clusters": 50, "batch_size": 256, "epochs": 50, "lr": 0.0001, "lr_decay_rate": 0.1, "iters": 50, "scaling": true, "data_split": "scaffold", "seed": 0, "results_folder": "/results//exp12-09-2025-01-01-35/"}

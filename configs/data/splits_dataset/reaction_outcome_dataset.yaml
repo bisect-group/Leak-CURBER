@@ -1,0 +1,21 @@
+random:
+  input_dataset_parquet_file_path: ${reactions_dataset.reaction_outcome_dataset_parquet_file_path}
+  output_dir: ${paths.reaction_outcome_dataset_path}/random_splits
+  unique_cols:
+    - rxn_smiles
+
+time_split:
+  input_dataset_parquet_file_path: ${reactions_dataset.reaction_outcome_dataset_parquet_file_path}
+  output_dir: ${paths.reaction_outcome_dataset_path}/uniprot_time_splits
+
+tanimoto_split_input_dataset_parquet_file_path: ${reactions_dataset.reaction_outcome_dataset_parquet_file_path}
+tanimoto_split_output_dir: ${paths.reaction_outcome_dataset_path}/drfp_tanimoto_splits
+unique_tanimoto_similarity_plot_path: ${.tanimoto_split_output_dir}/tanimoto_similarity_distribution_all_thresholds.png
+full_dataset_tanimoto_similarity_plot_path: ${.tanimoto_split_output_dir}/full_dataset_reaction_tanimoto_similarity_distribution.png
+tanimoto_key_column: rxn_smiles
+tanimoto_similarity_thresholds:
+  - 0.09
+  - 0.1
+  - 0.11
+tanimoto_embeddings_store_dir: ${embeddings.drfp_embeddings_store_dir}
+tanimoto_embedding_lookup_mode: direct

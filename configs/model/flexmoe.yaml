@@ -1,0 +1,31 @@
+_target_: src.models.flexmoe_module.FlexMoE
+
+log_dir: ${paths.log_dir}/flexmoe
+log_file_name: flexmoe_${now:%Y%m%d_%H%M%S}.log
+
+task_type: "regression"  # "regression" or "binary_classification"
+value_types:
+  - kcat
+  # - km
+  # - ki
+
+num_patches: 1 # number of patches per modality
+input_dims: null  # will be set from datamodule
+hidden_dim: 768
+output_dim: 1 # for regression or binary classification
+num_layers: 4
+num_layers_mlp_pred: 2  # number of layers in MLP predictor head
+num_experts: 128
+num_routers: 1
+top_k: 4
+num_heads: 4
+dropout: 0.1
+num_modalities: null  # will be set from datamodule
+full_modality_index: 0
+
+# use optimizer and scheduler defined in configs/optimizer and configs/scheduler
+optimizer: ${optimizer}
+scheduler: null
+
+# compile model for faster training with pytorch 2.0
+compile: false

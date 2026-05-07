@@ -1,0 +1,30 @@
+# Hydra config for UnimolSdfEmbedder
+# Fast SDF embedding pipeline with multiprocessing and GPU batching
+
+defaults:
+  - _self_
+
+unimol_sdf_sdf_dir: ${paths.sdf_path}
+unimol_sdf_input_dataset_parquet_file_path: ${splits.dataset.cosine_split.input_dataset_parquet_file_path}
+unimol_sdf_embeddings_store_dir: ${paths.embeddings_path}/unimol_sdf/unimolv2/v1
+
+unimol_sdf_output_npz: ${paths.embeddings_path}/unimol_sdf_embeddings.npz
+
+# Directory where unimol_featurize.py saves its checkpoint (consumed by unimol_embed_gpus.py)
+unimol_sdf_raw_dir: ${paths.raw_data_dir}/unimol_sdf_featurized
+
+unimol_sdf_gpu_ids: [0, 1, 2, 3]          # single GPU: [0]  |  multi-GPU: [0, 1, 2, 3]
+
+unimol_sdf_batch_size: 4
+
+unimol_sdf_model_size: "1.1B"  # Options: 84m | 164m | 310m | 570m | 1.1B
+
+unimol_sdf_percentile: 99  # Percentile for MAX_ATOMS selection (50-100)
+
+unimol_sdf_num_workers: 0  # 0 = auto-detect os.cpu_count()
+
+unimol_sdf_stems_per_batch: 1000000  # Process missing SDF stems in batches to avoid OOM
+
+unimol_sdf_log_file_name: unimol_sdf_embeddings.log
+
+log_dir: ${paths.log_dir}

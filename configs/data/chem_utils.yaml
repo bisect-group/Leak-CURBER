@@ -1,0 +1,56 @@
+defaults:
+  - _self_
+
+# Logging configuration
+log_dir: ${paths.log_dir}        # Directory for log files (from paths config)
+log_file_name: utils.log               # Name of the log file for Rhea processing
+
+intermediate_data_dir: ${paths.intermediate_data_dir}  # Directory for intermediate data files (from paths config)
+
+mol_path:
+  2D: ${paths.mol_path.2D}
+  3D: ${paths.mol_path.3D}
+sdf_path: ${paths.sdf_path}
+
+pdb_path: ${paths.pdb_path}
+mmcif_path: ${paths.mmcif_path}
+processed_exp_pdb_path: ${paths.processed_exp_pdb_path}
+af_pdb_path: ${paths.af_pdb_path}
+af_json_path: ${paths.af_json_path}
+esm_pdb_path: ${paths.esm_pdb_path}
+
+reference_raw_path: ${paths.reference_raw_path}
+pubchem_raw_path: ${paths.pubchem_raw_path}
+pubchem_cid_search_path: ${.pubchem_raw_path}/cid_search
+pubchem_name_search_path: ${.pubchem_raw_path}/name_search
+
+uniprot_acc_path: ${paths.unirprot_acc_path}
+uniprot_time_path: ${paths.uniprot_time_path}
+uniprot_ec_acc_path: ${paths.uniprot_ec_acc_path}
+uniprot_ec_org_acc_path: ${paths.uniprot_ec_org_acc_path}
+
+kegg_mol_url: https://www.kegg.jp/entry/-f+m+{id}
+
+chebi_mol_url: https://www.ebi.ac.uk/chebi/saveStructure.do?defaultImage=true&chebiId=CHEBI:{id}&imageId=0
+
+pubchem_compound_url: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/property/MolecularFormula,SMILES/JSON
+pubchem_substance_url: https://pubchem.ncbi.nlm.nih.gov/rest/pug/substance/sid/cids/JSON
+pubchem_cid_from_name_url: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{compound_name}/cids/JSON
+pubchem_cid_smiles_url: https://ftp.ncbi.nlm.nih.gov/pubchem/Compound/Extras/CID-SMILES.gz
+
+pubchem_cid_smiles_raw_file_path: ${.pubchem_raw_path}/CID-SMILES.tsv
+pubchem_cid_smiles_gz_file_path: ${.pubchem_raw_path}/CID-SMILES.gz
+pubchem_cid_smiles_processed_file_path: ${.pubchem_raw_path}/pubchem_cids_with_canonical_smiles.parquet
+
+uniprot_api_url: https://rest.uniprot.org/uniprotkb/search
+
+alphafold_api_url: https://alphafold.ebi.ac.uk/api/prediction/{id}
+
+ebi_pdb_url: https://www.ebi.ac.uk/pdbe/entry-files/download/pdb{id}.ent
+ebi_mmcif_archive_url: https://www.ebi.ac.uk/pdbe/entry-files/download/{id}.cif
+ebi_mmcif_updated_url: https://www.ebi.ac.uk/pdbe/entry-files/download/{id}_updated.cif
+
+pubmed_entrez_efetch_url: https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi
+
+brenda_wsdl_url: https://www.brenda-enzymes.org/soap/brenda_zeep.wsdl
+brenda_mol_download_url: https://www.brenda-enzymes.org/ligand.php?brenda_group_id={ligand_id}

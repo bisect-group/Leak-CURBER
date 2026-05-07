@@ -1,0 +1,39 @@
+defaults:
+  - _self_
+
+# Target function to instantiate when using hydra.utils.instantiate()
+_target_: src.data.generation.sabio_rk.setup
+
+# Logging configuration
+log_dir: ${paths.log_dir}        # Directory for log files (from paths config)
+log_file_name: sabio_rk.log           # Name of the log file for Sabio-RK processing
+
+# Directory paths for Sabio-RK data
+sabio_raw_path: ${paths.sabio_raw_path}                    # Raw downloaded Sabio-RK files
+sabio_data_path: ${paths.sabio_data_path}                  # Processed Sabio-RK data files
+sabio_entries_path: ${paths.sabio_entries_path}            # Sabio-RK entries file path
+sabio_compounds_path: ${paths.sabio_compounds_path}        # Sabio-RK compounds file path
+sabio_reactions_path: ${paths.sabio_reactions_path}        # Sabio-RK reactions file path
+sabio_kinetic_laws_path: ${paths.sabio_kinetic_laws_path}  # Sabio-RK kinetic laws file path
+
+mol_path: ${paths.mol_path.2D}              # Path to 2D molecule files
+
+kegg_compound_path: ${paths.kegg_compound_path}  # Path to KEGG compound files
+
+# Rhea database URLs and endpoints
+enzyme_dat_url: https://ftp.expasy.org/databases/enzyme/enzyme.dat                                                  # Enzyme data download URL
+sabio_entryid_list_url: https://sabiork.h-its.org/entry/exportToExcelCustomizable                                    # Sabio-RK entry ID list URL
+sabio_release_url: https://sabiork.h-its.org/sabioRestWebServices/lastSoftwareRelease                               # Sabio-RK latest release URL
+sabio_entryid_query_url: https://sabiork.h-its.org/sabioRestWebServices/searchKineticLaws/entryIDs                   # Sabio-RK entry ID query URL
+sabio_kinetic_param_download_url: https://sabiork.h-its.org/sabioRestWebServices/kineticlawsExportTsv                # Sabio-RK kinetic parameters download URL  
+sabio_reaction_participant_query_url: https://sabiork.h-its.org/sabioRestWebServices/searchReactionParticipants     # Sabio-RK reaction participant query URL
+
+# Local file paths for downloaded data
+enzyme_dat_file: ${paths.sabio_raw_path}/enzyme.dat             # Enzyme data file path
+sabio_version_file: ${paths.sabio_raw_path}/sabio_version.txt   # Sabio-RK version file path
+
+# Processed data output paths
+sabio_entries_parquet_file_path: ${.sabio_data_path}/sabio_entries.parquet                # Processed entries in Parquet format
+sabio_reactions_parquet_file_path: ${.sabio_data_path}/sabio_reactions.parquet            # Processed reactions in Parquet format
+sabio_compounds_parquet_file_path: ${.sabio_data_path}/sabio_compounds.parquet            # Processed compounds in Parquet format
+sabio_kinetic_params_parquet_file_path: ${.sabio_data_path}/sabio_kinetic_params.parquet  # Processed kinetic parameters in Parquet format

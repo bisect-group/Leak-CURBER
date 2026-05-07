@@ -1,0 +1,19 @@
+{
+    "available_gpus": ["4,5,6,7"],
+    "script": "screen",
+    "cartesian_hyperparams": {
+      "dataset_file_path": ["files/new_data.csv"],
+      "inference_dir": [""],
+      "save_hiddens": [false], 
+      "save_predictions": [false], 
+      "use_as_protein_encoder": [false], 
+      "use_as_reaction_encoder": [false],
+      "gpus": [1],
+      "batch_size": [8],
+      "precision": ["bf16"],
+      "checkpoint_path": ["files/clipzyme_model.ckpt"],
+      "esm_dir": ["/data/esm/checkpoints"],
+      "num_workers": [24]
+    }
+  }
+  

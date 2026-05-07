@@ -1,0 +1,25 @@
+*/data/esm_data
+*/data/distance_map
+*/data/pretrained
+*/dist/
+*/esm/
+*/build/
+*/model/
+*/gmm_test/
+*/src/CLEAN/__pycache__/
+*/*.egg-info/*
+.DS_STORE
+__pycache__/
+*.py[cod]
+*/results/*
+# Ignore large models that have been fetched manually
+*.pt
+*.fai
+app/data/emulator_*.csv
+app/data/emulator_*.fasta
+app/data/model/
+app/results/emulator_bench/
+emulator_bench/cache/
+emulator_bench/runs/
+emulator_bench/logs/
+*.log

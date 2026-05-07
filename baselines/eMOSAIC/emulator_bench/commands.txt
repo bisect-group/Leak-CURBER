@@ -1,0 +1,118 @@
+# emulator_bench — common commands for eMOSAIC (TrustAffinity regression)
+# All commands assume conda env `mldb` is active and you are running from the repo root:
+#   cd ~/github/eMOSAIC && conda activate mldb
+# Replace <BASE_DIR> with your Leak-CURBER baselines path, e.g.
+#   ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC
+
+# ---------------------------------------------------------------------------
+# 0) One-time protein + ligand cache build (ESMFold runs ONCE per sequence)
+#    Sequences longer than max_seq_len are truncated (not skipped).
+# ---------------------------------------------------------------------------
+# Single GPU:
+python -u emulator_bench/cache_embeddings.py \
+  --base_dir ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC \
+  --embeddings_dir ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC/embeddings \
+  --device cuda:0 \
+  --max_seq_len 700 \
+  --chunk_size 64 \
+  --protein_dtype float16
+
+# Multi-GPU (splits sequence list across GPUs, each runs a worker subprocess):
+python -u emulator_bench/cache_embeddings.py \
+  --base_dir ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC \
+  --embeddings_dir ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC/embeddings \
+  --gpus 0 1 \
+  --max_seq_len 700 \
+  --chunk_size 64 \
+  --protein_dtype float16
+
+# ---------------------------------------------------------------------------
+# 1) Train on one split (explicit paths)
+# ---------------------------------------------------------------------------
+python -u emulator_bench/train_single_target_tvt.py \
+  --train_path ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC/random_splits/train.parquet \
+  --val_path   ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC/random_splits/val.parquet \
+  --test_path  ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC/random_splits/test.parquet \
+  --embeddings_dir ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC/embeddings \
+  --out_dir ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC/random_splits/emosaic_results/seed_42 \
+  --epochs 50 --batch_size 256 --lr 1e-4 \
+  --pin_memory --persistent_workers --preload_proteins
+
+# Or train by split group (bench discovers train/val/test files automatically):
+python -u emulator_bench/train_single_target_tvt.py \
+  --base_dir ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC \
+  --split_group random_splits \
+  --epochs 50 --pin_memory --persistent_workers --preload_proteins
+
+# ---------------------------------------------------------------------------
+# 2) Sequential benchmark across every discovered split group
+# ---------------------------------------------------------------------------
+python -u emulator_bench/run_split_benchmarks.py \
+  --base_dir ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC \
+  --embeddings_dir ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC/embeddings \
+  --gpus 0 1 \
+  --trials_per_gpu 1 \
+  --seeds 666 777 888 \
+  --epochs 50 \
+  --pin_memory \
+  --persistent_workers \
+  --preload_proteins \
+  --val_every 0 \
+  --hparams_json emulator_bench/default_hparams_original.json
+
+# ---------------------------------------------------------------------------
+# 3) Optuna tuning (single GPU)
+# ---------------------------------------------------------------------------
+python -u emulator_bench/tune_optuna.py \
+  --base_dir ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC \
+  --embeddings_dir ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC/embeddings \
+  --split_groups random_splits \
+  --seeds 42 \
+  --n_trials 20 \
+  --epochs 25 \
+  --metric rmse --eval_split val \
+  --study_name emosaic_optuna_random \
+  --pin_memory --persistent_workers --preload_proteins
+
+# ---------------------------------------------------------------------------
+# 4) Optuna tuning in parallel across multiple GPUs (shared study)
+#    trials_per_gpu=2 and --gpus 0 1 launches 4 workers in parallel.
+# ---------------------------------------------------------------------------
+python -u emulator_bench/launch_parallel_optuna.py \
+  --gpus 0 1 \
+  --trials_per_gpu 2 \
+  --n_trials 32 \
+  --base_dir ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC \
+  --embeddings_dir ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC/embeddings \
+  --storage sqlite:///$HOME/github/Leak-CURBER/data/processed/baselines/eMOSAIC/optuna_studies/emosaic_optuna.db \
+  --study_name emosaic_optuna \
+  --split_groups random_splits \
+  --seeds 42 \
+  --epochs 25 \
+  --metric rmse --eval_split val \
+  --pin_memory --persistent_workers --preload_proteins
+
+# ---------------------------------------------------------------------------
+# 5) Multi-GPU parallel retrain from best Optuna hparams across ALL splits
+#    trials_per_gpu=2 and --gpus 0 1 drains 4 jobs concurrently.
+# ---------------------------------------------------------------------------
+python -u emulator_bench/launch_parallel_retrain_from_optuna.py \
+  --gpus 0 1 \
+  --trials_per_gpu 2 \
+  --base_dir ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC \
+  --embeddings_dir ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC/embeddings \
+  --hparams_json ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC/optuna_studies/emosaic_optuna_best_hparams.json \
+  --split_groups random_splits enzyme_sequence_splits substrate_splits group_shuffle_splits \
+  --seeds 42 0 11 \
+  --epochs 50 \
+  --pin_memory --persistent_workers --preload_proteins
+
+# ---------------------------------------------------------------------------
+# 6) Inference with a trained checkpoint
+# ---------------------------------------------------------------------------
+python -u emulator_bench/predict_single_target.py \
+  --input_path ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC/random_splits/test.parquet \
+  --embeddings_dir ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC/embeddings \
+  --ckpt_path ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC/random_splits/emosaic_results/seed_42/bestmodel.pth \
+  --out_csv ${PROJECT_ROOT}/data/processed/baselines/eMOSAIC/random_splits/emosaic_results/seed_42/predictions_test.csv \
+  --pin_memory

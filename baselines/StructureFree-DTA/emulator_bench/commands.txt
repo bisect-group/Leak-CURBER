@@ -1,0 +1,88 @@
+# Build the reusable embedding cache once for all discovered StructureFree-DTA split jobs.
+python3 -m emulator_bench.cache_embeddings \
+  --base_dir ${PROJECT_ROOT}/data/processed/baselines/StructureFree-DTA \
+  --embeddings_dir ${PROJECT_ROOT}/data/processed/baselines/StructureFree-DTA/embeddings \
+  --split_groups random_splits enzyme_sequence_splits enzyme_structure_splits conformer_cosine_splits substrate_splits uniprot_time_splits \
+  --sequence_col sequence \
+  --smiles_col smiles \
+  --device cuda:0
+
+# Train one explicit split.
+python3 -m emulator_bench.train_single_target_tvt \
+  --base_dir ${PROJECT_ROOT}/data/processed/baselines/StructureFree-DTA \
+  --split_group random_splits \
+  --embeddings_dir ${PROJECT_ROOT}/data/processed/baselines/StructureFree-DTA/embeddings \
+  --sequence_col sequence \
+  --smiles_col smiles \
+  --target_col log10_value \
+  --device cuda:0 \
+  --preload_embeddings \
+  --persistent_workers \
+  --pin_memory
+
+# Run all requested split benchmarks sequentially, reusing the same cache.
+python3 -m emulator_bench.run_split_benchmarks \
+  --base_dir ${PROJECT_ROOT}/data/processed/baselines/StructureFree-DTA \
+  --embeddings_dir ${PROJECT_ROOT}/data/processed/baselines/StructureFree-DTA/embeddings \
+  --split_groups random_splits enzyme_sequence_splits substrate_splits uniprot_time_splits \
+  --seeds 0 1 2 \
+  --device cuda:0 \
+  --preload_embeddings \
+  --persistent_workers \
+  --pin_memory
+
+# Tune retraining-safe hyperparameters with Optuna on one GPU.
+python3 -m emulator_bench.tune_optuna \
+  --base_dir ${PROJECT_ROOT}/data/processed/baselines/StructureFree-DTA \
+  --embeddings_dir ${PROJECT_ROOT}/data/processed/baselines/StructureFree-DTA/embeddings \
+  --split_groups random_splits \
+  --n_trials 40 \
+  --study_name structurefree_optuna \
+  --storage sqlite:////root/github/Leak-CURBER/data/processed/baselines/StructureFree-DTA/optuna_studies/structurefree_optuna.db \
+  --device cuda:0 \
+  --preload_embeddings
+
+# Launch parallel Optuna workers across multiple GPUs.
+python3 -m emulator_bench.launch_parallel_optuna \
+  --gpus 0 1 2 3 \
+  --trials_per_gpu 1 \
+  --base_dir ${PROJECT_ROOT}/data/processed/baselines/StructureFree-DTA \
+  --embeddings_dir ${PROJECT_ROOT}/data/processed/baselines/StructureFree-DTA/embeddings \
+  --split_groups random_splits \
+  --n_trials 80 \
+  --study_name structurefree_optuna \
+  --storage sqlite:////root/github/Leak-CURBER/data/processed/baselines/StructureFree-DTA/optuna_studies/structurefree_optuna.db \
+  --preload_embeddings
+
+# Aggregate retrain results: mean ± std across seeds, grouped by split group.
+python3 -m emulator_bench.aggregate_results \
+  --base_dir ${PROJECT_ROOT}/data/processed/baselines/StructureFree-DTA \
+  --split test \
+  --group_by split_group
+
+# Retrain all selected split jobs in parallel using the original model's default hparams.
+python3 -m emulator_bench.launch_parallel_retrain_from_optuna \
+  --gpus 0 1 \
+  --trials_per_gpu 9 \
+  --base_dir ${PROJECT_ROOT}/data/processed/baselines/StructureFree-DTA \
+  --embeddings_dir ${PROJECT_ROOT}/data/processed/baselines/StructureFree-DTA/embeddings \
+  --seeds 666 777 888 \
+  --hparams_json ~/github/StructureFree-DTA/emulator_bench/default_hparams.json \
+  --epochs 150 \
+  --num_workers 0 \
+  --preload_embeddings \
+  --pin_memory \
+  --overwrite
+
+# Retrain all selected split jobs in parallel from Optuna's best hparams.
+python3 -m emulator_bench.launch_parallel_retrain_from_optuna \
+  --gpus 0 1 2 3 \
+  --trials_per_gpu 1 \
+  --base_dir ${PROJECT_ROOT}/data/processed/baselines/StructureFree-DTA \
+  --embeddings_dir ${PROJECT_ROOT}/data/processed/baselines/StructureFree-DTA/embeddings \
+  --seeds 0 1 2 3 4 \
+  --study_name structurefree_optuna \
+  --storage sqlite:////root/github/Leak-CURBER/data/processed/baselines/StructureFree-DTA/optuna_studies/structurefree_optuna.db \
+  --preload_embeddings \
+  --persistent_workers \
+  --pin_memory

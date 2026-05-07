@@ -4,10 +4,78 @@
 root_dir: ${oc.env:PROJECT_ROOT}
 
 # path to data directory
-data_dir: ${paths.root_dir}/data/
+data_dir: ${.root_dir}/data
+
+# base paths for different types of data
+raw_data_dir: ${.data_dir}/raw
+processed_data_dir: ${.data_dir}/processed
+intermediate_data_dir: ${.data_dir}/intermediate
+
+mol_path:
+  2D: ${..intermediate_data_dir}/mol/2d
+  3D: ${..intermediate_data_dir}/mol/3d
+sdf_path: ${.intermediate_data_dir}/sdf
+
+pdb_path: ${.intermediate_data_dir}/pdb
+mmcif_path: ${.intermediate_data_dir}/mmcif
+processed_exp_pdb_path: ${.intermediate_data_dir}/processed_exp_pdb
+af_pdb_path: ${.intermediate_data_dir}/alphafold
+af_json_path: ${.raw_data_dir}/alphafold
+esm_pdb_path: ${.intermediate_data_dir}/esm
+
+chebi_raw_path: ${.raw_data_dir}/chebi
+
+rhea_raw_path: ${.raw_data_dir}/rhea
+rhea_data_path: ${.intermediate_data_dir}/rhea
+
+brenda_raw_path: ${.raw_data_dir}/brenda
+brenda_data_path: ${.intermediate_data_dir}/brenda
+
+kegg_raw_path: ${.raw_data_dir}/kegg
+kegg_data_path: ${.intermediate_data_dir}/kegg
+kegg_compound_path: ${.kegg_raw_path}/compound
+kegg_reaction_path: ${.kegg_raw_path}/reaction
+kegg_glycan_path: ${.kegg_raw_path}/glycan
+
+sabio_raw_path: ${.raw_data_dir}/sabio
+sabio_data_path: ${.intermediate_data_dir}/sabio
+sabio_entries_path: ${.sabio_raw_path}/entries
+sabio_kinetic_laws_path: ${.sabio_raw_path}/kinetic_laws
+sabio_compounds_path: ${.sabio_raw_path}/compounds
+sabio_reactions_path: ${.sabio_raw_path}/reactions
+
+metacyc_raw_path: ${.raw_data_dir}/metacyc/
+metacyc_data_path: ${.intermediate_data_dir}/metacyc
+
+reference_raw_path: ${.raw_data_dir}/reference
+reference_data_path: ${.intermediate_data_dir}/reference
+
+pubchem_raw_path: ${.raw_data_dir}/pubchem
+pubchem_name_search_path: ${.pubchem_raw_path}/name_search
+pubchem_cid_search_path: ${.pubchem_raw_path}/cid_search
+
+uniprot_raw_path: ${.raw_data_dir}/uniprot
+unirprot_acc_path: ${.uniprot_raw_path}/acc
+uniprot_time_path: ${.uniprot_raw_path}/time
+uniprot_ec_acc_path: ${.uniprot_raw_path}/ec_acc
+uniprot_ec_org_acc_path: ${.uniprot_raw_path}/ec_org_acc
+
+bindingdb_raw_path: ${.raw_data_dir}/bindingdb
+bindingdb_data_path: ${.intermediate_data_dir}/bindingdb
+
+embeddings_path: ${.intermediate_data_dir}/embeddings
+
+datasets_path: ${.processed_data_dir}/datasets
+kinetic_dataset_path: ${.datasets_path}/kinetic_dataset
+reactions_dataset_path: ${.datasets_path}/reactions_dataset
+reaction_outcome_dataset_path: ${.datasets_path}/reaction_outcome_dataset
+enzyme_compound_dataset_path: ${.datasets_path}/enzyme_compound_dataset
+enzyme_retrieval_dataset_path: ${.datasets_path}/enzyme_retrieval_dataset
+enzyme_classification_dataset_path: ${.datasets_path}/enzyme_classification_dataset
+binding_affinity_dataset_path: ${.datasets_path}/binding_affinity_dataset
 
 # path to logging directory
-log_dir: ${paths.root_dir}/logs/
+log_dir: ${.root_dir}/logs
 
 # path to output directory, created dynamically by hydra
 # path generation pattern is specified in `configs/hydra/default.yaml`

@@ -1,0 +1,110 @@
+defaults:
+  - _self_
+  - /data/splits_dataset@dataset: kinetic_params_kcat
+
+# Dataset config names in configs/data/splits_dataset/*.yaml
+datasets:
+  - kinetic_params_kcat
+  - kinetic_params_ki
+  - kinetic_params_km
+  - binding_affinity_ec50
+  - binding_affinity_ic50
+  - binding_affinity_kd
+  # - binding_affinity_unified
+  # - enzyme_retrieval
+  # - enzyme_substrate
+  # - kinetic_params_unified
+  - reactions_unified
+  - reaction_outcome_dataset
+
+# Logging configuration
+log_dir: ${paths.log_dir}
+log_file_name: splits.log
+
+# Base paths
+intermediate_data_dir: ${paths.intermediate_data_dir}
+af_pdb_path: ${paths.af_pdb_path}
+esm_pdb_path: ${paths.esm_pdb_path}
+processed_exp_pdb_path: ${paths.processed_exp_pdb_path}
+
+# pandarallel configuration
+pandarallel:
+  progress_bar: false
+  nb_workers: 112
+
+# Random seed for reproducibility
+random_seed: 42
+
+# Dataset split fractions
+train_frac: 0.9
+valid_frac: 0.05
+test_frac: 0.05
+
+# Similarity caching controls
+similarity_cache_overwrite: false
+
+# Random grouped split
+random_unique_cols:
+  - smiles
+  - sequence
+
+# Leakage-safe grouped split (optional)
+group_shuffle_enabled: false
+group_shuffle_unique_col: sequence
+group_shuffle_random_seed: ${.random_seed}
+group_shuffle_output_dir_name: group_shuffle_splits
+
+# EC hierarchy grouped split (optional)
+ec_split_enabled: false
+ec_split_column: ec
+ec_split_levels:
+  - 1
+  - 2
+  - 3
+  - 4
+ec_split_random_seed: ${.random_seed}
+ec_split_test_frac: ${.test_frac}
+ec_split_match_val_to_test: true
+ec_split_output_dir_name: ec_hierarchy_splits
+ec_split_part_delimiter: "."
+ec_split_multivalue_delimiter: null
+
+# UniProt time-based split (optional)
+time_split_enabled: false
+time_split_acc_id_column: null
+time_split_acc_id_delimiter: "|"
+time_split_dataset_date_column: uniprot_date
+time_split_date_field: date_created
+time_split_missing_date_split: train
+time_split_output_dir_name: uniprot_time_splits
+
+# Dataset split difficulty levels
+split_difficulty_levels:
+  - easy
+  - medium
+  - hard
+
+# Foldseek (protein structure similarity) paths
+foldseek_tmpdir: ${paths.raw_data_dir}/foldseek_tmp
+all_foldseek_path: ${paths.raw_data_dir}/foldseek_all
+all_pdb_symlink_path: ${paths.raw_data_dir}/all_pdb_symlinks
+
+# MMseqs2 (protein sequence similarity) paths
+mmseqs2_tmpdir: ${paths.raw_data_dir}/mmseqs2_tmp
+all_mmseqs2_path: ${paths.raw_data_dir}/mmseqs2_all
+
+plot_names:
+  unique_smiles_similarity: tanimoto_similarity_distribution_all_thresholds.png
+  full_smiles_similarity: full_dataset_smiles_tanimoto_similarity_distribution.png
+  unique_enzyme_sequence_similarity: unique_enzyme_sequence_test_train_similarity_distribution.png
+  full_enzyme_sequence_similarity: full_dataset_enzyme_sequence_test_train_similarity_distribution.png
+  unique_enzyme_structure_similarity: unique_enzyme_structure_test_train_similarity_distribution.png
+  full_enzyme_structure_similarity: full_dataset_enzyme_structure_test_train_similarity_distribution.png
+  unique_conformer_similarity: unique_conformer_cosine_similarity_distribution.png
+  full_conformer_similarity: full_dataset_conformer_cosine_similarity_distribution.png
+  unique_uniprot_time_distribution: unique_uniprot_time_distribution.png
+  full_uniprot_time_distribution: full_dataset_uniprot_time_distribution.png
+
+enzyme_split_methods:
+  - sequence
+  - structure

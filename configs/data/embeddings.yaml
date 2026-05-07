@@ -1,0 +1,112 @@
+defaults:
+  - _self_
+
+# Target function to instantiate when using hydra.utils.instantiate()
+_target_: src.data.generation.embeddings.setup
+
+gpu_ids: [1]                          # List of GPU IDs to use for embeddings computation
+
+# Logging configuration
+log_dir: ${paths.log_dir}        # Directory for log files (from paths config)
+
+esmc_embeddings_log_file_name: esmc_embeddings.log   # Name of the log file for embeddings processing
+esm3_pdbs_log_file_name: esm3_pdbs.log               # Name of the log file for ESM3 PDB processing
+esm3_embeddings_log_file_name: esm3_embeddings.log   # Name of the log file for ESM3 embeddings processing
+
+clamp_smiles_embeddings_log_file_name: clamp_smiles_embeddings.log    # Name of the log file for CLAMP processing
+bartsmiles_embeddings_log_file_name: bartsmiles_embeddings.log        # Name of the log file for BARTSMILES processing
+smited_embeddings_log_file_name: smited_embeddings.log                # Name of the log file for SMI-TED processing
+rxnfp_embeddings_log_file_name: rxnfp_embeddings.log                  # Name of the log file for RXNFP processing
+unimol_embeddings_log_file_name: unimol_embeddings.log                # Name of the log file for UNIMOL processing
+molr_embeddings_log_file_name: molr_embeddings.log                    # Name of the log file for MolR UNIMOL processing
+smiles_ecfp_embeddings_log_file_name: smiles_ecfp_embeddings.log      # Name of the log file for SMILES ECFP processing
+smiles_atom_pair_embeddings_log_file_name: smiles_atompair_fp_embeddings.log  # Name of the log file for SMILES AtomPair FP processing
+datamol_3dconformers_log_file_name: datamol_3d_conformers.log  # Name of the log file for Datamol 3D conformers generation
+
+datamol_random_seed: 42    # Random seed for reproducibility
+datamol_max_attempts: 1000    # Maximum attempts for RDKit operations
+datamol_num_conformers: 10    # Number of conformers to generate with RDKit
+datamol_conformer_optimization: True    # Whether to perform RDKit conformer optimization
+datamol_conformer_input_dataset_parquet_file_path: ${splits.dataset.cosine_split.input_dataset_parquet_file_path}
+
+# Directory paths for embeddings data
+embeddings_path: ${paths.embeddings_path}    # Directory to store embeddings
+
+esmc_embeddings_path: ${.embeddings_path}/esmc                                                                        # Input pickle path for ESMC embeddings
+esmc_embeddings_input_pkl_path: ${oc.env:DATAVERSE_ROOT}/01_core_benchmark/esmc_embedding_sequences.pkl    # Input pickle path for ESMC embeddings
+
+sdf_path: ${paths.sdf_path}            # Directory containing SDF molecule files
+mol_2d_path: ${paths.mol_path.2D}      # Directory containing 2D molecule files
+mol_3d_path: ${paths.mol_path.3D}      # Directory containing 3D molecule files
+af_pdb_path: ${paths.af_pdb_path}      # Directory containing AlphaFold PDB files
+esm_pdb_path: ${paths.esm_pdb_path}    # Directory containing ESM3 PDB files
+processed_exp_pdb_path: ${paths.processed_exp_pdb_path}  # Directory containing processed experimental PDB files
+
+esm3_pdbs_input_pkl_path: ${oc.env:PROJECT_ROOT}/data/intermediate/all_pdb_acc_ids.pkl          # Input pickle path for ESM3 PDBs  
+esm3_embeddings_input_pkl_path: ${oc.env:PROJECT_ROOT}/data/intermediate/all_pdb_acc_ids.pkl    # Input pickle path for ESM3 embeddings
+esm3_featurized_dir: ${paths.intermediate_data_dir}/esm3_featurized
+esm3_keep_featurized_after_success: false
+esm3_reclaim_last_underfilled_shard: true
+esm3_featurize_workers: 80
+esm3_featurize_backend: process
+esm3_feature_records_per_shard: 5000
+esm3_pending_checkpoint_interval_embeddings: 5000
+esm3_pending_checkpoint_interval_seconds: 300
+
+clamp_dir: ${oc.env:HOME}/.cache/CLAMP
+clamp_batch_size: 100                                                                                                     # Batch size for CLAMP embeddings computation
+clamp_hp_url: https://cloud.ml.jku.at/s/dRX9TWPrF7WqnHd/download/hp.json                                                  # URL for CLAMP hyperparameters
+clamp_checkpoint_url: https://cloud.ml.jku.at/s/7nxgpAQrTr69Rp2/download/checkpoint.pt                                    # URL for CLAMP model checkpoint
+clamp_smiles_embeddings_input_pkl_path: ${oc.env:PROJECT_ROOT}/data/intermediate/unified_kinetic_params_smiles.pkl   # Input pickle path for CLAMP embeddings
+clamp_smiles_embeddings_output_pkl_path: ${.embeddings_path}/unified_kinetic_params_clamp_smiles_embeddings.pkl           # Output pickle path for CLAMP embeddings
+
+bartsmiles_embeddings_batch_size: 128                                                                                   # Batch size for BARTSMILES embeddings computation
+bartsmiles_embeddings_input_pkl_path: ${oc.env:PROJECT_ROOT}/data/intermediate/all_canonical_smiles.pkl   # Input pickle path for BARTSMILES embeddings
+bartsmiles_embeddings_output_pkl_path: ${.embeddings_path}/all_canonical_smiles_bartsmiles_embeddings.pkl             # Output pickle path for BARTSMILES embeddings
+
+smited_embeddings_model_id: <your-hf-namespace>/materials-smi-ted-fork  # HF model ID for the SMI-TED fork; replace with your namespace
+smited_embeddings_batch_size: 1024
+smited_embeddings_prefetch_batches: 8
+smited_embeddings_tokenize_workers: 8
+smited_embeddings_tokenizers_parallelism: true
+smited_embeddings_use_autocast: true
+smited_embeddings_autocast_dtype: float16
+smited_embeddings_input_pkl_path: ${oc.env:PROJECT_ROOT}/data/intermediate/all_canonical_smiles.pkl
+smited_embeddings_output_pkl_path: ${.embeddings_path}/all_canonical_smiles_smited_embeddings.pkl
+
+rxnfp_batch_size: 2500                                                                                             # Batch size for RXNFP embeddings computation
+rxnfp_embeddings_input_pkl_path: ${oc.env:PROJECT_ROOT}/data/intermediate/unified_reactions_rxn_smiles.pkl    # Input pickle path for RXNFP embeddings
+rxnfp_embeddings_output_pkl_path: ${.embeddings_path}/unified_reactions_rxnfp_embeddings.pkl                       # Output pickle path for RXNFP embeddings
+
+drfp_embeddings_log_file_name: drfp_embeddings.log
+drfp_batch_size: 2500
+drfp_n_folded_length: 2048
+drfp_min_radius: 0
+drfp_radius: 3
+drfp_rings: false
+drfp_include_hydrogens: false
+drfp_embeddings_input_pkl_path: ${enzyme_retrieval_dataset.enzyme_retrieval_rxn_smiles_pickle_path}
+drfp_embeddings_store_dir: ${.embeddings_path}/drfp/default/v1
+
+unimol_embeddings_mol_path: ${paths.mol_path.3D}                                                               # Directory for storing 3D molecule files for UNIMOL embeddings
+unimol_embeddings_input_pkl_path: ${oc.env:PROJECT_ROOT}/data/intermediate/unified_kinetic_params_smiles.pkl   # Input pickle path for UNIMOL embeddings
+unimol_embeddings_output_pkl_path: ${.embeddings_path}/unified_kinetic_params_unimol_3d_embeddings.pkl              # Output pickle path for UNIMOL embeddings
+
+molr_batch_size: 500                                                                                              # Batch size for MolR UNIMOL embeddings computation
+molr_embeddings_input_pkl_path: ${oc.env:PROJECT_ROOT}/data/intermediate/unified_kinetic_params_smiles.pkl   # Input pickle path for MolR UNIMOL embeddings
+molr_embeddings_output_pkl_path: ${.embeddings_path}/unified_kinetic_params_molr_2d_embeddings.pkl                # Output pickle path for MolR embeddings
+
+ecfp_pandarallel:
+  progress_bar: false
+  nb_workers: 112
+ecfp_radius: 2
+ecfp_nbits: 1024
+smiles_ecfp_embeddings_input_pkl_path: ${oc.env:PROJECT_ROOT}/data/intermediate/unified_kinetic_params_smiles.pkl   # Input pickle path for SMILES ECFP embeddings
+smiles_ecfp_embeddings_output_pkl_path: ${.embeddings_path}/unified_kinetic_params_smiles_ecfp_embeddings.pkl            # Output pickle path for SMILES ECFP embeddings
+
+atom_pair_pandarallel:
+  progress_bar: false
+  nb_workers: 112
+atom_pair_nbits: 1024
+smiles_atom_pair_embeddings_input_pkl_path: ${oc.env:PROJECT_ROOT}/data/intermediate/unified_kinetic_params_smiles.pkl   # Input pickle path for SMILES AtomPair embeddings
+smiles_atom_pair_embeddings_output_pkl_path: ${.embeddings_path}/unified_kinetic_params_smiles_atom_pair_embeddings.pkl     # Output pickle path for SMILES AtomPair embeddings

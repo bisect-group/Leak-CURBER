@@ -1,0 +1,38 @@
+defaults:
+  - _self_
+
+_target_: src.data.components.enzyme_compound_dataset.EnzymeCompoundDatasetBuilder.setup
+
+# Logging configuration
+log_dir: ${paths.log_dir}                     # Directory for log files (from paths config)
+log_file_name: enzyme_compound_dataset.log        # Name of the log file for enzyme-compound
+
+# Base paths
+enzyme_compound_dataset_path: ${paths.enzyme_compound_dataset_path}  # Path for enzyme-compound dataset
+
+# Input paths for unified reactions and sequences
+unified_reactions_parquet_file_path: ${reactions_dataset.unified_reactions_parquet_file_path}            # Path to unified reactions in Parquet format
+unified_reactions_sequences_pickle_path: ${reactions_dataset.unified_reactions_sequences_pickle_path}    # Path to unified reaction sequences in pickle format
+unified_reactions_rxn_smiles_pickle_path: ${reactions_dataset.unified_reactions_rxn_smiles_pickle_path}  # Path to unified reaction SMILES in pickle format
+
+# Output paths for enzyme-substrate dataset
+enzyme_substrate_smiles_pickle_path: ${.enzyme_compound_dataset_path}/enzyme_substrate_smiles.pkl                                # Path to save enzyme-substrate SMILES in pickle format
+enzyme_substrate_sequences_pickle_path: ${.enzyme_compound_dataset_path}/enzyme_substrate_sequences.pkl                          # Path to save enzyme-substrate sequences in pickle format
+enzyme_substrate_dataset_parquet_file_path: ${.enzyme_compound_dataset_path}/enzyme_substrate_dataset.parquet                    # Path to save enzyme-substrate dataset in Parquet format
+enzyme_substrate_positive_dataset_parquet_file_path: ${.enzyme_compound_dataset_path}/enzyme_substrate_positive_dataset.parquet  # Path to save positive enzyme-substrate dataset in Parquet format
+enzyme_substrate_negative_dataset_parquet_file_path: ${.enzyme_compound_dataset_path}/enzyme_substrate_negative_dataset.parquet  # Path to save negative enzyme-substrate dataset in Parquet format
+
+# Random seed for reproducibility
+random_seed: 42
+
+# pandarallel configuration
+pandarallel:
+  progress_bar: false
+  progress_bar_negative_pairs: true
+  nb_workers: 112
+
+# Negative sampling parameters
+n_neg: 3          # Number of negative samples per positive sample
+sim_upper: 0.95   # Upper bound for similarity threshold
+sim_lower: 0.7    # Lower bound for similarity threshold
+sim_step: 0.2     # Step size for similarity threshold

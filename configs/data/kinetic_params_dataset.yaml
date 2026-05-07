@@ -1,0 +1,45 @@
+defaults:
+  - _self_
+
+# Target function to instantiate when using hydra.utils.instantiate()
+_target_: src.data.components.unify_kinetic_params.setup
+
+# Logging configuration
+log_dir: ${paths.log_dir}            # Directory for log files (from paths config)
+log_file_name: unify_kinetic_params.log   # Name of the log file for KEGG processing
+
+# Base paths
+kinetic_dataset_path: ${paths.kinetic_dataset_path}  # Path for kinetic parameters dataset
+
+# Directory paths for kinetic params data
+bindingdb_kinetic_params_parquet_file_path: ${binding_affinity_dataset.bindingdb_data_path}/ki.parquet          # Processed BindingDB Ki data in Parquet format
+sabio_kinetic_params_parquet_file_path: ${sabio_rk.sabio_kinetic_params_parquet_file_path}      # Processed Sabio-RK kinetic parameters in Parquet format
+brenda_kinetic_params_parquet_file_path: ${brenda.brenda_kinetic_params_parquet_file_path}    # Processed BRENDA kinetic parameters in Parquet format
+metacyc_kinetic_params_parquet_file_path: ${metacyc.metacyc_kinetic_params_parquet_file_path}  # Processed MetaCyc kinetic parameters in Parquet format
+
+# Output path for unified reactions
+save_1d_dataset: true
+save_3d_dataset: true
+value_types: [unified, kcat, km, ki]
+unified_kinetic_params_sequences_pickle_path: ${.kinetic_dataset_path}/unified_kinetic_params_sequences.pkl  # Path to save unified kinetic parameter sequences in pickle format
+unified_kinetic_params_smiles_pickle_path: ${.kinetic_dataset_path}/unified_kinetic_params_smiles.pkl        # Path to save unified kinetic parameter SMILES in pickle format
+dataset_paths:
+  unified:
+    dir: ${kinetic_params_dataset.kinetic_dataset_path}/unified
+    parquet_1d: ${.dir}/unified_kinetic_params_1d.parquet
+    parquet_3d: ${.dir}/unified_kinetic_params_3d.parquet
+  kcat:
+    dir: ${kinetic_params_dataset.kinetic_dataset_path}/kcat
+    parquet_1d: ${.dir}/kcat_kinetic_params_1d.parquet
+    parquet_3d: ${.dir}/kcat_kinetic_params_3d.parquet
+  km:
+    dir: ${kinetic_params_dataset.kinetic_dataset_path}/km
+    parquet_1d: ${.dir}/km_kinetic_params_1d.parquet
+    parquet_3d: ${.dir}/km_kinetic_params_3d.parquet
+  ki:
+    dir: ${kinetic_params_dataset.kinetic_dataset_path}/ki
+    parquet_1d: ${.dir}/ki_kinetic_params_1d.parquet
+    parquet_3d: ${.dir}/ki_kinetic_params_3d.parquet
+unified_kinetic_params_1d_parquet_file_path: ${.dataset_paths.unified.parquet_1d}
+unified_kinetic_params_3d_parquet_file_path: ${.dataset_paths.unified.parquet_3d}
+unified_kinetic_params_parquet_file_path: ${.unified_kinetic_params_3d_parquet_file_path}            # Backward-compatible alias for the 3D dataset path

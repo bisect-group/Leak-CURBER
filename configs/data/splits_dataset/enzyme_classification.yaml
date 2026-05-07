@@ -1,0 +1,34 @@
+random_output_dir: ${enzyme_classification_dataset.enzyme_classification_dataset_path}/random_splits
+
+random:
+  input_dataset_parquet_file_path: ${..sequence_split.input_dataset_parquet_file_path}
+  output_dir: ${..random_output_dir}
+  unique_cols:
+    - sequence
+
+ec_split:
+  input_dataset_parquet_file_path: ${enzyme_classification_dataset.enzyme_classification_dataset_parquet_file_path}
+  output_dir: ${enzyme_classification_dataset.enzyme_classification_dataset_path}/ec_hierarchy_splits
+  column: ec_number
+
+sequence_split:
+  input_dataset_parquet_file_path: ${enzyme_classification_dataset.enzyme_classification_dataset_parquet_file_path}
+  output_dir: ${enzyme_classification_dataset.enzyme_classification_dataset_path}/enzyme_sequence_splits
+  unique_similarity_plot_path: ${.output_dir}/${splits.plot_names.unique_enzyme_sequence_similarity}
+  full_dataset_similarity_plot_path: ${.output_dir}/${splits.plot_names.full_enzyme_sequence_similarity}
+  similarity_thresholds:
+    - 0.4
+
+structure_split:
+  input_dataset_parquet_file_path: ${enzyme_classification_dataset.enzyme_classification_dataset_parquet_file_path}
+  output_dir: ${enzyme_classification_dataset.enzyme_classification_dataset_path}/enzyme_structure_splits
+  unique_similarity_plot_path: ${.output_dir}/${splits.plot_names.unique_enzyme_structure_similarity}
+  full_dataset_similarity_plot_path: ${.output_dir}/${splits.plot_names.full_enzyme_structure_similarity}
+  # Whether to drop the 3D structure features and only keep the 1D sequence features in the output splits.
+  # Applicable for models that dint use the 3D structure features and only use the 1D sequence features.
+  # Keeping it enabled would skew the TVT ratios after dropping the 3D structure features and deduplicating.
+  drop_to_1d: true
+  similarity_thresholds:
+    - 0.7
+    - 0.8
+    - 0.9

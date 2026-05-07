@@ -3,18 +3,19 @@ defaults:
   - early_stopping
   - model_summary
   - rich_progress_bar
+  - warmup_loader
   - _self_
 
 model_checkpoint:
   dirpath: ${paths.output_dir}/checkpoints
   filename: "epoch_{epoch:03d}"
-  monitor: "val/acc"
+  monitor: "val/r2"
   mode: "max"
   save_last: True
   auto_insert_metric_name: False
 
 early_stopping:
-  monitor: "val/acc"
+  monitor: "val/r2"
   patience: 100
   mode: "max"
 

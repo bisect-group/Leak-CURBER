@@ -1,0 +1,15 @@
+Plan.md~
+emulator_bench/cache/
+emulator_bench/runs/
+emulator_bench/outputs/
+emulator_bench/__pycache__/
+emulator_bench/**/*.pyc
+*.log
+*.out
+*.err
+Data/Structures/*
+Data/ProtTrans/*
+Data/DSSP/*
+!Data/Structures/.gitkeep
+!Data/ProtTrans/.gitkeep
+!Data/DSSP/.gitkeep

@@ -1,0 +1,25 @@
+defaults:
+  - _self_
+
+# Target function to instantiate when using hydra.utils.instantiate()
+_target_: src.data.generation.kegg.setup
+
+# Logging configuration
+log_dir: ${paths.log_dir}        # Directory for log files (from paths config)
+log_file_name: kegg.log               # Name of the log file for KEGG processing
+
+# Directory paths for KEGG data
+kegg_raw_path: ${paths.kegg_raw_path}              # Raw downloaded KEGG files
+kegg_data_path: ${paths.kegg_data_path}            # Processed KEGG data files
+kegg_compound_path: ${paths.kegg_compound_path}    # Raw KEGG compound files
+kegg_reaction_path: ${paths.kegg_reaction_path}    # Raw KEGG reaction files
+kegg_glycan_path: ${paths.kegg_glycan_path}        # Raw KEGG glycan files
+kegg_mol_path: ${paths.mol_path.2D}                # Directory for storing 2D molecule files
+
+# KEGG database URLs and endpoints
+kegg_base_url: http://rest.kegg.jp                         # Base URL for KEGG REST API
+kegg_reaction_list_url: ${.kegg_base_url}/list/reaction    # URL to get list of KEGG reactions
+
+# Processed data output paths
+kegg_compounds_parquet_file_path: ${.kegg_data_path}/kegg_compounds.parquet     # Processed compounds in Parquet format
+kegg_reactions_parquet_file_path: ${.kegg_data_path}/kegg_reactions.parquet     # Processed reactions in Parquet format

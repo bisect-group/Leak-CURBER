@@ -1,0 +1,21 @@
+# @package _global_
+
+defaults:
+  - _self_
+  - paths: default
+  - data/chem_utils@chem_utils
+  - data/chebi@chebi
+  - data/rhea@rhea
+  - data/kegg@kegg
+  - data/brenda@brenda
+  - data/metacyc@metacyc
+  - data/sabio_rk@sabio_rk
+  - data/reactions_dataset@reactions_dataset
+  - data/kinetic_params_dataset@kinetic_params_dataset
+  - data/enzyme_compound_dataset@enzyme_compound_dataset
+  - data/enzyme_retrieval_dataset@enzyme_retrieval_dataset
+  - data/enzyme_classification_dataset@enzyme_classification_dataset
+  - data/binding_affinity_dataset@binding_affinity_dataset
+  - data/embeddings@embeddings
+  - data/splits@splits
+  - data/unimol_sdf_embeddings@unimol_sdf_embeddings
