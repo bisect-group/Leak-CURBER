@@ -1,0 +1,25 @@
+lightning
+hydra-core
+hydra-colorlog
+hydra-optuna-sweeper
+dm-tree
+wandb
+tqdm
+huggingface-hub
+esm
+rootutils
+rich
+rdkit
+zeep
+molvs
+pandas
+pyarrow
+datamol
+chemeq @ git+https://anonymous.4open.science/r/chemeq-10E7
+brendapyrser
+pandarallel
+scikit-learn
+unimol_tools @ git+https://anonymous.4open.science/r/unimol_tools-5766
+clamp @ git+https://anonymous.4open.science/r/clamp-3566
+rxnfp @ git+https://anonymous.4open.science/r/rxnfp-C4D7
+drfp

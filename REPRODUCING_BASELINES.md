@@ -11,30 +11,22 @@ directory.
 
 ### 1. Obtain the code
 
-Either extract the `05_code/` directory from the dataverse archive, or, if the project is also
-mirrored as a git repository with submodules:
-
-```bash
-git clone --recurse-submodules <repo-url>
-```
-
-If you already cloned without submodules:
-
-```bash
-git submodule update --init --recursive
-```
+Clone this repository, or extract the `Leak-CURBER/` directory from the dataverse archive.
 
 ### 2. Install dependencies
 
-All Python dependencies (including those required by every baseline's `emulator_bench/` workflow)
-are declared in the root package. Install once from the project root:
+All Python dependencies — including everything needed by both the main `src/` tree and every
+baseline's `emulator_bench/` workflow — are declared in [`requirements.txt`](requirements.txt).
+Create a conda env (Python ≥ 3.12 recommended) and install:
 
 ```bash
-pip install -e .
+conda create -n leakcurber python=3.12 -y
+conda activate leakcurber
+pip install -r requirements.txt
 ```
 
-> Do **not** install each baseline separately. The root `pip install -e .` covers every workflow
-> in `baselines/*/emulator_bench/`.
+> Do **not** install each baseline separately. The single environment covers every
+> workflow in `baselines/*/emulator_bench/`.
 
 ### 3. Hardware
 
@@ -44,20 +36,35 @@ All commands below assume at least one GPU (`cuda:0`); adjust `--gpus` / `--devi
 
 ### 4. Dataset
 
-Download the benchmark dataset archive from the dataverse record associated with this submission.
-After extraction the top-level layout is:
+Two options:
+
+- **Bundled sample** (smoke-test, ~50–900 rows per split): point `DATASET_ROOT` at the in-tree
+  sample so you can verify the pipeline runs end-to-end before downloading anything:
+
+  ```bash
+  export DATASET_ROOT=$PROJECT_ROOT/00-sample__benchmark_datasets
+  ```
+
+- **Full benchmark** (paper results): download from the dataverse record associated with this
+  submission and point `DATASET_ROOT` at the extracted `01_core_benchmark_datasets/` directory.
+
+Either way, the layout is:
 
 ```
 <DATASET_ROOT>/
   kinetic_params_dataset/
-    kcat/
-    km/
-    ki/
+    kcat/  km/  ki/
   binding_affinity_dataset/
-    ec50/
-    ic50/
-    kd/
+    ec50/  ic50/  kd/
+  enzyme_classification_dataset/
+  enzyme_retrieval_dataset/
+  reaction_outcome_dataset/
 ```
+
+This document covers the regression baselines, which use only `kinetic_params_dataset/{kcat,km,ki}`
+and `binding_affinity_dataset/{ec50,ic50}`. Baselines for the other task families (CARE, CLEAN,
+Clipzyme, GraphEC, HITEC, Horizon, StructureFree-DTA) are documented in their own
+`baselines/<NAME>/emulator_bench/README.md` files.
 
 Each value-type folder contains the same set of split-group subdirectories:
 
