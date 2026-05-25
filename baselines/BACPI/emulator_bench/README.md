@@ -1,6 +1,6 @@
 # emulator_bench
 
-This bench adds an Leak-CURBER-style retraining workflow to `BACPI` without modifying the original `code/` model implementation.
+This bench adds a Leak-CURBER-style retraining workflow to `BACPI` without modifying the original `code/` model implementation.
 
 It is designed for BACPI affinity split trees under:
 

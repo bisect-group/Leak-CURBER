@@ -28,7 +28,7 @@ Prepare one split group and populate the shared feature cache:
 ```bash
 conda run -n graphec python -m emulator_bench.cache_features \
   --dataset-root ../../data/processed/datasets/enzyme_classification_dataset \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --prottrans-model-path /path/to/Prot-T5-XL-U50
 ```
 
@@ -36,7 +36,7 @@ Train one seed:
 
 ```bash
 conda run -n graphec python -m emulator_bench.train \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --seed 0 \
   --epochs 35 \
   --precision auto
@@ -46,7 +46,7 @@ Evaluate one seed:
 
 ```bash
 conda run -n graphec python -m emulator_bench.evaluate \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --seed 0 \
   --eval-split test
 ```
@@ -57,7 +57,7 @@ when `--wait` is used:
 ```bash
 conda run -n graphec python -m emulator_bench.queue_pipeline \
   --dataset-root ../../data/processed/datasets/enzyme_classification_dataset \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --seed 0 \
   --execution-mode ts \
   --epochs 35 \
@@ -72,7 +72,7 @@ One-epoch smoke test directly on GPU 0, without waiting on `ts`:
 ```bash
 CUDA_VISIBLE_DEVICES=0 conda run -n graphec python -m emulator_bench.queue_pipeline \
   --dataset-root ../../data/processed/datasets/enzyme_classification_dataset \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --seed 0 \
   --execution-mode direct \
   --epochs 1 \

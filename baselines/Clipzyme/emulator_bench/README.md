@@ -39,14 +39,14 @@ Use the provided environment:
 ```bash
 conda run -n clipzyme python -m emulator_bench.cache_features \
   --dataset-root ../../data/processed/datasets/enzyme_retrieval_dataset \
-  --split-group random_splits
+  --split-group random_splits_grouped_sequence
 ```
 
 Train through Clipzyme's native dispatcher:
 
 ```bash
 conda run -n clipzyme python -m emulator_bench.train \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --seed 42 \
   --epochs 20 \
   --precision bf16
@@ -56,7 +56,7 @@ Evaluate the checkpoint produced by training:
 
 ```bash
 conda run -n clipzyme python -m emulator_bench.evaluate \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --seed 42 \
   --eval-split test
 ```
@@ -86,7 +86,7 @@ Required smoke-test shape:
 
 ```bash
 CUDA_VISIBLE_DEVICES=3 conda run -n clipzyme python -m emulator_bench.queue_pipeline \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --seed 42 \
   --epochs 1 \
   --limit-per-split 64 \

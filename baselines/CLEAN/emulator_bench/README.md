@@ -19,14 +19,14 @@ Prepare cache and CLEAN inputs for one split group:
 ```bash
 conda run -n clean python -m emulator_bench.cache_features \
   --dataset-root ../../data/processed/datasets/enzyme_classification_dataset \
-  --split-group random_splits
+  --split-group random_splits_grouped_sequence
 ```
 
 Train with the native triplet script:
 
 ```bash
 conda run -n clean python -m emulator_bench.train \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --env-name clean \
   --epochs 7000 \
   --precision auto
@@ -36,7 +36,7 @@ Evaluate the produced checkpoint:
 
 ```bash
 conda run -n clean python -m emulator_bench.evaluate \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --eval-split both
 ```
 
@@ -46,7 +46,7 @@ with task-spooler's native GPU scheduler:
 
 ```bash
 conda run -n clean python -m emulator_bench.queue_pipeline \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --env-name clean \
   --spooler-bin ts \
   --gpus-per-job 1
@@ -60,15 +60,15 @@ One-epoch smoke test on GPU 3 with reduced data:
 
 ```bash
 CUDA_VISIBLE_DEVICES=3 conda run -n clean python -m emulator_bench.cache_features \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --limit-per-split 32
 CUDA_VISIBLE_DEVICES=3 conda run -n clean python -m emulator_bench.train \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --epochs 1 \
-  --model-name emulator_random_splits_smoke
+  --model-name emulator_random_splits_grouped_sequence_smoke
 CUDA_VISIBLE_DEVICES=3 conda run -n clean python -m emulator_bench.evaluate \
-  --split-group random_splits \
-  --model-name emulator_random_splits_smoke \
+  --split-group random_splits_grouped_sequence \
+  --model-name emulator_random_splits_grouped_sequence_smoke \
   --eval-split test
 ```
 

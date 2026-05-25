@@ -13,8 +13,8 @@ Expected dataset root:
 ```
 
 Each split group must contain `train.parquet`, `val.parquet`, and `test.parquet`.
-The wrapper discovers `random_splits`, sequence, structure, time, and EC hierarchy
-split groups automatically.
+The wrapper discovers the released grouped random split directories plus
+sequence, structure, time, and EC hierarchy split groups automatically.
 
 Required columns are `uniprot_id`, `sequence`, and `ec_number`. Optional columns
 such as `pdbs`, `pdb_source`, and `pdb_type` are retained after per-file
@@ -43,14 +43,14 @@ Prepare one split group:
 ```bash
 conda run -n hitec python -m emulator_bench.cache_features \
   --dataset-root ../../data/processed/datasets/enzyme_classification_dataset \
-  --split-group random_splits
+  --split-group random_splits_grouped_sequence
 ```
 
 Train one seed:
 
 ```bash
 conda run -n hitec python -m emulator_bench.train \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --seed 1234 \
   --epochs 80 \
   --precision auto
@@ -60,7 +60,7 @@ Evaluate one seed:
 
 ```bash
 conda run -n hitec python -m emulator_bench.evaluate \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --seed 1234 \
   --eval-split test
 ```
@@ -70,7 +70,7 @@ Queue cache, train, and evaluate with `ts`:
 ```bash
 conda run -n hitec python -m emulator_bench.queue_pipeline \
   --dataset-root ../../data/processed/datasets/enzyme_classification_dataset \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --seed 1234 \
   --epochs 80 \
   --wait
@@ -81,7 +81,7 @@ Smoke test:
 ```bash
 CUDA_VISIBLE_DEVICES=3 conda run -n hitec python -m emulator_bench.queue_pipeline \
   --dataset-root ../../data/processed/datasets/enzyme_classification_dataset \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --epochs 1 \
   --seed 1234 \
   --limit-per-split 16 \

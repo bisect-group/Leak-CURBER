@@ -145,9 +145,19 @@ Legacy split-specific scripts are retained for comparison:
 
 ## Multi-split benchmark runner
 
-To run all thresholds across both split families for one value type (`kcat`, `km`, or `ki`), use:
+To run all released Leak-CURBER split groups for one value type (`kcat`, `km`,
+or `ki`), pass the explicit split group list:
 
-CUDA_VISIBLE_DEVICES=0 conda run -n mldb python emulator_bench/run_split_benchmarks.py --value_type kcat --device cuda:0 --seeds 0 1 2 3 4 --primary_metric MSE
+```bash
+CUDA_VISIBLE_DEVICES=0 conda run -n mldb python emulator_bench/run_split_benchmarks.py \
+  --value_type kcat \
+  --split_groups random_splits_grouped_sequence random_splits_grouped_smiles \
+                 enzyme_sequence_splits enzyme_structure_splits \
+                 substrate_splits uniprot_time_splits conformer_cosine_splits \
+  --device cuda:0 \
+  --seeds 0 1 2 3 4 \
+  --primary_metric MSE
+```
 
 This script will, for each discovered threshold directory:
 
@@ -165,14 +175,14 @@ It writes summaries at:
 
 - `<base_dir>/<value_type>/catapro_summary_runs.csv` (one row per seed-run)
 - `<base_dir>/<value_type>/catapro_summary_thresholds.csv` (mean/variance across seeds)
-- `<base_dir>/<value_type>/catapro_summary_by_split_group.csv` (enzyme vs substrate aggregates)
+- `<base_dir>/<value_type>/catapro_summary_by_split_group.csv` (per split-family aggregates)
 - `<base_dir>/<value_type>/catapro_summary_ranked.csv` (ranked by primary metric)
 - `<base_dir>/<value_type>/catapro_summary.csv` (backward-compatible threshold summary)
 
 Useful options:
 
 - `--base_dir <PROJECT_ROOT>/data/processed/baselines/CataPro`
-- `--split_groups enzyme_sequence_splits substrate_splits`
+- `--split_groups random_splits_grouped_sequence random_splits_grouped_smiles enzyme_sequence_splits enzyme_structure_splits substrate_splits uniprot_time_splits conformer_cosine_splits`
 - `--thresholds threshold_0.1 threshold_0.2`
 - `--cache_dir /path/to/shared_cache`
 - `--seeds 0 1 2 3 4`
@@ -213,4 +223,14 @@ If you want persistent Optuna storage, pass `--storage` explicitly (for example,
 
 Then run your full benchmark with frozen tuned params:
 
-CUDA_VISIBLE_DEVICES=0 conda run -n mldb python emulator_bench/run_split_benchmarks.py --value_type ki --device cuda:0 --seeds 0 1 2 3 4 --primary_metric MSE --hparams_json <PROJECT_ROOT>/data/processed/baselines/CataPro/ki/optuna_studies/catapro_ki_mse_best_hparams.json
+```bash
+CUDA_VISIBLE_DEVICES=0 conda run -n mldb python emulator_bench/run_split_benchmarks.py \
+  --value_type ki \
+  --split_groups random_splits_grouped_sequence random_splits_grouped_smiles \
+                 enzyme_sequence_splits enzyme_structure_splits \
+                 substrate_splits uniprot_time_splits conformer_cosine_splits \
+  --device cuda:0 \
+  --seeds 0 1 2 3 4 \
+  --primary_metric MSE \
+  --hparams_json <PROJECT_ROOT>/data/processed/baselines/CataPro/ki/optuna_studies/catapro_ki_mse_best_hparams.json
+```

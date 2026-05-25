@@ -20,11 +20,13 @@ Default base dir:
 
 Expected split layout:
 
-- `random_splits/train.parquet`
-- `random_splits/val.parquet`
-- `random_splits/test.parquet`
-- `enzyme_sequence_splits/threshold_x/train.parquet`
-- `substrate_splits/threshold_x/train.parquet`
+- `random_splits_grouped_sequence/{train,val,test}.parquet`
+- `random_splits_grouped_smiles/{train,val,test}.parquet`
+- `enzyme_sequence_splits/threshold_x/{train,val,test}.parquet`
+- `enzyme_structure_splits/threshold_x/{train,val,test}.parquet`
+- `substrate_splits/threshold_x/{train,val,test}.parquet`
+- `uniprot_time_splits/{train,val,test}.parquet`
+- `conformer_cosine_splits/threshold_x/{train,val,test}.parquet`
 
 ## Inputs The Bench Expects
 

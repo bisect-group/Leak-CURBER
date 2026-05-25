@@ -15,9 +15,13 @@ Clone this repository, or extract the `Leak-CURBER/` directory from the datavers
 
 ### 2. Install dependencies
 
-All Python dependencies — including everything needed by both the main `src/` tree and every
-baseline's `emulator_bench/` workflow — are declared in [`requirements.txt`](requirements.txt).
-Create a conda env (Python ≥ 3.12 recommended) and install:
+[`requirements.txt`](requirements.txt) lists the repo-level dependencies and
+patched forks used by the main `src/` tree and several adapters. Some
+baseline adapters also rely on baseline-specific stacks imported from the
+copied upstream projects, including packages such as `transformers`,
+`torch_geometric`, and model-specific training dependencies. Create the common
+environment first, then install any additional packages called out by the
+adapter README you are running:
 
 ```bash
 conda create -n leakcurber python=3.12 -y
@@ -25,8 +29,18 @@ conda activate leakcurber
 pip install -r requirements.txt
 ```
 
-> Do **not** install each baseline separately. The single environment covers every
-> workflow in `baselines/*/emulator_bench/`.
+> Do not assume one environment is sufficient for every adapter. The regression
+> commands below were validated in the project environment used for the release,
+> but adapter-specific dependencies may still need to be installed for a fresh
+> machine.
+
+The repo-level `src/` tree was syntax-checked in the validation environment with:
+
+```bash
+conda run -n mldb python -m compileall -q src
+```
+
+This completed successfully under Python 3.12.12.
 
 ### 3. Hardware
 
@@ -42,11 +56,12 @@ Two options:
   sample so you can verify the pipeline runs end-to-end before downloading anything:
 
   ```bash
+  export PROJECT_ROOT=/absolute/path/to/Leak-CURBER
   export DATASET_ROOT=$PROJECT_ROOT/00-sample__benchmark_datasets
   ```
 
 - **Full benchmark** (paper results): download from the dataverse record associated with this
-  submission and point `DATASET_ROOT` at the extracted `01_core_benchmark_datasets/` directory.
+  submission and point `DATASET_ROOT` at the extracted full benchmark dataset directory.
 
 Either way, the layout is:
 
@@ -62,9 +77,11 @@ Either way, the layout is:
 ```
 
 This document covers the regression baselines, which use only `kinetic_params_dataset/{kcat,km,ki}`
-and `binding_affinity_dataset/{ec50,ic50}`. Baselines for the other task families (CARE, CLEAN,
-Clipzyme, GraphEC, HITEC, Horizon, StructureFree-DTA) are documented in their own
-`baselines/<NAME>/emulator_bench/README.md` files.
+and `binding_affinity_dataset/{ec50,ic50}`. CLEAN, Clipzyme, GraphEC, HITEC,
+Horizon, and StructureFree-DTA cover the other task families through their own
+`baselines/<NAME>/emulator_bench/README.md` files. CARE is included as an
+upstream reference baseline in this checkout, but it has no Leak-CURBER
+`emulator_bench/` adapter.
 
 Each value-type folder contains the same set of split-group subdirectories:
 
@@ -204,6 +221,9 @@ cd baselines/CataPro
 
 python emulator_bench/launch_parallel_bench.py \
   --value_root $DATASET_ROOT/kinetic_params_dataset/kcat \
+  --split_groups random_splits_grouped_sequence random_splits_grouped_smiles \
+                 enzyme_sequence_splits enzyme_structure_splits \
+                 substrate_splits uniprot_time_splits conformer_cosine_splits \
   --gpus 0 1 2 3 \
   --runs_per_gpu 2 \
   --seeds 666
@@ -460,7 +480,9 @@ Results land under `$BIND_DIR/<value_type>/<split_group>/[threshold_X.XX/]bind_r
 **Protein features**: amino-acid 3-gram tokenization (no large pretrained model required)  
 **Ligand features**: RDKit atom-environment graph + Morgan fingerprint (radius 2, 1024 bits)
 
-BACPI computes all features inline during training. No separate cache step is required.
+BACPI caches its native RDKit graph, Morgan fingerprint, and protein 3-gram
+features before training. The training wrapper refuses to run if the requested
+cache files are missing.
 
 ### Step 0 — Assemble the unified data root
 
@@ -473,11 +495,23 @@ ln -s $DATASET_ROOT/binding_affinity_dataset/ec50 $BACPI_DIR/ec50
 ln -s $DATASET_ROOT/binding_affinity_dataset/ic50 $BACPI_DIR/ic50
 ```
 
-### Retrain across all split groups
+### Step 1 — Build the shared feature cache
 
 ```bash
 cd baselines/BACPI
 
+python emulator_bench/cache_embeddings.py \
+  --base_dir $BACPI_DIR \
+  --value_type ki ec50 ic50 \
+  --split_groups random_splits_grouped_sequence random_splits_grouped_smiles \
+                 enzyme_sequence_splits enzyme_structure_splits \
+                 substrate_splits uniprot_time_splits conformer_cosine_splits \
+  --skip_smiles_validity_check
+```
+
+### Step 2 — Retrain across all split groups
+
+```bash
 for VALUE_TYPE in ki ec50 ic50; do
   python emulator_bench/launch_parallel_retrain_from_optuna.py \
     --gpus 0 1 2 3 \
@@ -500,36 +534,12 @@ Results land under `$BACPI_DIR/<value_type>/<split_group>/[threshold_X.XX/]bacpi
 
 ## Output Structure
 
-Every baseline writes the same standardised output layout inside each split job directory:
-
-```
-<split_job_dir>/
-  train/
-    bestmodel.pth           ← checkpoint with best validation loss
-    checkpoint_last.pt
-  predictions/
-    train_predictions.csv
-    val_predictions.csv
-    test_predictions.csv
-    *_predictions_metrics.csv
-  metrics/
-    tvt_metrics_long.csv    ← per-split metrics (RMSE, MAE, R², PCC, SCC)
-    tvt_metrics_wide.csv
-  logs/
-    train.log
-    predict_*.log
-```
-
-The parallel launcher additionally writes at its output root:
-
-```
-planned_runs.csv            ← all discovered jobs
-runs_status.csv             ← per-job success/failure
-all_tvt_metrics.csv         ← concatenation of every job's metrics
-aggregate_tvt_metrics.csv   ← mean ± std across seeds per split group
-```
-
-These aggregate files are the primary artefacts used to populate the paper's results tables.
+Output names vary by adapter. Regression adapters generally write a best
+checkpoint, train/validation/test prediction CSVs, per-split metric CSVs, and a
+run summary under each split job's result directory, but the exact filenames are
+baseline-specific (`kcatnet_results/`, `catapro_results/`, `bind_results/`,
+`bacpi_results/`, and so on). See the relevant
+`baselines/<NAME>/emulator_bench/README.md` for the authoritative output list.
 
 ---
 

@@ -8,7 +8,10 @@ What this adds:
 - Cached train-split PNA degree histograms reused across seeds and Optuna trials
 - Explicit train/val/test training script
 - Direct parquet/CSV split loading
-- Benchmark runner across `random_splits`, `enzyme_sequence_splits`, and `substrate_splits`
+- Benchmark runner across Leak-CURBER split groups, including
+  `random_splits_grouped_sequence`, `random_splits_grouped_smiles`,
+  `enzyme_sequence_splits`, `enzyme_structure_splits`, `substrate_splits`,
+  `uniprot_time_splits`, and `conformer_cosine_splits`
 - Optuna tuner for optimization hyperparameters
 - Single-checkpoint prediction script
 
@@ -53,11 +56,11 @@ You can also restrict caching to one thresholded split family with `--split_grou
 
 ```bash
 python emulator_bench/train_single_target_tvt.py \
-  --train_path <PROJECT_ROOT>/data/processed/baselines/KcatNet/random_splits/train.parquet \
-  --val_path <PROJECT_ROOT>/data/processed/baselines/KcatNet/random_splits/val.parquet \
-  --test_path <PROJECT_ROOT>/data/processed/baselines/KcatNet/random_splits/test.parquet \
+  --train_path <PROJECT_ROOT>/data/processed/baselines/KcatNet/random_splits_grouped_sequence/train.parquet \
+  --val_path <PROJECT_ROOT>/data/processed/baselines/KcatNet/random_splits_grouped_sequence/val.parquet \
+  --test_path <PROJECT_ROOT>/data/processed/baselines/KcatNet/random_splits_grouped_sequence/test.parquet \
   --embeddings_dir <PROJECT_ROOT>/data/processed/baselines/KcatNet/embeddings \
-  --out_dir <PROJECT_ROOT>/data/processed/baselines/KcatNet/random_splits/kcatnet_results/seed_666 \
+  --out_dir <PROJECT_ROOT>/data/processed/baselines/KcatNet/random_splits_grouped_sequence/kcatnet_results/seed_666 \
   --device cuda:0
 ```
 
@@ -92,11 +95,17 @@ Outputs include:
 python emulator_bench/run_split_benchmarks.py \
   --base_dir <PROJECT_ROOT>/data/processed/baselines/KcatNet \
   --embeddings_dir <PROJECT_ROOT>/data/processed/baselines/KcatNet/embeddings \
-  --split_groups random_splits enzyme_sequence_splits substrate_splits \
+  --split_groups random_splits_grouped_sequence random_splits_grouped_smiles \
+                 enzyme_sequence_splits enzyme_structure_splits \
+                 substrate_splits uniprot_time_splits conformer_cosine_splits \
   --seeds 666 \
   --device cuda:0 \
   --cache_device cuda:0
 ```
+
+The legacy alias `random_splits` is still accepted by the adapter and expands
+to any `random_splits_grouped_*` directories found under `--base_dir`; the
+explicit grouped names above match the released dataset layout.
 
 To run only one threshold:
 
@@ -136,9 +145,9 @@ Aggregate summaries are written to the base directory:
 
 ```bash
 python emulator_bench/predict_single_target.py \
-  --input_path <PROJECT_ROOT>/data/processed/baselines/KcatNet/random_splits/test.parquet \
+  --input_path <PROJECT_ROOT>/data/processed/baselines/KcatNet/random_splits_grouped_sequence/test.parquet \
   --embeddings_dir <PROJECT_ROOT>/data/processed/baselines/KcatNet/embeddings \
-  --ckpt_path <PROJECT_ROOT>/data/processed/baselines/KcatNet/random_splits/kcatnet_results/seed_666/bestmodel.pth \
+  --ckpt_path <PROJECT_ROOT>/data/processed/baselines/KcatNet/random_splits_grouped_sequence/kcatnet_results/seed_666/bestmodel.pth \
   --out_csv /tmp/kcatnet_predictions.csv \
   --device cuda:0
 ```
@@ -163,7 +172,9 @@ python emulator_bench/predict_single_target.py \
 python emulator_bench/tune_optuna.py \
   --base_dir <PROJECT_ROOT>/data/processed/baselines/KcatNet \
   --embeddings_dir <PROJECT_ROOT>/data/processed/baselines/KcatNet/embeddings \
-  --split_groups random_splits enzyme_sequence_splits substrate_splits \
+  --split_groups random_splits_grouped_sequence random_splits_grouped_smiles \
+                 enzyme_sequence_splits enzyme_structure_splits \
+                 substrate_splits uniprot_time_splits conformer_cosine_splits \
   --batch_size 256 \
   --metric rmse \
   --eval_split val \
@@ -292,5 +303,7 @@ Global summaries written once at output root:
 - The train script computes the PNA degree histogram from the train split only.
 - That train-only PNA degree histogram is cached under `<embeddings_dir>/metadata/pna_degrees` and reused across repeated runs on the same train split.
 - The shared cache is external to this repo so multiple split runs can reuse it.
-- `random_splits` is treated as a single benchmark job.
+- `random_splits` is a compatibility alias that expands to grouped random split
+  directories such as `random_splits_grouped_sequence` and
+  `random_splits_grouped_smiles`.
 - Thresholded split directories are mapped to `easy`, `medium`, and `hard` by threshold order, with larger thresholds treated as easier.

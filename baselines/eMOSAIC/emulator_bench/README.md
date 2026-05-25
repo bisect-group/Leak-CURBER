@@ -94,7 +94,7 @@ Compared with the original `code/BindingAffinityModule/main.py`:
 - **One-time-only** ESMFold embedding cache + one-time RDKit graph cache. ESMFold is the
   bottleneck; the bench runs it once per unique protein across all retrains and trials.
 - Per-sequence cache key makes the cache survive split reshuffles — no recomputation when moving
-  from random_splits to substrate_splits.
+  from grouped random splits to substrate splits.
 - Automatic mixed precision: **bf16** on Ampere-and-newer CUDA devices, **fp16** on older CUDA,
   fp32 on CPU. `GradScaler` only turns on in the fp16 branch.
 - TF32 enabled on matmul and cuDNN where supported; `cudnn.benchmark=True` for fastest kernels.

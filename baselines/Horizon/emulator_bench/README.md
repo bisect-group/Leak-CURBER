@@ -61,7 +61,7 @@ Cache features for one split group:
 ```bash
 conda run -n horizon python -m emulator_bench.cache_features \
   --dataset-root ../../data/processed/datasets/enzyme_retrieval_dataset \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --runs-root emulator_bench/runs \
   --cache-root emulator_bench/cache \
   --embedding-source prott5 \
@@ -74,7 +74,7 @@ Train one seed with Horizon's native trainer:
 
 ```bash
 conda run -n horizon python -m emulator_bench.train \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --runs-root emulator_bench/runs \
   --seed 42 \
   --precision bf16
@@ -84,7 +84,7 @@ Evaluate the produced checkpoint:
 
 ```bash
 conda run -n horizon python -m emulator_bench.evaluate \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --runs-root emulator_bench/runs \
   --seed 42 \
   --eval-split test
@@ -102,7 +102,7 @@ EC references, matching CARE Task 2's EC-prototype ranking more closely:
 
 ```bash
 conda run -n horizon python -m emulator_bench.evaluate \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --runs-root emulator_bench/runs \
   --seed 42 \
   --eval-split test \
@@ -129,7 +129,7 @@ Queue cache, train, and evaluate with task-spooler:
 ```bash
 conda run -n horizon python -m emulator_bench.queue_pipeline \
   --dataset-root ../../data/processed/datasets/enzyme_retrieval_dataset \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --env-name horizon \
   --precision bf16 \
   --seed 42 --seed 43 --seed 44
@@ -147,7 +147,7 @@ non-benchmark embeddings:
 ```bash
 CUDA_VISIBLE_DEVICES=3 conda run -n horizon python -m emulator_bench.cache_features \
   --dataset-root ../../data/processed/datasets/enzyme_retrieval_dataset \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --runs-root emulator_bench/runs \
   --cache-root emulator_bench/cache \
   --embedding-source deterministic \
@@ -155,14 +155,14 @@ CUDA_VISIBLE_DEVICES=3 conda run -n horizon python -m emulator_bench.cache_featu
   --limit-per-split 8
 
 CUDA_VISIBLE_DEVICES=3 conda run -n horizon python -m emulator_bench.train \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --runs-root emulator_bench/runs \
   --seed 42 \
   --epochs 1 \
   --precision bf16
 
 CUDA_VISIBLE_DEVICES=3 conda run -n horizon python -m emulator_bench.evaluate \
-  --split-group random_splits \
+  --split-group random_splits_grouped_sequence \
   --runs-root emulator_bench/runs \
   --seed 42 \
   --eval-split test
