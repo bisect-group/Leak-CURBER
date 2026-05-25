@@ -5,9 +5,10 @@ import pickle
 import queue
 import shutil
 import traceback
+import warnings
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 from pathlib import Path
-from typing import Optional
+from typing import Iterable, Optional
 
 import numpy as np
 import pandas as pd
@@ -21,10 +22,15 @@ from src.data.components.embedders.base import BaseShardEmbedder
 from src.data.components.embedders.utils import load_pickle_items, sha256_short
 
 
-_ESM3_FEATURE_RECORDS: list[dict] = []
+def _suppress_esm3_warnings() -> None:
+    warnings.filterwarnings("ignore")
+
+
+_suppress_esm3_warnings()
 
 
 def _featurize_esm3_record(args: tuple[str, str]) -> dict:
+    _suppress_esm3_warnings()
     key, pdb_path = args
     try:
         from esm.sdk.api import ESMProtein
@@ -94,11 +100,12 @@ def _make_length_buckets_from_records(
 
 def _esm3_gpu_worker(
     rank: int,
-    stride: int,
     max_batch_tokens: int,
     max_batch_size: int,
+    task_queue,
     result_queue,
 ) -> None:
+    _suppress_esm3_warnings()
     try:
         from esm.models.esm3 import ESM3
         from esm.sdk.api import LogitsConfig
@@ -107,129 +114,157 @@ def _esm3_gpu_worker(
         from esm.utils.misc import stack_variable_length_tensors
         from esm.utils.sampling import _BatchedESMProteinTensor
 
-        records = _ESM3_FEATURE_RECORDS[rank::stride]
-        if not records:
-            result_queue.put(("done", rank, 0, None))
-            return
-
         torch.cuda.set_device(rank)
         torch.cuda.empty_cache()
         client = ESM3.from_pretrained(ESM3_OPEN_SMALL).to(f"cuda:{rank}")
+        client.eval()
         device = next(client.parameters()).device
         structure_encoder = client.get_structure_encoder()
-        batches = _make_length_buckets_from_records(
-            records,
-            max_batch_tokens=max_batch_tokens,
-            max_batch_size=max_batch_size,
-        )
 
-        for batch in batches:
-            keys = [record["key"] for record in batch]
+        while True:
+            task = task_queue.get()
+            if task is None:
+                result_queue.put(("done", rank, 0, None))
+                return
+
+            task_id = int(task["task_id"])
+            rows = task["rows"]
+            if not rows:
+                result_queue.put(("task_done", rank, task_id, 0))
+                continue
+
             try:
-                sequence_tensors = []
-                raw_coords = []
-                residue_indices = []
-                lengths = []
-
-                for record in batch:
-                    sequence = str(record["sequence"])
-                    sequence_tensors.append(
-                        encoding.tokenize_sequence(
-                            sequence,
-                            client.tokenizers.sequence,
-                            add_special_tokens=True,
-                        )
-                    )
-                    raw_coords.append(
-                        torch.as_tensor(record["coords"], dtype=torch.float32)
-                    )
-                    residue_indices.append(
-                        torch.as_tensor(record["residue_index"], dtype=torch.int64)
-                    )
-                    lengths.append(int(record["length"]))
-
-                coords_batch = stack_variable_length_tensors(
-                    raw_coords,
-                    constant_value=torch.inf,
-                ).to(device)
-                residue_index_batch = stack_variable_length_tensors(
-                    residue_indices,
-                    constant_value=0,
-                ).to(device)
-
-                _, structure_tokens_batch = structure_encoder.encode(
-                    coords_batch,
-                    residue_index=residue_index_batch,
-                )
-
-                structure_token_tensors = []
-                coordinate_tensors = []
-                for idx, length in enumerate(lengths):
-                    structure_tokens = structure_tokens_batch[idx, :length]
-                    structure_tokens = F.pad(
-                        structure_tokens,
-                        (1, 1),
-                        value=client.tokenizers.structure.mask_token_id,
-                    )
-                    structure_tokens[0] = client.tokenizers.structure.bos_token_id
-                    structure_tokens[-1] = client.tokenizers.structure.eos_token_id
-                    structure_token_tensors.append(structure_tokens)
-
-                    coords_i = raw_coords[idx].to(device)
-                    coords_i = F.pad(
-                        coords_i,
-                        (0, 0, 0, 0, 1, 1),
-                        value=torch.inf,
-                    )
-                    coordinate_tensors.append(coords_i)
-
-                batched = _BatchedESMProteinTensor(
-                    sequence=stack_variable_length_tensors(
-                        [seq.to(device) for seq in sequence_tensors],
-                        constant_value=client.tokenizers.sequence.pad_token_id,
-                    ),
-                    structure=stack_variable_length_tensors(
-                        structure_token_tensors,
-                        constant_value=client.tokenizers.structure.pad_token_id,
-                    ),
-                    coordinates=stack_variable_length_tensors(
-                        coordinate_tensors,
-                        constant_value=torch.inf,
-                    ),
-                )
-
-                logits_output = client.logits(
-                    batched,
-                    LogitsConfig(return_embeddings=True),
-                )
-                assert logits_output.embeddings is not None
-
-                arrays_by_key = {}
-                for idx, key in enumerate(keys):
-                    seq_len = lengths[idx] + 2
-                    arrays_by_key[key] = (
-                        logits_output.embeddings[idx, :seq_len]
-                        .mean(dim=0)
-                        .detach()
-                        .cpu()
-                        .numpy()
-                        .astype(np.float16, copy=False)
-                    )
-                result_queue.put(("batch", rank, arrays_by_key, []))
+                records = _load_feature_task_records(task["shard_path"], rows)
+                records.sort(key=lambda record: int(record["length"]))
             except Exception as exc:
                 failures = [
                     {
-                        "raw_key": key,
-                        "canonical_key": key,
+                        "raw_key": row["key"],
+                        "canonical_key": row["key"],
                         "error": str(exc),
                     }
-                    for key in keys
+                    for row in rows
                 ]
                 result_queue.put(("batch", rank, {}, failures))
-            finally:
-                torch.cuda.empty_cache()
+                result_queue.put(("task_done", rank, task_id, len(rows)))
+                continue
 
-        result_queue.put(("done", rank, len(records), None))
+            batches = _make_length_buckets_from_records(
+                records,
+                max_batch_tokens=max_batch_tokens,
+                max_batch_size=max_batch_size,
+            )
+            processed = 0
+
+            for batch in batches:
+                keys = [record["key"] for record in batch]
+                processed += len(keys)
+                try:
+                    sequence_tensors = []
+                    raw_coords = []
+                    residue_indices = []
+                    lengths = []
+
+                    for record in batch:
+                        sequence = str(record["sequence"])
+                        sequence_tensors.append(
+                            encoding.tokenize_sequence(
+                                sequence,
+                                client.tokenizers.sequence,
+                                add_special_tokens=True,
+                            )
+                        )
+                        raw_coords.append(
+                            torch.as_tensor(record["coords"], dtype=torch.float32)
+                        )
+                        residue_indices.append(
+                            torch.as_tensor(record["residue_index"], dtype=torch.int64)
+                        )
+                        lengths.append(int(record["length"]))
+
+                    coords_batch = stack_variable_length_tensors(
+                        raw_coords,
+                        constant_value=torch.inf,
+                    ).to(device)
+                    residue_index_batch = stack_variable_length_tensors(
+                        residue_indices,
+                        constant_value=0,
+                    ).to(device)
+
+                    with torch.inference_mode():
+                        _, structure_tokens_batch = structure_encoder.encode(
+                            coords_batch,
+                            residue_index=residue_index_batch,
+                        )
+
+                        structure_token_tensors = []
+                        coordinate_tensors = []
+                        for idx, length in enumerate(lengths):
+                            structure_tokens = structure_tokens_batch[idx, :length]
+                            structure_tokens = F.pad(
+                                structure_tokens,
+                                (1, 1),
+                                value=client.tokenizers.structure.mask_token_id,
+                            )
+                            structure_tokens[0] = client.tokenizers.structure.bos_token_id
+                            structure_tokens[-1] = client.tokenizers.structure.eos_token_id
+                            structure_token_tensors.append(structure_tokens)
+
+                            coords_i = raw_coords[idx].to(device)
+                            coords_i = F.pad(
+                                coords_i,
+                                (0, 0, 0, 0, 1, 1),
+                                value=torch.inf,
+                            )
+                            coordinate_tensors.append(coords_i)
+
+                        batched = _BatchedESMProteinTensor(
+                            sequence=stack_variable_length_tensors(
+                                [seq.to(device) for seq in sequence_tensors],
+                                constant_value=client.tokenizers.sequence.pad_token_id,
+                            ),
+                            structure=stack_variable_length_tensors(
+                                structure_token_tensors,
+                                constant_value=client.tokenizers.structure.pad_token_id,
+                            ),
+                            coordinates=stack_variable_length_tensors(
+                                coordinate_tensors,
+                                constant_value=torch.inf,
+                            ),
+                        )
+
+                        logits_output = client.logits(
+                            batched,
+                            LogitsConfig(return_embeddings=True),
+                        )
+                    assert logits_output.embeddings is not None
+
+                    arrays_by_key = {}
+                    for idx, key in enumerate(keys):
+                        seq_len = lengths[idx] + 2
+                        arrays_by_key[key] = (
+                            logits_output.embeddings[idx, :seq_len]
+                            .mean(dim=0)
+                            .detach()
+                            .cpu()
+                            .numpy()
+                            .astype(np.float16, copy=False)
+                        )
+                    result_queue.put(("batch", rank, arrays_by_key, []))
+                except Exception as exc:
+                    failures = [
+                        {
+                            "raw_key": key,
+                            "canonical_key": key,
+                            "error": str(exc),
+                        }
+                        for key in keys
+                    ]
+                    result_queue.put(("batch", rank, {}, failures))
+                finally:
+                    torch.cuda.empty_cache()
+
+            result_queue.put(("task_done", rank, task_id, processed))
     except Exception as exc:
         result_queue.put(
             (
@@ -239,6 +274,12 @@ def _esm3_gpu_worker(
                 traceback.format_exc(),
             )
         )
+
+
+def _load_feature_task_records(shard_path: str, rows: list[dict]) -> list[dict]:
+    with open(shard_path, "rb") as handle:
+        shard_records = pickle.load(handle)
+    return [shard_records[int(row["row_idx"])] for row in rows]
 
 
 class ESM3FeatureStore:
@@ -278,6 +319,75 @@ class ESM3FeatureStore:
             }
             for row in failures.itertuples(index=False)
         ]
+
+    def completed_shards(self) -> list[tuple[int, Path]]:
+        shards: list[tuple[int, Path]] = []
+        for shard_path in self.shards_dir.glob("feature_shard_*.pkl"):
+            shard_id = self._parse_shard_id(shard_path)
+            if shard_id is not None and shard_path.name == f"feature_shard_{shard_id:06d}.pkl":
+                shards.append((shard_id, shard_path))
+        return sorted(shards, key=lambda item: item[0])
+
+    def find_feature_locations_for_keys(self, keys: list[str]) -> dict[str, dict]:
+        if not keys:
+            return {}
+
+        requested_hashes = {sha256_short(key) for key in keys}
+        locations: dict[str, dict] = {}
+        shards = self.completed_shards()
+        for shard_id, shard_path in tqdm(
+            shards,
+            desc="Scanning ESM3 feature shards",
+            leave=False,
+        ):
+            remaining_hashes = requested_hashes - set(locations)
+            if not remaining_hashes:
+                break
+            try:
+                with open(shard_path, "rb") as handle:
+                    shard_records = pickle.load(handle)
+            except Exception as exc:
+                self.logger.warning(f"Skipping unreadable ESM3 feature shard {shard_path}: {exc}")
+                continue
+
+            for row_idx, record in enumerate(shard_records):
+                key = str(record.get("key"))
+                key_hash = str(record.get("key_hash") or sha256_short(key))
+                if key_hash not in requested_hashes:
+                    continue
+                locations[key_hash] = {
+                    "key": key,
+                    "key_hash": key_hash,
+                    "length": int(record["length"]),
+                    "shard_id": shard_id,
+                    "shard_path": str(shard_path),
+                    "row_idx": row_idx,
+                }
+
+        return locations
+
+    def iter_records_by_shard(
+        self,
+        locations: Iterable[dict],
+        *,
+        desc: str = "Loading ESM3 feature shards",
+    ):
+        by_shard: dict[int, list[dict]] = {}
+        for location in locations:
+            by_shard.setdefault(int(location["shard_id"]), []).append(location)
+
+        for shard_id, shard_locations in tqdm(
+            sorted(by_shard.items()),
+            desc=desc,
+            leave=False,
+        ):
+            shard_path = str(shard_locations[0]["shard_path"])
+            rows = [
+                {"row_idx": int(location["row_idx"]), "key": location["key"]}
+                for location in shard_locations
+            ]
+            records = _load_feature_task_records(shard_path, rows)
+            yield shard_id, records
 
     def put_records(self, records: list[dict]) -> int:
         if not records:
@@ -339,26 +449,16 @@ class ESM3FeatureStore:
         return len(rows)
 
     def load_records_for_keys(self, keys: list[str]) -> list[dict]:
-        manifest = self._load_manifest()
-        if manifest.empty:
-            return []
-
-        key_hashes = {sha256_short(key) for key in keys}
-        rows = manifest[
-            (manifest["status"] == "ok") & manifest["key_hash"].isin(key_hashes)
-        ].drop_duplicates(subset=["key_hash"], keep="last")
-        if rows.empty:
-            return []
-
+        locations = self.find_feature_locations_for_keys(keys)
+        ordered_hashes = [sha256_short(key) for key in keys]
+        ordered_locations = [
+            locations[key_hash] for key_hash in ordered_hashes if key_hash in locations
+        ]
         records: list[dict] = []
-        for shard_id, shard_rows in rows.groupby("feature_shard"):
-            shard_path = self.shards_dir / f"feature_shard_{int(shard_id):06d}.pkl"
-            with open(shard_path, "rb") as handle:
-                shard_records = pickle.load(handle)
-            for row in shard_rows.itertuples(index=False):
-                records.append(shard_records[int(row.row_idx)])
+        for _shard_id, shard_records in self.iter_records_by_shard(ordered_locations):
+            records.extend(shard_records)
 
-        requested_order = {sha256_short(key): idx for idx, key in enumerate(keys)}
+        requested_order = {key_hash: idx for idx, key_hash in enumerate(ordered_hashes)}
         records.sort(key=lambda record: requested_order[record["key_hash"]])
         return records
 
@@ -395,11 +495,17 @@ class ESM3FeatureStore:
     def _next_shard_id(self) -> int:
         shard_ids = []
         for shard_path in self.shards_dir.glob("feature_shard_*.pkl"):
-            try:
-                shard_ids.append(int(shard_path.stem.split("_")[-1]))
-            except ValueError:
-                continue
+            shard_id = self._parse_shard_id(shard_path)
+            if shard_id is not None:
+                shard_ids.append(shard_id)
         return max(shard_ids, default=-1) + 1
+
+    @staticmethod
+    def _parse_shard_id(shard_path: Path) -> Optional[int]:
+        try:
+            return int(shard_path.stem.split("_")[-1])
+        except ValueError:
+            return None
 
 
 class ESM3StructureShardEmbedder(BaseShardEmbedder):
@@ -408,14 +514,21 @@ class ESM3StructureShardEmbedder(BaseShardEmbedder):
         self.alphafold_pdb_path = cfg.embeddings.af_pdb_path
         self.esm3_pdb_path = cfg.embeddings.esm_pdb_path
         self.processed_exp_pdb_path = cfg.embeddings.processed_exp_pdb_path
+        default_featurized_dir = (
+            Path(cfg.paths.raw_data_dir) / "esm3_featurized"
+            if "paths" in cfg and "raw_data_dir" in cfg.paths
+            else Path(cfg.embeddings.embeddings_path).parent.parent
+            / "raw"
+            / "esm3_featurized"
+        )
         self.featurized_dir = Path(
             cfg.embeddings.get(
                 "esm3_featurized_dir",
-                Path(cfg.embeddings.embeddings_path).parent / "esm3_featurized",
+                default_featurized_dir,
             )
         )
         self.keep_featurized_after_success = bool(
-            cfg.embeddings.get("esm3_keep_featurized_after_success", False)
+            cfg.embeddings.get("esm3_keep_featurized_after_success", True)
         )
         self.reclaim_last_underfilled_shard = bool(
             cfg.embeddings.get("esm3_reclaim_last_underfilled_shard", True)
@@ -489,11 +602,18 @@ class ESM3StructureShardEmbedder(BaseShardEmbedder):
             self.feature_records_per_shard,
             self.logger,
         )
-        self.featurize_missing(missing_keys, feature_store)
+        feature_locations = feature_store.find_feature_locations_for_keys(missing_keys)
+        self.featurize_missing(
+            missing_keys,
+            feature_store,
+            existing_feature_hashes=set(feature_locations),
+        )
         feature_failures = feature_store.failure_dicts_for_keys(missing_keys)
 
-        success_hashes = feature_store.successful_key_hashes()
-        ready_keys = [key for key in missing_keys if sha256_short(key) in success_hashes]
+        feature_locations = feature_store.find_feature_locations_for_keys(missing_keys)
+        ready_keys = [
+            key for key in missing_keys if sha256_short(key) in feature_locations
+        ]
         self.logger.info(
             f"{len(ready_keys)} ESM3 feature records ready for GPU embedding; "
             f"{len(feature_failures)} feature failures recorded"
@@ -505,6 +625,7 @@ class ESM3StructureShardEmbedder(BaseShardEmbedder):
             total_written, embed_failures = self.embed_featurized(
                 ready_keys,
                 feature_store,
+                feature_locations=feature_locations,
             )
         else:
             self.logger.warning("No ESM3 feature records are available for embedding")
@@ -527,8 +648,12 @@ class ESM3StructureShardEmbedder(BaseShardEmbedder):
         self,
         missing_keys: list[str],
         feature_store: ESM3FeatureStore,
+        existing_feature_hashes: Optional[set[str]] = None,
     ) -> int:
-        existing_feature_hashes = feature_store.successful_key_hashes()
+        if existing_feature_hashes is None:
+            existing_feature_hashes = set(
+                feature_store.find_feature_locations_for_keys(missing_keys)
+            )
         keys_to_featurize = [
             key for key in missing_keys if sha256_short(key) not in existing_feature_hashes
         ]
@@ -604,52 +729,64 @@ class ESM3StructureShardEmbedder(BaseShardEmbedder):
         self,
         ready_keys: list[str],
         feature_store: ESM3FeatureStore,
+        *,
+        feature_locations: Optional[dict[str, dict]] = None,
     ) -> tuple[int, list[dict]]:
         num_gpus = torch.cuda.device_count()
         if num_gpus == 0:
             raise RuntimeError("No CUDA devices available for ESM3 structure embedding.")
 
-        feature_records = feature_store.load_records_for_keys(ready_keys)
-        feature_records.sort(key=lambda record: int(record["length"]))
-        if not feature_records:
+        if feature_locations is None:
+            feature_locations = feature_store.find_feature_locations_for_keys(ready_keys)
+
+        ready_hashes = [sha256_short(key) for key in ready_keys]
+        ready_locations = [
+            feature_locations[key_hash]
+            for key_hash in ready_hashes
+            if key_hash in feature_locations
+        ]
+        if not ready_locations:
             return 0, []
 
+        locations_by_shard: dict[int, list[dict]] = {}
+        for location in ready_locations:
+            locations_by_shard.setdefault(int(location["shard_id"]), []).append(location)
+
+        total_ready = len(ready_locations)
         self.logger.info(
-            f"Embedding {len(feature_records):,} featurized ESM3 structures "
+            f"Embedding {total_ready:,} featurized ESM3 structures "
             f"across {num_gpus} GPU(s)"
         )
 
         ctx = mp.get_context("fork")
         result_queue = ctx.Queue(maxsize=max(16, num_gpus * 4))
+        task_queues = [ctx.Queue(maxsize=1) for _ in range(num_gpus)]
         processes = []
-        global _ESM3_FEATURE_RECORDS
-        _ESM3_FEATURE_RECORDS = feature_records
+        next_task_id = 0
         try:
             for rank in range(num_gpus):
                 process = ctx.Process(
                     target=_esm3_gpu_worker,
                     args=(
                         rank,
-                        num_gpus,
                         self.max_batch_tokens,
                         self.max_batch_size,
+                        task_queues[rank],
                         result_queue,
                     ),
                 )
                 process.start()
                 processes.append(process)
 
-            _ESM3_FEATURE_RECORDS = []
             total_written = 0
             failures: list[dict] = []
             done_workers = 0
             fatal_errors = []
-            with tqdm(
-                total=len(feature_records),
-                desc="Embedding ESM3 features",
-                leave=True,
-            ) as progress_bar:
-                while done_workers < num_gpus:
+
+            def collect_results_until(task_ids: set[int]) -> None:
+                nonlocal total_written, done_workers
+                completed_task_ids: set[int] = set()
+                while completed_task_ids != task_ids:
                     try:
                         message = result_queue.get(timeout=1.0)
                     except queue.Empty:
@@ -660,7 +797,7 @@ class ESM3StructureShardEmbedder(BaseShardEmbedder):
                                     f"code {process.exitcode}"
                                 )
                         if fatal_errors:
-                            break
+                            return
                         continue
 
                     kind, rank, payload, extra = message
@@ -669,15 +806,81 @@ class ESM3StructureShardEmbedder(BaseShardEmbedder):
                         batch_failures = extra or []
                         total_written += self.store.put_many(arrays_by_key)
                         failures.extend(batch_failures)
-                        progress_bar.update(len(arrays_by_key) + len(batch_failures))
+                        feature_progress_bar.update(
+                            len(arrays_by_key) + len(batch_failures)
+                        )
+                    elif kind == "task_done":
+                        completed_task_ids.add(int(payload))
                     elif kind == "done":
                         done_workers += 1
                     elif kind == "fatal":
                         fatal_errors.append(f"GPU worker {rank} failed: {payload}\n{extra}")
+                        return
+
+            with tqdm(
+                total=total_ready,
+                desc="Embedding ESM3 features",
+                leave=True,
+            ) as feature_progress_bar:
+                for shard_id, shard_locations in tqdm(
+                    sorted(locations_by_shard.items()),
+                    desc="Embedding ESM3 feature shards",
+                    leave=True,
+                ):
+                    shard_locations = sorted(
+                        shard_locations,
+                        key=lambda location: int(location["length"]),
+                    )
+                    task_ids = set()
+                    for rank in range(num_gpus):
+                        rank_locations = shard_locations[rank::num_gpus]
+                        if not rank_locations:
+                            continue
+                        task_id = next_task_id
+                        next_task_id += 1
+                        task_ids.add(task_id)
+                        task_queues[rank].put(
+                            {
+                                "task_id": task_id,
+                                "shard_id": shard_id,
+                                "shard_path": rank_locations[0]["shard_path"],
+                                "rows": [
+                                    {
+                                        "row_idx": int(location["row_idx"]),
+                                        "key": location["key"],
+                                    }
+                                    for location in rank_locations
+                                ],
+                            }
+                        )
+
+                    collect_results_until(task_ids)
+                    if fatal_errors:
                         break
 
             if fatal_errors:
                 raise RuntimeError("\n".join(fatal_errors))
+
+            for task_queue in task_queues:
+                task_queue.put(None)
+
+            while done_workers < num_gpus:
+                try:
+                    message = result_queue.get(timeout=1.0)
+                except queue.Empty:
+                    for process in processes:
+                        if process.exitcode not in (None, 0):
+                            raise RuntimeError(
+                                f"GPU worker {process.pid} exited with code "
+                                f"{process.exitcode}"
+                            )
+                    continue
+
+                kind, rank, payload, extra = message
+                if kind == "done":
+                    done_workers += 1
+                elif kind == "fatal":
+                    raise RuntimeError(f"GPU worker {rank} failed: {payload}\n{extra}")
 
             for process in processes:
                 process.join()
@@ -689,12 +892,13 @@ class ESM3StructureShardEmbedder(BaseShardEmbedder):
             total_written += self.store.put_many({}, flush=True)
             return total_written, failures
         finally:
-            _ESM3_FEATURE_RECORDS = []
             for process in processes:
                 if process.is_alive():
                     process.terminate()
             for process in processes:
                 process.join()
+            for task_queue in task_queues:
+                task_queue.close()
             result_queue.close()
 
     def _load_unique_input_keys(self) -> tuple[list[str], list[dict]]:
