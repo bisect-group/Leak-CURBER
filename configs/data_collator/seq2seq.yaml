@@ -1,6 +1,0 @@
-_target_: transformers.DataCollatorForSeq2Seq
-tokenizer: ${tokenizer}
-max_length: ${model.net.config.max_position_embeddings}
-padding: "max_length"
-return_tensors: "pt"
-label_pad_token_id: -100

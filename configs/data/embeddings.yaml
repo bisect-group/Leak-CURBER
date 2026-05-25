@@ -1,9 +1,6 @@
 defaults:
   - _self_
 
-# Target function to instantiate when using hydra.utils.instantiate()
-_target_: src.data.generation.embeddings.setup
-
 gpu_ids: [1]                          # List of GPU IDs to use for embeddings computation
 
 # Logging configuration

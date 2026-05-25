@@ -2,7 +2,7 @@ defaults:
   - _self_
 
 # Target function to instantiate when using hydra.utils.instantiate()
-_target_: src.data.generation.metacyc.setup
+_target_: src.data.components.metacyc.MetaCycDatasetBuilder.setup
 
 # Logging configuration
 log_dir: ${paths.log_dir}        # Directory for log files (from paths config)

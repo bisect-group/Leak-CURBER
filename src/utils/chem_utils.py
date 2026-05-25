@@ -124,7 +124,6 @@ class ChemUtils:
             self.logger.warning(
                 f".env file not found at {env_path}. Environment variables may not be loaded."
             )
-            raise FileNotFoundError(f".env file not found at {env_path}")
 
     def download(self, url, path, overwrite=False, verbose=False):
         """

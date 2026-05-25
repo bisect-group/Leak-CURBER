@@ -1,7 +1,7 @@
 defaults:
   - _self_
 
-_target_: src.data.components.binding_affinity_dataset.BindingAffintyDatasetBuilder.setup
+_target_: src.data.components.binding_affinity_dataset.BindingAffinityDatasetBuilder.setup
 
 # Logging configuration
 log_dir: ${paths.log_dir}                     # Directory for log files (from paths config)

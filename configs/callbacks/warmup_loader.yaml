@@ -1,2 +1,0 @@
-warmup_loader:
-  _target_: src.callbacks.warmup_loader.WarmupLoaderCallback

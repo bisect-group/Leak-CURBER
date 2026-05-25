@@ -3,7 +3,6 @@ import rootutils
 rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
 
 import re
-import sexpdata
 import numpy as np
 import pandas as pd
 from rdkit import Chem
@@ -18,6 +17,17 @@ chem_utils = ChemUtils()
 smiles_to_mol = chem_utils.smiles_to_mol
 get_uniprot_acc_json = chem_utils.get_uniprot_acc_json
 normalize_ec_collection = chem_utils.normalize_ec_collection
+
+
+def _load_sexpdata():
+    try:
+        import sexpdata
+    except ImportError as exc:
+        raise ImportError(
+            "MetaCyc parsing requires the optional 'sexpdata' package. "
+            "Install it before running MetaCyc dataset generation."
+        ) from exc
+    return sexpdata
 
 
 class MetaCycDatasetBuilder:
@@ -451,6 +461,7 @@ class MetaCycDatasetBuilder:
             str or list: Converted string or list of strings.
         """
         try:
+            sexpdata = _load_sexpdata()
             if isinstance(obj, list):
                 return [self.sexp_to_str(x) for x in obj]
             elif isinstance(obj, sexpdata.Symbol):
@@ -903,6 +914,7 @@ class MetaCycDatasetBuilder:
                     ]
                 )
 
+            sexpdata = _load_sexpdata()
             protein_seq_ids = [
                 {
                     "RXN-ID": row[0],
