@@ -1,0 +1,10 @@
+{
+  "embedder": "esm3",
+  "embedding_dim": 1536,
+  "key_field": "acc_id",
+  "key_type": "protein_accession",
+  "max_shard_bytes": 536870912,
+  "model_name": "open_small_structure",
+  "storage_dtype": "float16",
+  "version": "v1"
+}

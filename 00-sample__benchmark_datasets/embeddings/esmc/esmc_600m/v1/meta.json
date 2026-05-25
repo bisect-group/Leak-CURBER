@@ -1,0 +1,10 @@
+{
+  "embedder": "esmc",
+  "embedding_dim": 1152,
+  "key_field": "sequence",
+  "key_type": "protein_sequence",
+  "max_shard_bytes": 536870912,
+  "model_name": "esmc_600m",
+  "storage_dtype": "float16",
+  "version": "v1"
+}

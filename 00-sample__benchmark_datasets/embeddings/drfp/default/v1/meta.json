@@ -1,0 +1,10 @@
+{
+  "embedder": "drfp",
+  "embedding_dim": 2048,
+  "key_field": "rxn_smiles",
+  "key_type": "rxn_smiles",
+  "max_shard_bytes": 536870912,
+  "model_name": "default",
+  "storage_dtype": "uint8",
+  "version": "v1"
+}

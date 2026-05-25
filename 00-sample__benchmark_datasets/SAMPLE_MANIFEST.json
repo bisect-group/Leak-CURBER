@@ -97025,5 +97025,89 @@
       "source_path": "01_core_benchmark/kinetic_params_dataset/km/enzyme_structure_splits/foldseek_all_vs_all_lddt.tsv.7z.001",
       "size_bytes": 579588252
     }
-  ]
+  ],
+  "embeddings": {
+    "source_root": "/home/adhil/github/EMULaToR/data/intermediate/embeddings",
+    "output_root": "00-sample__benchmark_datasets/embeddings",
+    "selection_policy": "Deterministically sorted sample-matching key hashes capped per store for smoke tests.",
+    "cap_per_store": 1000,
+    "generated_at": "2026-05-25T12:17:56.535002+00:00",
+    "stores": [
+      {
+        "store": "esmc",
+        "source_path": "/home/adhil/github/EMULaToR/data/intermediate/embeddings/esmc/esmc_600m/v1",
+        "destination_path": "embeddings/esmc/esmc_600m/v1",
+        "candidate_key_count": 18849,
+        "matching_embedding_count_before_cap": 15270,
+        "selected_embedding_count": 1000,
+        "cap": 1000,
+        "failure_rows_written": 0,
+        "embedding_dim": 1152,
+        "storage_dtype": "float16",
+        "shards": [
+          "shard_000000.npy"
+        ]
+      },
+      {
+        "store": "esm3",
+        "source_path": "/home/adhil/github/EMULaToR/data/intermediate/embeddings/esm3/open_small_structure/v1",
+        "destination_path": "embeddings/esm3/open_small_structure/v1",
+        "candidate_key_count": 15014,
+        "matching_embedding_count_before_cap": 10517,
+        "selected_embedding_count": 1000,
+        "cap": 1000,
+        "failure_rows_written": 5554,
+        "embedding_dim": 1536,
+        "storage_dtype": "float16",
+        "shards": [
+          "shard_000000.npy"
+        ]
+      },
+      {
+        "store": "smited",
+        "source_path": "/home/adhil/github/EMULaToR/data/intermediate/embeddings/smited/materials_smi_ted_fork/v1",
+        "destination_path": "embeddings/smited/materials_smi_ted_fork/v1",
+        "candidate_key_count": 35003,
+        "matching_embedding_count_before_cap": 34891,
+        "selected_embedding_count": 1000,
+        "cap": 1000,
+        "failure_rows_written": 0,
+        "embedding_dim": 768,
+        "storage_dtype": "float16",
+        "shards": [
+          "shard_000000.npy"
+        ]
+      },
+      {
+        "store": "drfp",
+        "source_path": "/home/adhil/github/EMULaToR/data/intermediate/embeddings/drfp/default/v1",
+        "destination_path": "embeddings/drfp/default/v1",
+        "candidate_key_count": 6703,
+        "matching_embedding_count_before_cap": 6703,
+        "selected_embedding_count": 1000,
+        "cap": 1000,
+        "failure_rows_written": 0,
+        "embedding_dim": 2048,
+        "storage_dtype": "uint8",
+        "shards": [
+          "shard_000000.npy"
+        ]
+      },
+      {
+        "store": "unimol_sdf",
+        "source_path": "/home/adhil/github/EMULaToR/data/intermediate/embeddings/unimol_sdf/unimolv2/v1",
+        "destination_path": "embeddings/unimol_sdf/unimolv2/v1",
+        "candidate_key_count": 385022,
+        "matching_embedding_count_before_cap": 372744,
+        "selected_embedding_count": 1000,
+        "cap": 1000,
+        "failure_rows_written": 0,
+        "embedding_dim": 1536,
+        "storage_dtype": "float16",
+        "shards": [
+          "shard_000000.npy"
+        ]
+      }
+    ]
+  }
 }

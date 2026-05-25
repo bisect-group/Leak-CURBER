@@ -1,0 +1,10 @@
+{
+  "embedder": "unimol_sdf",
+  "embedding_dim": 1536,
+  "key_field": "smiles",
+  "key_type": "str",
+  "max_shard_bytes": 536870912,
+  "model_name": "unimolv2",
+  "storage_dtype": "float16",
+  "version": "v1"
+}
