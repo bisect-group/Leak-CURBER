@@ -5,10 +5,10 @@ suite of leakage-aware splits for kinetic-parameter prediction, binding
 affinity prediction, enzyme classification, enzyme retrieval, and reaction
 outcome.
 
-This repository is one part of the Leak-CURBER dataverse release. The full
-benchmark datasets, raw sources, intermediates, and Croissant metadata live
-outside this anonymous code tree. A small reproducible **sample** of the core
-benchmark is bundled in-tree under
+This repository is one part of the Leak-CURBER Dataverse release. The complete
+processed benchmark and a reviewer sample are available in a separate
+Dataverse record. A small reproducible **sample** of the core benchmark is also
+bundled in-tree under
 [`00-sample__benchmark_datasets/`](00-sample__benchmark_datasets/) so the
 baseline adapters and data utilities can be smoke-tested before downloading the
 full release.
@@ -71,32 +71,60 @@ conda activate mldb
 
 ### 2. Set required environment variables
 
-Configs and baseline adapters resolve paths through environment variables.
-Set these explicitly in your shell or in your local environment manager:
+The code repository and Dataverse download are separate directories. After
+downloading and extracting the Dataverse record, its top-level layout is:
+
+```text
+DATAVERSE_ROOT/
+├── 00-sample__benchmark_datasets/
+│   ├── binding_affinity_dataset/
+│   ├── enzyme_classification_dataset/
+│   ├── enzyme_retrieval_dataset/
+│   ├── kinetic_params_dataset/
+│   └── reaction_outcome_dataset/
+└── 01_core_benchmark_datasets/
+    ├── binding_affinity_dataset/
+    ├── enzyme_classification_dataset/
+    ├── enzyme_retrieval_dataset/
+    ├── kinetic_params_dataset/
+    └── reaction_outcome_dataset/
+```
+
+Set the code, Dataverse, and full-dataset roots explicitly:
 
 ```bash
-export PROJECT_ROOT=/absolute/path/to/Leak-CURBER
-export DATAVERSE_ROOT=/absolute/path/to/Leak-CURBER_dataverse
-export DATASET_ROOT=$PROJECT_ROOT/00-sample__benchmark_datasets
+export PROJECT_ROOT=/absolute/path/to/cloned/Leak-CURBER
+export DATAVERSE_ROOT=/absolute/path/to/downloaded/Leak-CURBER_dataverse
+export DATASET_ROOT="$DATAVERSE_ROOT/01_core_benchmark_datasets"
 ```
 
 Required:
 
 | Variable          | Purpose                                                                    |
 |-------------------|----------------------------------------------------------------------------|
-| `PROJECT_ROOT`    | Absolute path to your working copy (this directory). Configs anchor every dataset and embedding path against this. |
-| `DATAVERSE_ROOT`  | Absolute path to the parent dataverse root. Used by configs that read full-release data and intermediates outside this anonymous code tree. |
-| `DATASET_ROOT`    | Convenience variable used by the baseline examples. Point it at the bundled sample or the full benchmark dataset directory. |
+| `PROJECT_ROOT`    | Absolute path to the cloned code repository. |
+| `DATAVERSE_ROOT`  | Absolute path to the extracted Dataverse download containing the `00` and `01` directories above. |
+| `DATASET_ROOT`    | Dataset tier used by a baseline command. Point it at the bundled sample or `01_core_benchmark_datasets`. |
+
+The Dataverse record intentionally excludes the 44 GB shared embedding store.
+When a baseline requires cached features, its adapter generates them from the
+released protein, molecule, or reaction inputs through the baseline's native
+feature pipeline. This avoids a large mandatory download and preserves
+model-specific preprocessing.
 
 Optional (only needed for the matching feature):
 
 - `PUBMED_API_KEY`, `BRENDA_PASSWORD` — used by [src/utils/chem_utils.py](src/utils/chem_utils.py) for raw-source ingestion only.
 
-### 3. Placeholders to fill in
+### 3. Anonymization placeholder
 
-One value was left as a placeholder during anonymization:
+One model identifier is intentionally hidden during anonymous review:
 
-- [configs/data/embeddings.yaml](configs/data/embeddings.yaml): `smited_embeddings_model_id: <your-hf-namespace>/materials-smi-ted-fork` — set to your HuggingFace fork of `materials.smi-ted`, or upstream if compatible.
+- [configs/data/embeddings.yaml](configs/data/embeddings.yaml):
+  `smited_embeddings_model_id: <your-hf-namespace>/materials-smi-ted-fork`.
+  This value is needed only to regenerate SMI-TED embeddings. It does not
+  affect use of the released benchmark or the CataPro example below. The
+  de-anonymized public release will provide the public model identifier.
 
 ## Running baselines
 
@@ -128,7 +156,156 @@ Quick orientation:
 3. `baselines/<NAME>/commands.txt` (when present) — verbatim commands from our runs.
 4. `baselines/<NAME>/queue_multiple_seeds.sh` (when present) — multi-seed sweep script.
 
-## Trying it on the bundled sample
+## Verified end-to-end example: CataPro k<sub>cat</sub> P-seq
+
+This example performs feature generation, training, test evaluation, and result
+aggregation for one originally submitted baseline. It uses the bundled P-seq
+sample, which contains 900 training rows, 50 validation rows, and 50 test rows.
+The example writes all generated files to a temporary directory. It does not
+modify the code repository or downloaded Dataverse files.
+
+### 1. Create the CataPro environment
+
+```bash
+conda create -n leakcurber-catapro python=3.12 -y
+conda activate leakcurber-catapro
+
+python -m pip install \
+  torch \
+  "transformers==4.57.6" \
+  sentencepiece \
+  protobuf \
+  numpy \
+  pandas \
+  pyarrow \
+  scikit-learn \
+  rdkit \
+  tqdm
+```
+
+A CUDA-capable GPU and internet access are required. During the first run,
+CataPro downloads `Rostlab/prot_t5_xl_uniref50` and
+`laituan245/molt5-base-smiles2caption` from Hugging Face.
+
+### 2. Prepare a writable run directory
+
+Run these commands from the cloned repository:
+
+```bash
+cd "$PROJECT_ROOT"
+
+export DATASET_ROOT="$PROJECT_ROOT/00-sample__benchmark_datasets"
+export CATAPRO_SOURCE="$DATASET_ROOT/kinetic_params_dataset/kcat/enzyme_sequence_splits/threshold_0.01"
+export CATAPRO_RUN_ROOT
+CATAPRO_RUN_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/leakcurber-catapro-kcat-pseq.XXXXXX")"
+
+mkdir -p "$CATAPRO_RUN_ROOT/enzyme_sequence_splits/threshold_0.01"
+cp "$CATAPRO_SOURCE/train.parquet" \
+   "$CATAPRO_SOURCE/val.parquet" \
+   "$CATAPRO_SOURCE/test.parquet" \
+   "$CATAPRO_RUN_ROOT/enzyme_sequence_splits/threshold_0.01/"
+
+export HF_HOME="$CATAPRO_RUN_ROOT/huggingface"
+```
+
+### 3. Run the complete CataPro workflow
+
+The checked-in `default_hparams.json` supplies CataPro's native settings,
+including its 150-epoch training budget. The protein batch size below controls
+feature-generation memory only. It does not change the training configuration.
+
+```bash
+cd "$PROJECT_ROOT/baselines/CataPro"
+
+CUDA_VISIBLE_DEVICES=0 python emulator_bench/run_split_benchmarks.py \
+  --value_root "$CATAPRO_RUN_ROOT" \
+  --split_groups enzyme_sequence_splits \
+  --thresholds threshold_0.01 \
+  --cache_dir "$CATAPRO_RUN_ROOT/.cache_embeddings" \
+  --prot_batch_size 8 \
+  --seeds 666 \
+  --device cuda:0 \
+  --primary_metric R2 \
+  --higher_is_better
+```
+
+The primary test metrics are written to:
+
+```text
+$CATAPRO_RUN_ROOT/enzyme_sequence_splits/threshold_0.01/catapro_results/seed_666/final_results_test.csv
+```
+
+The aggregate result is written to:
+
+```text
+$CATAPRO_RUN_ROOT/catapro_summary.csv
+```
+
+The corresponding run-level index, including seed 666 and threshold 0.01, is
+written to `$CATAPRO_RUN_ROOT/catapro_summary_runs.csv`.
+
+Verify the run and print the test metrics:
+
+```bash
+export CATAPRO_RESULT_DIR="$CATAPRO_RUN_ROOT/enzyme_sequence_splits/threshold_0.01/catapro_results/seed_666"
+export CATAPRO_FINAL="$CATAPRO_RESULT_DIR/final_results_test.csv"
+export CATAPRO_PREDICTIONS="$CATAPRO_RESULT_DIR/pred_label_test.csv"
+export CATAPRO_SUMMARY="$CATAPRO_RUN_ROOT/catapro_summary.csv"
+export CATAPRO_RUNS="$CATAPRO_RUN_ROOT/catapro_summary_runs.csv"
+
+test -s "$CATAPRO_FINAL"
+test -s "$CATAPRO_PREDICTIONS"
+test -s "$CATAPRO_SUMMARY"
+test -s "$CATAPRO_RUNS"
+
+python - "$CATAPRO_FINAL" "$CATAPRO_PREDICTIONS" "$CATAPRO_SUMMARY" "$CATAPRO_RUNS" <<'PY'
+import sys
+import numpy as np
+import pandas as pd
+
+metrics = pd.read_csv(sys.argv[1])
+predictions = pd.read_csv(sys.argv[2])
+summary = pd.read_csv(sys.argv[3])
+runs = pd.read_csv(sys.argv[4])
+required = {"PCC", "SCC", "R2", "RMSE", "MSE", "MAE"}
+missing = required.difference(metrics.columns)
+assert not missing, f"Missing metric columns: {sorted(missing)}"
+assert np.isfinite(metrics[list(required)].to_numpy()).all(), "Test metrics must be finite"
+assert len(predictions) == 50, f"Expected 50 test predictions, found {len(predictions)}"
+assert summary["n_seeds"].tolist() == [1]
+assert runs["seed"].astype(int).tolist() == [666]
+assert runs["threshold"].tolist() == ["threshold_0.01"]
+print(metrics.to_string(index=False))
+PY
+```
+
+This sampled-data result verifies the complete execution path. It is not a
+paper result.
+
+### 4. Use the complete Dataverse dataset
+
+For the full k<sub>cat</sub> P-seq evaluation, prepare a new temporary run
+directory from the `01` dataset tier:
+
+```bash
+export DATASET_ROOT="$DATAVERSE_ROOT/01_core_benchmark_datasets"
+export CATAPRO_SOURCE="$DATAVERSE_ROOT/01_core_benchmark_datasets/kinetic_params_dataset/kcat/enzyme_sequence_splits/threshold_0.01"
+export CATAPRO_RUN_ROOT
+CATAPRO_RUN_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/leakcurber-catapro-kcat-pseq-full.XXXXXX")"
+
+mkdir -p "$CATAPRO_RUN_ROOT/enzyme_sequence_splits/threshold_0.01"
+cp "$CATAPRO_SOURCE/train.parquet" \
+   "$CATAPRO_SOURCE/val.parquet" \
+   "$CATAPRO_SOURCE/test.parquet" \
+   "$CATAPRO_RUN_ROOT/enzyme_sequence_splits/threshold_0.01/"
+
+export HF_HOME="$CATAPRO_RUN_ROOT/huggingface"
+```
+
+Then run Step 3. The first run builds the native CataPro feature cache. Later
+runs can reuse that cache.
+
+## Other bundled-sample workflows
 
 The sample under [`00-sample__benchmark_datasets/`](00-sample__benchmark_datasets/)
 mirrors the task layout of the full release with ~50-900 rows per split. It is
