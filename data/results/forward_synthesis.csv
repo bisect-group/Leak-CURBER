@@ -1,0 +1,13 @@
+Split,Method,Top1_mean,Top1_std,Top10_mean,Top10_std
+Original,Root-aligned SMILES,91.0,,97.0,
+Original,MEGAN,86.3,,95.4,
+Original,Chemformer,91.3,,94.0,
+GR-rxnsmi,Root-aligned SMILES,90.6,0.3,96.6,0.2
+GR-rxnsmi,MEGAN,85.2,0.4,94.6,0.3
+GR-rxnsmi,Chemformer,92.0,0.2,97.2,0.1
+Time,Root-aligned SMILES,88.7,0.4,95.0,0.3
+Time,MEGAN,82.9,0.5,92.8,0.4
+Time,Chemformer,90.1,0.3,95.8,0.2
+DRFP,Root-aligned SMILES,85.9,0.5,92.6,0.4
+DRFP,MEGAN,79.8,0.6,89.7,0.5
+DRFP,Chemformer,87.6,0.4,93.8,0.3

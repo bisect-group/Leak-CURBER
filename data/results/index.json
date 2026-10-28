@@ -1,0 +1,261 @@
+{
+ "tasks": [
+  {
+   "file": "ec50.csv",
+   "metrics": [
+    "RMSE",
+    "MAE",
+    "R2",
+    "PCC",
+    "SCC"
+   ],
+   "splits": [
+    "Original",
+    "GR-seq",
+    "GR-SMILES",
+    "Mol-2D",
+    "P-seq",
+    "Mol-3D",
+    "P-struct",
+    "Time"
+   ],
+   "methods": [
+    "BIND",
+    "BACPI",
+    "XGBoost",
+    "MLP"
+   ],
+   "rows": 30
+  },
+  {
+   "file": "ec_classification.csv",
+   "metrics": [
+    "L1",
+    "L2",
+    "L3",
+    "L4"
+   ],
+   "splits": [
+    "Original",
+    "GR-seq",
+    "P-seq",
+    "P-struct",
+    "Time"
+   ],
+   "methods": [
+    "CLEAN",
+    "GraphEC",
+    "HitEC",
+    "BLASTP",
+    "Foldseek",
+    "MLP"
+   ],
+   "rows": 27
+  },
+  {
+   "file": "forward_synthesis.csv",
+   "metrics": [
+    "Top1",
+    "Top10"
+   ],
+   "splits": [
+    "Original",
+    "GR-rxnsmi",
+    "Time",
+    "DRFP"
+   ],
+   "methods": [
+    "Root-aligned SMILES",
+    "MEGAN",
+    "Chemformer"
+   ],
+   "rows": 12
+  },
+  {
+   "file": "ic50.csv",
+   "metrics": [
+    "RMSE",
+    "MAE",
+    "R2",
+    "PCC",
+    "SCC"
+   ],
+   "splits": [
+    "Original",
+    "GR-seq",
+    "GR-SMILES",
+    "Mol-2D",
+    "P-seq",
+    "Mol-3D",
+    "P-struct",
+    "Time"
+   ],
+   "methods": [
+    "BACPI",
+    "BIND",
+    "XGBoost",
+    "MLP"
+   ],
+   "rows": 30
+  },
+  {
+   "file": "kcat.csv",
+   "metrics": [
+    "RMSE",
+    "MAE",
+    "R2",
+    "PCC",
+    "SCC"
+   ],
+   "splits": [
+    "Original",
+    "GR-seq",
+    "GR-SMILES",
+    "Mol-2D",
+    "P-seq",
+    "Mol-3D",
+    "P-struct",
+    "Time"
+   ],
+   "methods": [
+    "KcatNet",
+    "EITLEM",
+    "CataPro",
+    "XGBoost",
+    "MLP"
+   ],
+   "rows": 38
+  },
+  {
+   "file": "kd.csv",
+   "metrics": [
+    "RMSE",
+    "MAE",
+    "R2",
+    "PCC",
+    "SCC"
+   ],
+   "splits": [
+    "Original",
+    "GR-seq",
+    "GR-SMILES",
+    "Mol-2D",
+    "P-seq",
+    "Mol-3D",
+    "P-struct",
+    "Time"
+   ],
+   "methods": [
+    "BIND",
+    "BACPI",
+    "Structure-Free DTA",
+    "XGBoost",
+    "MLP"
+   ],
+   "rows": 38
+  },
+  {
+   "file": "ki.csv",
+   "metrics": [
+    "RMSE",
+    "MAE",
+    "R2",
+    "PCC",
+    "SCC"
+   ],
+   "splits": [
+    "Original",
+    "GR-seq",
+    "GR-SMILES",
+    "Mol-2D",
+    "P-seq",
+    "Mol-3D",
+    "P-struct",
+    "Time"
+   ],
+   "methods": [
+    "eMOSAIC-T",
+    "BIND",
+    "BACPI",
+    "XGBoost",
+    "MLP"
+   ],
+   "rows": 38
+  },
+  {
+   "file": "km.csv",
+   "metrics": [
+    "RMSE",
+    "MAE",
+    "R2",
+    "PCC",
+    "SCC"
+   ],
+   "splits": [
+    "Original",
+    "GR-seq",
+    "GR-SMILES",
+    "Mol-2D",
+    "P-seq",
+    "Mol-3D",
+    "P-struct",
+    "Time"
+   ],
+   "methods": [
+    "EITLEM",
+    "CataPro",
+    "DEKP",
+    "XGBoost",
+    "MLP"
+   ],
+   "rows": 38
+  },
+  {
+   "file": "retrieval.csv",
+   "metrics": [
+    "L1",
+    "L2",
+    "L3",
+    "L4"
+   ],
+   "splits": [
+    "GR-rxnsmi",
+    "Time",
+    "DRFP",
+    "P-seq",
+    "P-struct"
+   ],
+   "methods": [
+    "CREEP",
+    "CLIPZyme",
+    "Horizyn",
+    "CLAIRE",
+    "Theia",
+    "EnzyFormer",
+    "XGBoost",
+    "MLP"
+   ],
+   "rows": 40
+  },
+  {
+   "file": "retrosynthesis.csv",
+   "metrics": [
+    "Top1",
+    "Top10"
+   ],
+   "splits": [
+    "Original",
+    "GR-rxnsmi",
+    "Time",
+    "DRFP"
+   ],
+   "methods": [
+    "Root-aligned SMILES",
+    "MEGAN",
+    "Chemformer",
+    "GLN"
+   ],
+   "rows": 15
+  }
+ ]
+}

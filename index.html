@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Leak-CURBER: A Leakage-Controlled Multimodal Evaluation Benchmark for Enzymatic Reaction Tasks</title>
+  <meta name="description" content="Leak-CURBER is a leakage-controlled benchmark for enzymatic reaction models. It covers four task families, ten subtasks and 17 baselines.">
+  <meta property="og:title" content="Leak-CURBER">
+  <meta property="og:description" content="A leakage-controlled multimodal evaluation benchmark for enzymatic reaction tasks. NeurIPS 2026, Evaluations and Datasets Track.">
+  <link rel="canonical" href="https://bisect-group.github.io/Leak-CURBER/">
+  <meta property="og:url" content="https://bisect-group.github.io/Leak-CURBER/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://bisect-group.github.io/Leak-CURBER/static/img/social.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://bisect-group.github.io/Leak-CURBER/static/img/social.jpg">
+  <link rel="icon" href="static/img/favicon.svg" type="image/svg+xml">
+  <script>
+    const t = localStorage.getItem("lc-theme");
+    if (t) document.documentElement.dataset.theme = t;
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css" integrity="sha384-HmYpsz2Aa9Gh3JlkCoh8kUJ2mUKJKTnkyC2Lzt8aLzpPOpnDe8KpFE2xNiBpMDou" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  <link rel="stylesheet" href="static/css/site.css">
+  <link rel="stylesheet" href="static/css/figures.css">
+</head>
+<body>
+<button class="lc-theme" id="theme-toggle" type="button" aria-label="Dark mode" aria-pressed="false"></button>
+
+<header class="lc-header">
+  <div class="lc-wrap">
+    <span class="lc-venue">NeurIPS 2026 · Evaluations &amp; Datasets Track</span>
+    <h1 class="lc-title">Leak-CURBER: A Leakage-Controlled Multimodal Evaluation Benchmark for Enzymatic Reaction Tasks</h1>
+    <div class="lc-authors">
+      <span>Adhil Ahmed<sup>1,2,4*</sup></span>
+      <span>Roshan Balaji<sup>1,2,3,4*</sup></span>
+      <span>Nirav Pravinbhai Bhatt<sup>1,2,3,4</sup></span>
+    </div>
+    <div class="lc-affils">
+      <span>*Equal contribution</span>
+      <span><sup>1</sup>BioSystems Engineering and Control (BiSECt) Lab, <sup>2</sup>Robert Bosch Centre for Data Science and AI (RBCDSAI),</span>
+      <span><sup>3</sup>Centre for Integrative Biology and Systems mEdicine (IBSE), <sup>4</sup>Wadhwani School of Data Science and AI,</span>
+      <span>IIT Madras</span>
+    </div>
+    <div class="lc-logos">
+      <img src="static/img/iitm.webp" alt="IIT Madras" width="52" height="52">
+      <img src="static/img/wsai.webp" alt="Wadhwani School of Data Science and AI" width="52" height="52">
+      <img src="static/img/bisect.webp" alt="BiSECt Lab" width="80" height="52">
+      <img src="static/img/rbcdsai.webp" alt="RBCDSAI" width="52" height="52">
+      <img src="static/img/ibse.webp" alt="IBSE" width="54" height="52">
+    </div>
+    <div class="lc-buttons">
+      <span class="lc-btn is-disabled" aria-disabled="true"><i class="fa-solid fa-file-lines"></i> Paper <small>(soon)</small></span>
+      <a class="lc-btn" href="https://github.com/bisect-group/Leak-CURBER"><i class="fa-brands fa-github"></i> Code</a>
+      <span class="lc-btn is-disabled" aria-disabled="true"><i class="fa-solid fa-database"></i> Data <small>(coming soon)</small></span>
+      <a class="lc-btn" href="https://huggingface.co/spaces/starkAhmed43/leak-curber-leaderboard"><i class="fa-solid fa-trophy"></i> Leaderboard</a>
+    </div>
+    <p class="lc-tagline">Random splits let models reuse similar proteins, molecules and reactions. Leak-CURBER removes that overlap and measures what is left.</p>
+  </div>
+</header>
+
+<main>
+<section class="lc-section lc-hero">
+  <div class="lc-wrap">
+    <img src="static/img/overview.webp" alt="Overview of Leak-CURBER: unified data, four task families, leakage-controlled splits and multimodal inputs" width="1800" height="1149">
+    <p class="lc-caption"><strong>Overview of Leak-CURBER.</strong> <strong>(A)</strong> It joins enzymatic reactions, enzymes, molecules, kinetic parameters and binding records in one schema. <strong>(B)</strong> It supports four task families (ten subtasks): reaction outcome, enzyme function, kinetic parameters and protein–ligand binding affinity. <strong>(C)</strong> It provides grouped-random, temporal and similarity-based splits. <strong>(D)</strong> Ready-to-use multimodal inputs support sequence, structure and reaction-aware learning.</p>
+    <div id="splits-demo"></div>
+  </div>
+</section>
+
+<section class="lc-section" id="stats">
+  <div class="lc-wrap">
+    <h2 class="lc-sr">Benchmark at a glance</h2>
+    <div class="lc-stat-group">
+      <h3>Scale</h3>
+      <div class="lc-cards">
+        <div class="lc-card"><div class="lc-value" data-fact="stats.scale.reactions"></div><div class="lc-label">Reactions</div></div>
+        <div class="lc-card"><div class="lc-value" data-fact="stats.scale.enzymes"></div><div class="lc-label">Enzymes</div></div>
+        <div class="lc-card"><div class="lc-value" data-fact="stats.scale.metabolites"></div><div class="lc-label">Metabolites</div></div>
+        <div class="lc-card"><div class="lc-value" data-fact="stats.scale.properties"></div><div class="lc-label">Curated measurements</div><div class="lc-sub">k<sub>cat</sub>, K<sub>M</sub>, K<sub>i</sub>, K<sub>d</sub>, EC<sub>50</sub> and IC<sub>50</sub> rows</div></div>
+        <div class="lc-card"><div class="lc-value" data-fact="stats.scale.pairs"></div><div class="lc-label">Enzyme–reaction pairs</div></div>
+        <div class="lc-card"><div class="lc-value" data-fact="stats.scale.databases"></div><div class="lc-label">Databases</div></div>
+        <div class="lc-card"><div class="lc-value" data-fact="stats.scale.subtasks"></div><div class="lc-label">Subtasks</div></div>
+        <div class="lc-card"><div class="lc-value" data-fact="stats.scale.baselines"></div><div class="lc-label">Baselines</div></div>
+      </div>
+    </div>
+    <div class="lc-stat-group">
+      <h3>Regression under leakage control</h3>
+      <p class="lc-note" data-fact="stats.regression_metric"></p>
+      <div class="lc-cards" data-cards="stats.regression"></div>
+    </div>
+    <div class="lc-stat-group">
+      <h3>Retrieval and classification under leakage control</h3>
+      <p class="lc-note" data-fact="stats.retrieval_metric"></p>
+      <div class="lc-cards" data-cards="stats.retrieval"></div>
+      <p class="lc-note" data-fact="stats.note.text"></p>
+    </div>
+  </div>
+</section>
+
+<section class="lc-section" id="abstract">
+  <div class="lc-wrap narrow">
+    <h2>Abstract</h2>
+    <p class="lc-abstract">We present <strong>Leak-CURBER</strong>, the largest multimodal, leakage-controlled benchmark for evaluating machine learning and deep learning models for enzymatic reactions. Leak-CURBER standardizes data from 10 biochemical databases and curates datasets with multimodal inputs, metrics, and leakage-controlled splits for four task families. The benchmark comprises ten subtasks: prediction of reaction outcomes (2), enzyme function (2), kinetic parameters (3), and protein–ligand binding (3). Leak-CURBER establishes new evaluation protocols that control for train/validation/test overlap across protein sequence and structure, molecule string and structure, reaction similarity, and annotation time, thereby exposing generalization failures of learning methods. Evaluating the state-of-the-art (SOTA) models on Leak-CURBER shows that their strong performance degrades sharply under these splits, often approaching random classification or retrieval performance; regression performance drops sharply, often to near zero <i>R</i><sup>2</sup>, under protein-based and temporal splits. Leak-CURBER includes precomputed embeddings, continual benchmark releases, reproducible curation scripts, and a public leaderboard to support reliable comparison of enzymatic-reaction models.</p>
+  </div>
+</section>
+
+<section class="lc-section" id="data">
+  <div class="lc-wrap">
+    <h2>Data</h2>
+    <div class="lc-figure" data-figure="data-stats"></div>
+  </div>
+</section>
+
+<section class="lc-section" id="pipeline">
+  <div class="lc-wrap">
+    <h2>Curation pipeline</h2>
+    <div class="lc-figure" data-figure="pipeline"></div>
+  </div>
+</section>
+
+<section class="lc-section" id="modalities">
+  <div class="lc-wrap">
+    <h2>Multimodal inputs</h2>
+    <div class="lc-figure" data-figure="modalities"></div>
+  </div>
+</section>
+
+<section class="lc-section" id="tasks">
+  <div class="lc-wrap">
+    <h2>Tasks</h2>
+    <div class="lc-figure" data-figure="tasks"></div>
+    <p>Leak-CURBER has four task families and ten subtasks.</p>
+    <ul class="lc-list">
+      <li><strong>Reaction outcome (2).</strong> Forward reaction prediction and single-step retrosynthesis. Metric: top-<i>k</i> exact match.</li>
+      <li><strong>Enzyme function (2).</strong> Enzyme classification and reaction-to-enzyme retrieval. Both use EC levels 4, 3, 2 and 1.</li>
+      <li><strong>Kinetic parameters (3).</strong> Turnover rate <i>k</i><sub>cat</sub>, Michaelis constant <i>K</i><sub>M</sub> and inhibition strength <i>K</i><sub>i</sub>.</li>
+      <li><strong>Protein–ligand binding (3).</strong> Binding affinity <i>K</i><sub>d</sub>, IC<sub>50</sub> and EC<sub>50</sub>.</li>
+    </ul>
+    <p>Regression subtasks use standardized units and log-transformed labels. Enzyme function subtasks use hierarchical EC evaluation.</p>
+  </div>
+</section>
+
+<section class="lc-section" id="splits">
+  <div class="lc-wrap">
+    <h2>Leakage-controlled splits</h2>
+    <div class="lc-figure" data-figure="splits"></div>
+    <p>Enzymatic reaction tasks leak in several ways. We use the grouped-random split as an in-distribution reference. The other splits test generalization along one similarity axis at a time. Each task uses the splits that fit its inputs.</p>
+    <h3>Grouped random (GR)</h3>
+    <p>Records that share a protein sequence, molecule, reaction SMILES or label go to the same partition. A reaction and its reverse form one group. This removes exact repeats but keeps related examples close.</p>
+    <h3>Similarity splits</h3>
+    <p><strong>Protein sequence (P-seq).</strong> MMseqs2 compares sequences. Test proteins have low maximum identity to the training set.</p>
+    <p><strong>Protein structure (P-struct).</strong> Foldseek compares structures. We use the experimental chain first, then AlphaFold, ESMFold2 and ESM3. This split catches remote homologs that keep the same fold.</p>
+    <p><strong>Molecule 2D and 3D (Mol-2D, Mol-3D).</strong> Mol-2D compares Morgan fingerprints with Tanimoto similarity. Mol-3D compares Uni-Mol2 conformer embeddings.</p>
+    <p><strong>Reaction (DRFP).</strong> Differential reaction fingerprints encode the change from reactants to products. Test reactions stay below a similarity threshold to the training set.</p>
+    <p>For every similarity split, a test entity must fall below the threshold to all training entities. Above-threshold overlap is 0% by construction.</p>
+    <h3>Time</h3>
+    <p>Records split by UniProt annotation date. Validation and test records are later than training records. This approximates prospective use.</p>
+  </div>
+</section>
+
+<section class="lc-section" id="results">
+  <div class="lc-wrap">
+    <h2>Results</h2>
+    <div id="results-explorer"></div>
+  </div>
+</section>
+
+<section class="lc-section" id="leaderboard">
+  <div class="lc-wrap narrow">
+    <h2>Leaderboard</h2>
+    <p>The public leaderboard reports every applicable evaluation axis. It does not rank models by grouped-random performance alone. MetaCyc records form the private test set.</p>
+    <p>For a subtask <i>t</i> with applicable axes <span>\(A_t\)</span>, let <span class="math-inline">\(N_{\mathrm{test}}(t,a)\)</span> be the test size of axis <span class="math-inline">\(a \in A_t\)</span>. The axis weight is</p>
+    <p>\[ w_{ta} = \frac{N_{\mathrm{test}}(t,a)}{\sum_{b \in A_t} N_{\mathrm{test}}(t,b)}. \]</p>
+    <p>For a metric <i>m</i>, let <span>\(M_{tam}\)</span> be the model's performance on subtask <i>t</i>, axis <i>a</i> and metric <i>m</i>. The aggregate score is</p>
+    <p>\[ S_{tm} = \sum_{a \in A_t} w_{ta}\, M_{tam}. \]</p>
+    <p>Scores stay separate by metric and keep each metric's usual ranking direction. A submission must report every axis in <span>\(A_t\)</span> to receive <span class="math-inline">\(S_{tm}\)</span>. All per-axis results stay visible.</p>
+    <div class="lc-buttons"><a class="lc-btn" href="https://huggingface.co/spaces/starkAhmed43/leak-curber-leaderboard"><i class="fa-solid fa-trophy"></i> Open the leaderboard</a></div>
+  </div>
+</section>
+
+<section class="lc-section" id="bibtex-section">
+  <div class="lc-wrap narrow">
+    <h2>BibTeX</h2>
+    <div class="lc-bib">
+      <!-- DRAFT: placeholder entry. Replace the title and add the final proceedings URL when available. -->
+      <pre id="bibtex">@inproceedings{ahmed2026leakcurber,
+  title={...},
+  author={Ahmed, Adhil and Balaji, Roshan and Bhatt, Nirav Pravinbhai},
+  booktitle={Advances in Neural Information Processing Systems (NeurIPS) Evaluations and Datasets Track},
+  year={2026}
+}</pre>
+      <button class="lc-copy" id="copy-bib" type="button">Copy</button>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="lc-footer">
+  <div class="lc-wrap">
+    <p>Contact: <a href="mailto:da24s023@smail.iitm.ac.in">da24s023@smail.iitm.ac.in</a>, <a href="mailto:roshan@smail.iitm.ac.in">roshan@smail.iitm.ac.in</a>, <a href="mailto:niravbhatt@iitm.ac.in">niravbhatt@iitm.ac.in</a></p>
+    <p><a href="https://bisect-group.github.io">BiSECt Lab</a></p>
+    <p>We thank WSAI (IIT Madras), RBCDSAI and IBSE. Roshan Balaji is supported by the Prime Minister's Research Fellowship (PMRF).</p>
+    <p>Figures created with BioRender.com</p>
+    <p>Page based on the <a href="https://github.com/nerfies/nerfies.github.io">Nerfies template</a> (CC BY-SA 4.0)</p>
+  </div>
+</footer>
+
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+<script defer src="static/js/facts.js"></script>
+<script defer src="static/js/figures.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha384-bs/nf9FbdNouRbMiFcrcZfLXYPKiPaGVGplVbv7dLGECccEXDW+S3zjqSKR5ZEaD" crossorigin="anonymous"></script>
+<script defer src="static/js/explorer.js"></script>
+<script defer src="static/js/splits-demo.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => renderMathInElement(document.getElementById("leaderboard"), {
+    delimiters: [{left: "\\[", right: "\\]", display: true}, {left: "\\(", right: "\\)", display: false}]
+  }));
+</script>
+</body>
+</html>

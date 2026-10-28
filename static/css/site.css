@@ -1,0 +1,147 @@
+@font-face { font-family: "Inter"; font-weight: 400; font-style: normal; font-display: swap; src: url("../fonts/inter-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 600; font-style: normal; font-display: swap; src: url("../fonts/inter-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 700; font-style: normal; font-display: swap; src: url("../fonts/inter-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Source Serif 4"; font-weight: 600; font-style: normal; font-display: swap; src: url("../fonts/source-serif-4-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Source Serif 4"; font-weight: 700; font-style: normal; font-display: swap; src: url("../fonts/source-serif-4-latin-700-normal.woff2") format("woff2"); }
+
+:root {
+  --lc-navy: #1b2a5c;
+  --lc-pill-top: #d4e8fa;
+  --lc-pill-bottom: #9fc7ec;
+  --lc-best: #99D8C9;
+  --lc-second: #9EBCDA;
+  --lc-worst: #FDBB84;
+  --lc-green: #009E73;
+  --lc-red: #D55E00;
+  --lc-red-text: #B34A00; /* red text that passes WCAG AA on card and page backgrounds */
+  /* --lc-art-bg (figures.css) stays light in dark mode: the raster art needs a light panel. */
+  --lc-bg: #ffffff;
+  --lc-text: #1f2937;
+  --lc-muted: #5b6575;
+  --lc-card: #f3f7fc;
+  --lc-border: #d6e0ec;
+  --lc-btn: #1b2a5c;
+  --lc-btn-text: #ffffff;
+  --lc-link: #1b5fa8;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --lc-navy: #b9d6f2; --lc-bg: #0f1522; --lc-text: #e4e9f1; --lc-muted: #9aa6b8;
+    --lc-card: #182133; --lc-border: #2b3850; --lc-btn: #b9d6f2; --lc-btn-text: #0f1522;
+    --lc-link: #8cc0f2; --lc-pill-top: #2a4a73; --lc-pill-bottom: #1c3354; --lc-red-text: #F2A465; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --lc-navy: #b9d6f2; --lc-bg: #0f1522; --lc-text: #e4e9f1; --lc-muted: #9aa6b8;
+  --lc-card: #182133; --lc-border: #2b3850; --lc-btn: #b9d6f2; --lc-btn-text: #0f1522;
+  --lc-link: #8cc0f2; --lc-pill-top: #2a4a73; --lc-pill-bottom: #1c3354; --lc-red-text: #F2A465; color-scheme: dark;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--lc-bg); color: var(--lc-text);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  line-height: 1.65; overflow-x: hidden;
+}
+a { color: var(--lc-link); }
+.lc-wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+.lc-wrap.narrow { max-width: 820px; }
+
+.lc-section { padding: 2.5rem 0 0.5rem; }
+.lc-section h2 {
+  font-family: "Source Serif 4", Georgia, serif; font-size: 1.8rem; font-weight: 600;
+  color: var(--lc-navy); text-align: center; margin-bottom: 1.2rem;
+}
+.lc-section h3 { color: var(--lc-navy); font-weight: 600; margin: 1.4rem 0 .4rem; font-size: 1.1rem; }
+.lc-section p { margin-bottom: .9rem; }
+.lc-caption { color: var(--lc-muted); font-size: .92rem; margin-top: .6rem; }
+.lc-note { color: var(--lc-muted); font-size: .92rem; text-align: center; }
+
+/* header */
+.lc-header { text-align: center; padding: 3rem 0 1.5rem; }
+.lc-venue {
+  display: inline-block; padding: .25rem 1rem; border-radius: 999px; font-size: .85rem; font-weight: 600;
+  color: var(--lc-navy); background: linear-gradient(var(--lc-pill-top), var(--lc-pill-bottom));
+}
+.lc-title {
+  font-family: "Source Serif 4", Georgia, serif; font-weight: 700; color: var(--lc-navy);
+  font-size: clamp(1.7rem, 4.6vw, 2.9rem); line-height: 1.2; margin: 1rem auto; max-width: 900px;
+}
+.lc-authors { font-size: 1.15rem; margin-top: .5rem; }
+.lc-authors span { display: inline-block; margin: 0 .6rem; white-space: nowrap; }
+.lc-affils { color: var(--lc-muted); font-size: .9rem; margin-top: .6rem; }
+.lc-affils span { display: block; }
+.lc-logos { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1.2rem 1.8rem; margin: 1.4rem 0; }
+.lc-logos img { height: 52px; width: auto; }
+:root[data-theme="dark"] .lc-logos img { background: #fff; border-radius: 8px; padding: 4px; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .lc-logos img { background: #fff; border-radius: 8px; padding: 4px; }
+}
+.lc-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: .7rem; margin: 1.2rem 0 .5rem; }
+.lc-btn {
+  display: inline-flex; align-items: center; gap: .5rem; padding: .55rem 1.3rem; border-radius: 999px;
+  background: var(--lc-btn); color: var(--lc-btn-text); font-weight: 600; text-decoration: none; font-size: .95rem;
+  transition: transform .15s, opacity .15s;
+}
+a.lc-btn:hover { transform: translateY(-2px); color: var(--lc-btn-text); }
+.lc-btn.is-disabled { background: var(--lc-border); color: var(--lc-muted); cursor: not-allowed; }
+.lc-tagline { max-width: 680px; margin: 1.4rem auto 0; font-size: 1.15rem; color: var(--lc-text); }
+
+/* hero */
+.lc-hero img { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--lc-border); background: #fff; }
+#splits-demo { margin-top: 1.4rem; }
+
+/* stat cards */
+.lc-stat-group { margin: 1.6rem 0 0; }
+.lc-stat-group h3 { text-align: center; margin: 0 0 .7rem; }
+.lc-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.lc-card {
+  background: var(--lc-card); border: 1px solid var(--lc-border); border-radius: 12px; padding: .9rem .8rem; text-align: center;
+  border-top: 4px solid var(--lc-second);
+}
+.lc-card .lc-value { font-size: 1.75rem; font-weight: 700; color: var(--lc-navy); line-height: 1.2; }
+.lc-card .lc-label { font-size: .85rem; color: var(--lc-text); }
+.lc-card .lc-sub { font-size: .75rem; color: var(--lc-muted); margin-top: .2rem; }
+
+/* abstract and text blocks */
+.lc-abstract { font-size: 1.02rem; text-align: justify; hyphens: auto; }
+.lc-list { padding-left: 1.2rem; margin-bottom: 1rem; }
+.lc-list li { margin-bottom: .4rem; }
+.lc-figure { margin: 1rem 0; }
+
+/* bibtex */
+.lc-bib { position: relative; }
+.lc-bib pre {
+  background: var(--lc-card); border: 1px solid var(--lc-border); color: var(--lc-text); border-radius: 10px;
+  padding: 1rem; font-size: .82rem; white-space: pre-wrap; word-break: break-word;
+}
+.lc-copy {
+  position: absolute; top: .6rem; right: .6rem; border: 0; cursor: pointer; border-radius: 999px;
+  padding: .3rem .8rem; font: inherit; font-size: .8rem; font-weight: 600; background: var(--lc-btn); color: var(--lc-btn-text);
+}
+
+/* footer */
+.lc-footer { margin-top: 3rem; padding: 2rem 0; border-top: 1px solid var(--lc-border); text-align: center; color: var(--lc-muted); font-size: .9rem; }
+.lc-footer p { margin-bottom: .5rem; }
+.lc-footer a { text-decoration: underline; }
+
+/* theme toggle */
+.lc-theme {
+  position: fixed; top: 12px; right: 12px; z-index: 50; width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid var(--lc-border); background: var(--lc-card); color: var(--lc-navy); cursor: pointer;
+}
+
+.katex-display { overflow-x: auto; overflow-y: hidden; }
+@media (max-width: 600px) {
+  .lc-logos img { height: 40px; }
+  .lc-abstract { text-align: left; }
+}
+strong, b { color: inherit; }
+.lc-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.lc-btn small { font-weight: 400; font-size: .75rem; }
+.lc-cards:has(.lc-to) { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.lc-card .lc-label { font-weight: 600; margin-bottom: .2rem; }
+.lc-card .lc-to { font-size: .88rem; color: var(--lc-red-text); }
+.lc-card .lc-value:not(:first-child) { font-size: 1rem; }
+.lc-stat-group .lc-note { margin-bottom: .6rem; }
