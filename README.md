@@ -28,7 +28,7 @@ The sync command writes `data/results/*.csv` and `index.json`. It also fills the
 - The scale numbers in `facts.json` match Table 1 of the paper, and the paper says 10 databases, ten subtasks and seventeen baselines.
 - Every CSV parses and has Split and Method columns.
 - The five tex-sourced CSVs equal a fresh parse of the tex, and the IC50 CSV has every tex row.
-- Every stat card and the Horizyn note equal the values in `data/results/`.
+- Every stat card equals the values in `data/results/`.
 
 Set the paths with arguments or env vars: `--src` or `LC_RESULTS_SRC` (result CSV folder), `--tex` or `LC_TEX` (camera-ready tex). Run `python scripts/sync_data.py -h` for all options.
 

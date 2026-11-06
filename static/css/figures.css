@@ -185,12 +185,6 @@
   color: var(--lc-text, #1f2937); background: var(--lc-card, #f3f7fc); border: 1px solid var(--lc-border, #d6e0ec);
 }
 .lc-ex-check { font-weight: 400 !important; }
-.lc-ex-banner {
-  margin: .8rem auto 0 !important; max-width: 640px; padding: .5rem 1rem; text-align: center; font-weight: 600;
-  color: var(--lc-text, #1f2937); background: color-mix(in srgb, var(--lc-worst, #FDBB84) 35%, transparent);
-  border: 1px solid var(--lc-worst, #FDBB84); border-radius: 10px;
-}
-.lc-ex-banner[hidden] { display: none; }
 .lc-ex-note { margin: .8rem 0 !important; color: var(--lc-muted, #5b6575); font-size: .9rem; text-align: center; }
 .lc-ex-view { min-width: 0; max-width: 100%; }
 .lc-ex-scroll { max-width: 100%; min-width: 0; overflow-x: auto; }

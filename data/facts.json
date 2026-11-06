@@ -1,11 +1,11 @@
 {
   "stats": {
     "scale": {
-      "reactions": 73398,
+      "reactions": 60961,
       "enzymes": 213785,
       "metabolites": 1125707,
       "properties": 1915255,
-      "pairs": 916704,
+      "pairs": 657349,
       "databases": 10,
       "subtasks": 10,
       "baselines": 17
@@ -22,10 +22,10 @@
           "Time"
         ],
         "source": "ic50.csv",
-        "from": "GR-SMILES 0.68 ± 0.01",
+        "from": "GR-SMILES 0.67 ± 0.00",
         "to": [
-          "P-seq −0.42 ± 0.08",
-          "Time −0.23 ± 0.03"
+          "P-seq −0.10 ± 0.03",
+          "Time −0.05 ± 0.03"
         ]
       },
       {
@@ -86,22 +86,20 @@
     ],
     "retrieval": [
       {
-        "label": "Retrieval · CREEP",
+        "label": "Retrieval · Horizyn",
         "task": "retrieval",
         "metric": "L4",
-        "method": "CREEP",
+        "method": "Horizyn",
         "from_split": "GR-rxnsmi",
         "to_splits": [
-          "P-struct",
-          "P-seq",
+          "Time",
           "DRFP"
         ],
         "source": "retrieval.csv",
-        "from": "GR-rxnsmi 39.4 ± 1.3",
+        "from": "GR-rxnsmi 43.5 ± 0.6",
         "to": [
-          "P-struct 1.9 ± 0.4",
-          "P-seq 3.0 ± 0.5",
-          "DRFP 4.1 ± 0.6"
+          "Time 18.1 ± 0.3",
+          "DRFP 30.8 ± 0.5"
         ]
       },
       {
@@ -115,10 +113,10 @@
           "Time"
         ],
         "source": "ec_classification.csv",
-        "from": "GR-seq 94.4 ± 0.1",
+        "from": "GR-seq 78.4 ± 0.2",
         "to": [
-          "P-struct 46.3 ± 0.3",
-          "Time 39.2 ± 0.2"
+          "P-struct 49.7 ± 0.3",
+          "Time 58.2 ± 0.6"
         ]
       },
       {
@@ -134,24 +132,13 @@
           "P-struct"
         ],
         "source": "ec_classification.csv",
-        "from": "GR-seq 83.1 ± 0.5 / 84.7 ± 0.6",
+        "from": "GR-seq 88.8 ± 0.1 / 86.2 ± 0.4",
         "to": [
-          "P-struct 41.7 ± 1.2 / 43.5 ± 1.0"
+          "P-struct 56.0 ± 0.0 / 28.0 ± 1.9"
         ]
       }
     ],
     "regression_metric": "R² (mean ± SD)",
-    "retrieval_metric": "EC level 4 accuracy, % (mean ± SD)",
-    "note": {
-      "task": "retrieval",
-      "metric": "L4",
-      "method": "Horizyn",
-      "splits": [
-        "Time",
-        "P-seq",
-        "P-struct"
-      ],
-      "text": "Horizyn scores 44.1 to 53.0% at EC level 4 on the Time, P-seq and P-struct splits."
-    }
+    "retrieval_metric": "EC level 4 accuracy, % (mean ± SD)"
   }
 }

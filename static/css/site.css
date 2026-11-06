@@ -106,6 +106,7 @@ a.lc-btn:hover { transform: translateY(-2px); color: var(--lc-btn-text); }
 
 /* abstract and text blocks */
 .lc-abstract { font-size: 1.02rem; text-align: justify; hyphens: auto; }
+.lc-abstract a { text-decoration: underline; overflow-wrap: anywhere; }
 .lc-list { padding-left: 1.2rem; margin-bottom: 1rem; }
 .lc-list li { margin-bottom: .4rem; }
 .lc-figure { margin: 1rem 0; }

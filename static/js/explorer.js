@@ -20,7 +20,7 @@
   };
 
   // Allowlist: the 17 evaluated baselines of the paper (MPEK excluded), keyed by task.
-  // Other CSV methods (DLKcat, UniKP, DeepEnzyme, CatPred, CLAIRE, Theia, EnzyFormer, GLN, MPEK) stay hidden.
+  // Other CSV methods (DLKcat, UniKP, CatPred, CLAIRE, Theia, EnzyFormer, GLN, MPEK) stay hidden.
   const MODELS = {
     kcat: ['KcatNet', 'EITLEM', 'CataPro'],
     km: ['EITLEM', 'CataPro', 'DEKP'],
@@ -33,7 +33,7 @@
     forward_synthesis: ['Root-aligned SMILES', 'MEGAN', 'Chemformer'],
     retrosynthesis: ['Root-aligned SMILES', 'MEGAN', 'Chemformer'],
   };
-  const OUTCOME_TASKS = new Set(['forward_synthesis', 'retrosynthesis']);
+  const SEEDS = { forward_synthesis: 'two seeds', retrosynthesis: 'two seeds (DRFP retrosynthesis: one seed)' };
   const REFERENCES = ['XGBoost', 'MLP', 'BLASTP', 'Foldseek'];
   const MODEL_LABEL = { EITLEM: 'EITLEM-Kinetics', HitEC: 'HIT-EC' };
 
@@ -277,10 +277,8 @@
   const viewButtons = views.map(([k, t]) => el('button', { type: 'button', 'data-view': k, onclick: () => { state.view = k; refresh(); } }, t));
   const check = (id, text, key) =>
     el('label', { class: 'lc-ex-check' }, el('input', { type: 'checkbox', id, ...(state[key] ? { checked: '' } : {}), onchange: (e) => { state[key] = e.target.checked; refresh(); } }), ` ${text}`);
-  const banner = el('p', { class: 'lc-ex-banner', role: 'status' }, 'These results will be updated. The outcome baselines are being fine-tuned.');
   const note = el('p', { class: 'lc-ex-note', 'aria-live': 'polite' });
   const view = el('div', { class: 'lc-ex-view' });
-  const footnote = el('p', { class: 'lc-ex-note lc-ex-foot' });
   const csvButton = el('button', { type: 'button', class: 'lc-ex-csv' }, 'Download CSV');
 
   root.append(
@@ -290,7 +288,7 @@
       el('div', { class: 'lc-ex-seg', role: 'group', 'aria-label': 'View' }, ...viewButtons),
       check('lc-ex-paper', 'Show paper-reported', 'paper'),
       check('lc-ex-refs', 'Show reference baselines', 'refs')),
-    banner, note, view, footnote, csvButton);
+    note, view, csvButton);
 
   async function refresh(taskChanged = false) {
     let data;
@@ -308,17 +306,13 @@
     }
     metricSelect.replaceChildren(...metrics.map((m) => el('option', { value: m }, METRIC_LABEL[m] || m)));
     metricSelect.value = state.metric;
-    banner.hidden = !OUTCOME_TASKS.has(state.task);
     viewButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === state.view)));
-    note.textContent = `${LOWER_IS_BETTER.has(state.metric) ? 'Lower' : 'Higher'} is better. Values are means over three seeds; error bars show the standard deviation. `
+    note.textContent = `${LOWER_IS_BETTER.has(state.metric) ? 'Lower' : 'Higher'} is better. Values are means over ${SEEDS[state.task] || 'three seeds'}; error bars show the standard deviation. `
       + (state.paper ? 'Hatched bars and italic values are numbers reported in the original papers.' : '');
     chart?.destroy();
     chart = null;
     view.replaceChildren();
     const picked = selection(data);
-    const spread = state.task === 'retrieval' && data.rows.find((r) => r.Method === 'Horizyn' && r.Split === 'GR-rxnsmi')?.L4_std;
-    footnote.textContent = spread ? `Horizyn on GR-rxnsmi has a large seed spread (SD ${spread} at L4), as reported in the paper.` : '';
-    footnote.hidden = !spread;
     if (state.view === 'bars') drawBars(view, picked);
     else drawGrid(view, picked, state.view === 'heatmap');
     csvButton.hidden = state.view !== 'table';

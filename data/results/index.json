@@ -91,8 +91,8 @@
     "Time"
    ],
    "methods": [
-    "BACPI",
     "BIND",
+    "BACPI",
     "XGBoost",
     "MLP"
    ],
@@ -121,10 +121,15 @@
     "KcatNet",
     "EITLEM",
     "CataPro",
+    "DLKcat",
+    "DEKP",
+    "UniKP",
+    "MPEK",
+    "CatPred",
     "XGBoost",
     "MLP"
    ],
-   "rows": 38
+   "rows": 78
   },
   {
    "file": "kd.csv",
@@ -177,10 +182,11 @@
     "eMOSAIC-T",
     "BIND",
     "BACPI",
+    "CatPred",
     "XGBoost",
     "MLP"
    ],
-   "rows": 38
+   "rows": 46
   },
   {
    "file": "km.csv",
@@ -205,10 +211,13 @@
     "EITLEM",
     "CataPro",
     "DEKP",
+    "UniKP",
+    "MPEK",
+    "CatPred",
     "XGBoost",
     "MLP"
    ],
-   "rows": 38
+   "rows": 62
   },
   {
    "file": "retrieval.csv",
@@ -229,13 +238,10 @@
     "CREEP",
     "CLIPZyme",
     "Horizyn",
-    "CLAIRE",
-    "Theia",
-    "EnzyFormer",
     "XGBoost",
     "MLP"
    ],
-   "rows": 40
+   "rows": 21
   },
   {
    "file": "retrosynthesis.csv",

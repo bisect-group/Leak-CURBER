@@ -131,13 +131,6 @@ def fill_card(card: dict, results: Path) -> dict:
     return out
 
 
-def fill_note(note: dict, results: Path) -> dict:
-    """Return the note spec with its text filled from data/results: the range of means over its splits."""
-    means = [float(cell(results, note["task"], note["metric"], note["method"], s).split(" ")[0].replace("−", "-")) for s in note["splits"]]
-    names = ", ".join(note["splits"][:-1]) + " and " + note["splits"][-1]
-    return dict(note, text=f"{note['method']} scores {min(means)} to {max(means)}% at EC level 4 on the {names} splits.")
-
-
 def sync(src: Path, tex: Path, out: Path, facts_path: Path) -> None:
     out.mkdir(parents=True, exist_ok=True)
     for old in out.glob("*.csv"):
@@ -159,7 +152,6 @@ def sync(src: Path, tex: Path, out: Path, facts_path: Path) -> None:
     facts = json.loads(facts_path.read_text())
     for key in ("regression", "retrieval"):
         facts["stats"][key] = [fill_card(c, out) for c in facts["stats"][key]]
-    facts["stats"]["note"] = fill_note(facts["stats"]["note"], out)
     facts_path.write_text(json.dumps(facts, indent=2, ensure_ascii=False) + "\n")
     print(f"wrote {len(tasks)} CSV files to {out} and stat cards to {facts_path}")
 
@@ -210,8 +202,6 @@ def check(tex: Path, facts_path: Path, out: Path) -> list[str]:
                 ok = False
             if not ok:
                 errors.append(f"stat card {key} / {card.get('label')} does not match data/results")
-    if fill_note(facts["stats"]["note"], out) != facts["stats"]["note"]:
-        errors.append("stats.note does not match data/results")
     return errors
 
 
