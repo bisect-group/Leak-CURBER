@@ -1,0 +1,126 @@
+run:
+  pipeline_id: classification_mlp_optuna100
+  output_root: outputs/baselines/MLP
+  data_root: outputs/baselines/MLP/data/classification
+  label: mlp
+  study_prefix: baseline_classification_mlp
+  tags: [baseline_classification, mlp]
+  endpoints: [classification, retrieval]
+  splits:
+    - random_splits_grouped_sequence
+    - random_splits_grouped_rxn_key
+    - uniprot_time_splits
+    - enzyme_sequence_splits
+    - enzyme_structure_splits
+    - reaction_drfp_tanimoto_splits
+  seeds: [666, 777, 888]
+
+resources:
+  gpus: [0]
+  max_slots_per_gpu: 2
+  hpo_workers_per_endpoint: 5
+  retry_failed: 3
+  job_timeout_sec: 0
+
+stages:
+  embeddings:
+    enabled: false
+    refresh_superset: false
+  materialization:
+    enabled: true
+    refresh: false
+    validation: metadata
+    feature_dtype: float16
+    block_rows: 65536
+    cache_root: null
+  hpo:
+    enabled: true
+    split: auto
+    n_trials: 100
+    max_epochs: 200
+    sampler_seed_base: 42
+    sampler_seed_strategy: worker_offset
+    checkpoints: false
+  final:
+    enabled: true
+    max_epochs: 200
+    checkpoints: true
+    reuse_existing_successes: true
+  cleanup:
+    enabled: true
+    dry_run: false
+
+wandb:
+  project: Leak-CURBER
+  entity: bisect-group
+  offline: false
+  skip_check: false
+
+ui:
+  progress_backend: rich
+  hpo_trial_log: false
+  stream_all_jobs: false
+  no_progress: false
+
+hydra:
+  config_groups:
+    data: baseline_classification
+    model: baseline_classification
+    optimizer: adamw
+    scheduler: cosine_warm_restarts
+    trainer: gpu
+    logger: wandb
+    callbacks: [default, model_checkpoint, early_stopping]
+  common:
+    data:
+      endpoint_modalities:
+        classification: [esmc, esm3]
+        retrieval: [drfp]
+      batch_size: 1024
+      num_workers: 2
+      materialized_feature_dtype: float16
+      pin_memory: true
+      persistent_workers: true
+      prefetch_factor: 2
+    model:
+      input_cast_dtype: null
+      metrics: [accuracy, balanced_accuracy, macro_f1, weighted_f1, top_5_accuracy, exact_match, ec_l1_exact_match, ec_l2_exact_match, ec_l3_exact_match, ec_l4_exact_match]
+    trainer:
+      precision: bf16-mixed
+      check_val_every_n_epoch: 1
+    callbacks:
+      model_checkpoint:
+        dirpath: ${paths.output_dir}/checkpoints
+        filename: "epoch_{epoch:03d}"
+        monitor: val/macro_f1
+        mode: max
+        save_last: true
+        auto_insert_metric_name: false
+      early_stopping:
+        monitor: val/macro_f1
+        patience: 20
+        mode: max
+  hpo:
+    hparams_search: baseline_classification_optuna4
+    optimized_metric: val/macro_f1
+    direction: maximize
+    callbacks:
+      early_stopping:
+        patience: 20
+  final:
+    data:
+      pin_memory: false
+      num_workers: 0
+      persistent_workers: false
+      prefetch_factor: null
+  raw_overrides:
+    common: []
+    hpo:
+      - "hydra.sweeper.sampler.n_startup_trials=20"
+      - "hydra.sweeper.sampler.multivariate=true"
+      - "hydra.sweeper.sampler.constant_liar=true"
+      - "hydra.sweeper.max_consecutive_failed_trials=5"
+      - "hydra.sweeper.stale_trial_timeout_sec=43200"
+      - "hydra.sweeper.stale_trial_check_interval_sec=300"
+      - "hydra.sweeper.fail_stale_running_trials=true"
+    final: []

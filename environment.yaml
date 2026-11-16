@@ -1,0 +1,93 @@
+# Curated direct dependencies, pinned to the versions of the environment used for the paper runs.
+# One-step setup: bash scripts/setup_env.sh
+# Manual setup:
+#   conda env create -f environment.yaml
+#   conda activate leakcurber
+#   pip install --no-deps -r requirements-nodeps.txt   # dgl, git packages (esm, smi-ted, MolR, ...)
+#   pip install --no-deps -e .
+# Only python and pip come from conda. Everything else is installed with pip.
+
+name: leakcurber
+
+channels:
+  - defaults
+  - conda-forge
+
+dependencies:
+  - python=3.12.12
+  - pip=26.0.1
+  - pip:
+      # torch builds are CUDA 13.2 wheels from the PyTorch index.
+      - --extra-index-url https://download.pytorch.org/whl/cu132
+      - torch==2.12.0+cu132
+      - torchvision==0.27.0+cu132
+      - torchmetrics==1.9.0
+      - lightning==2.6.1
+      - hydra-core==1.3.2
+      - hydra-colorlog==1.2.0
+      - omegaconf==2.3.0
+      - optuna==4.8.0
+      - rootutils==1.0.7
+      - rich==14.3.3
+      - python-dotenv==1.2.2
+      - wandb==0.25.0
+      - sqlalchemy==2.0.49
+      - tqdm==4.68.2
+      - requests==2.34.2
+      - beautifulsoup4==4.14.3
+      - numpy==2.4.4
+      - pandas==2.3.3
+      - pyarrow==23.0.1
+      - polars==1.39.3
+      - scipy==1.17.1
+      - scikit-learn==1.8.0
+      - xgboost==3.2.0
+      - joblib==1.5.3
+      - pandarallel==1.6.5
+      - matplotlib==3.10.8
+      # Runtime imports of dgl and localmapper.
+      - networkx==3.6.1
+      - psutil==7.2.2
+      - pydantic==2.14.1
+      - pyyaml==6.0.3
+      - packaging==26.3
+      - dm-tree==0.1.9
+      - lz4==4.4.5
+      - sexpdata==1.0.2
+      - biopython==1.86
+      - rdkit==2026.3.3
+      - molvs==0.1.1
+      - datamol==0.12.5
+      - drfp==0.3.7
+      - progres==1.1.0
+      - transformers==5.19.0
+      - accelerate==1.13.0
+      - huggingface-hub==2.2.0
+      # Runtime dependencies of the git packages in requirements-nodeps.txt (esm, unimol_tools, MolR).
+      - attrs==26.1.0
+      - biotite==1.6.0
+      - boto3==1.42.59
+      - brotli==1.2.0
+      - cloudpathlib==0.23.0
+      - dna-features-viewer==3.1.5
+      - einops==0.8.2
+      - httpx==0.28.1
+      - ipython==9.12.0
+      - ipywidgets==8.1.8
+      - msgpack-numpy==0.4.8
+      - py3dmol==2.5.4
+      - pydssp==0.9.1
+      - pygtrie==2.5.0
+      - safetensors==0.8.0
+      - tenacity==9.1.4
+      - zstd==1.5.7.3
+      - addict==2.4.0
+      - lmdb==1.7.5
+      - tensorboard==2.20.0
+      # Figures.
+      - seaborn==0.13.2
+      - tueplots==0.2.4
+      # Dev tools.
+      - pytest==9.0.3
+      - pre-commit==4.5.1
+      - ruff==0.14.0

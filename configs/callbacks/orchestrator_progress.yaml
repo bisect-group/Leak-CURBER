@@ -1,0 +1,15 @@
+# Lightweight progress artifacts consumed by scripts/run_baseline_mlp_pipeline.py.
+
+orchestrator_progress:
+  _target_: src.callbacks.orchestrator_progress.OrchestratorProgressCallback
+  output_dir: ${paths.output_dir}
+  stage: ${oc.env:ORCHESTRATOR_STAGE,manual}
+  endpoint: ${oc.env:ORCHESTRATOR_ENDPOINT,}
+  split: ${oc.env:ORCHESTRATOR_SPLIT,}
+  threshold: ${oc.env:ORCHESTRATOR_THRESHOLD,}
+  seed: ${oc.env:ORCHESTRATOR_SEED,}
+  job_id: ${oc.env:ORCHESTRATOR_JOB_ID,}
+  optimized_metric: ${optimized_metric}
+  mode: max  # use min when the optimized metric is a loss or error
+  status_interval_sec: 2.0
+  batch_interval: 25

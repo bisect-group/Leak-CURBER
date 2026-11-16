@@ -1,0 +1,13 @@
+defaults:
+  - _self_
+  - paths: default
+  - data/chem_utils@chem_utils
+  - data/split_inputs/reactions_dataset@reactions_dataset
+  - data/split_inputs/kinetic_params_dataset@kinetic_params_dataset
+  - data/split_inputs/enzyme_compound_dataset@enzyme_compound_dataset
+  - data/split_inputs/enzyme_retrieval_dataset@enzyme_retrieval_dataset
+  - data/split_inputs/enzyme_classification_dataset@enzyme_classification_dataset
+  - data/split_inputs/binding_affinity_dataset@binding_affinity_dataset
+  - data/embeddings@embeddings
+  - data/splits@splits
+  - optional data@_here_: builders

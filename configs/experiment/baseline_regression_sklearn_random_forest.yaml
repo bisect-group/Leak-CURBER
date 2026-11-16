@@ -1,0 +1,27 @@
+# @package _global_
+
+defaults:
+  - override /data: baseline_regression
+  - override /model: baseline_regression
+  # `logger: []` cannot merge into the logger group (DictConfig vs ListConfig).
+  - override /logger: null
+
+tags: ["baseline_regression", "sklearn", "random_forest"]
+
+data:
+  endpoint: ki
+  split: random_splits_grouped_smiles
+  modalities:
+    - smited
+    - esmc
+
+model:
+  _target_: src.models.baseline_regression_module.BaselineRegressionEstimatorModule
+  backend: sklearn
+  estimator:
+    _target_: sklearn.ensemble.RandomForestRegressor
+    n_estimators: 200
+    n_jobs: -1
+    random_state: ${seed}
+  save_model: true
+  save_predictions: true

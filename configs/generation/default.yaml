@@ -1,0 +1,9 @@
+_target_: transformers.GenerationConfig
+
+max_length: ${model.net.config.max_position_embeddings}
+do_sample: false
+decoder_start_token_id: ${model.net.config.decoder_start_token_id}
+forced_eos_token_id: ${model.net.config.eos_token_id}
+eos_token_id: ${model.net.config.eos_token_id}
+pad_token_id: ${model.net.config.pad_token_id}
+bos_token_id: ${model.net.config.bos_token_id}

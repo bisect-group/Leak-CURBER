@@ -1,0 +1,19 @@
+# Keys that split configs read from `binding_affinity_dataset`.
+binding_affinity_dataset_path: ${paths.binding_affinity_dataset_path}
+dataset_paths:
+  unified:
+    dir: ${binding_affinity_dataset.binding_affinity_dataset_path}/unified
+    parquet_1d: ${.dir}/unified_binding_affinity_dataset_1d.parquet
+    parquet_3d: ${.dir}/unified_binding_affinity_dataset_3d.parquet
+  kd:
+    dir: ${binding_affinity_dataset.binding_affinity_dataset_path}/kd
+    parquet_1d: ${.dir}/kd_binding_affinity_dataset_1d.parquet
+    parquet_3d: ${.dir}/kd_binding_affinity_dataset_3d.parquet
+  ec50:
+    dir: ${binding_affinity_dataset.binding_affinity_dataset_path}/ec50
+    parquet_1d: ${.dir}/ec50_binding_affinity_dataset_1d.parquet
+    parquet_3d: ${.dir}/ec50_binding_affinity_dataset_3d.parquet
+  ic50:
+    dir: ${binding_affinity_dataset.binding_affinity_dataset_path}/ic50
+    parquet_1d: ${.dir}/ic50_binding_affinity_dataset_1d.parquet
+    parquet_3d: ${.dir}/ic50_binding_affinity_dataset_3d.parquet

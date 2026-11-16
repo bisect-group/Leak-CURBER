@@ -1,0 +1,65 @@
+dataset_parquet_file_path: ${enzyme_retrieval_dataset.enzyme_retrieval_dataset_parquet_file_path}
+output_dir: ${paths.enzyme_retrieval_dataset_path}
+
+with_protein_information:
+  dataset_parquet_file_path: ${enzyme_retrieval_dataset.enzyme_retrieval_dataset_with_protein_information_1d_parquet_file_path}
+  dataset_3d_parquet_file_path: ${enzyme_retrieval_dataset.enzyme_retrieval_dataset_with_protein_information_3d_parquet_file_path}
+  output_dir: ${enzyme_retrieval_dataset.enzyme_retrieval_dataset_with_protein_information_path}
+  sequence_split:
+    input_dataset_parquet_file_path: ${..dataset_parquet_file_path}
+    output_dir: ${..output_dir}/enzyme_sequence_splits
+    unique_similarity_plot_path: ${.output_dir}/${splits.plot_names.unique_enzyme_sequence_similarity}
+    full_dataset_similarity_plot_path: ${.output_dir}/${splits.plot_names.full_enzyme_sequence_similarity}
+    similarity_thresholds:
+      - 0.4
+  structure_split:
+    input_dataset_parquet_file_path: ${..dataset_3d_parquet_file_path}
+    drop_to_1d_dataset_parquet_file_path: ${..dataset_parquet_file_path}
+    output_dir: ${..output_dir}/enzyme_structure_splits
+    # Predicted structures with a lower mean pLDDT count as unknown (train only).
+    min_mean_plddt: 70
+    # Foldseek queries per search call; bounds Foldseek temp disk, results identical.
+    search_query_chunk_size: 30000
+    # One Foldseek search over both datasets' structures; they share most proteins. Run the two splits one after the other.
+    shared_search_inputs:
+      - ${enzyme_classification_dataset.enzyme_classification_dataset_3d_parquet_file_path}
+      - ${enzyme_retrieval_dataset.enzyme_retrieval_dataset_with_protein_information_3d_parquet_file_path}
+    shared_search_dir: ${paths.datasets_path}/shared_structure_search/enzyme_cls_ret
+    unique_similarity_plot_path: ${.output_dir}/${splits.plot_names.unique_enzyme_structure_similarity}
+    full_dataset_similarity_plot_path: ${.output_dir}/${splits.plot_names.full_enzyme_structure_similarity}
+    drop_to_1d: true
+    similarity_thresholds:
+      - 0.86
+
+random:
+  input_dataset_parquet_file_path: ${..dataset_parquet_file_path}
+  output_dir: ${..output_dir}/random_splits
+  unique_cols:
+    - rxn_key
+
+time_split:
+  input_dataset_parquet_file_path: ${..dataset_parquet_file_path}
+  output_dir: ${..output_dir}/uniprot_time_splits
+  group_cols:
+    - rxn_key
+
+tanimoto_split_input_dataset_parquet_file_path: ${.dataset_parquet_file_path}
+tanimoto_split_output_dir: ${.output_dir}/reaction_drfp_tanimoto_splits
+unique_tanimoto_similarity_plot_path: ${.tanimoto_split_output_dir}/tanimoto_similarity_distribution_all_thresholds.png
+full_dataset_tanimoto_similarity_plot_path: ${.tanimoto_split_output_dir}/full_dataset_reaction_tanimoto_similarity_distribution.png
+tanimoto_key_column: rxn_key
+tanimoto_similarity_thresholds:
+  - 0.425
+tanimoto_embeddings_store_dir: ${embeddings.drfp_embeddings_store_dir}
+
+collapsed_sequence_split:
+  input_with_protein_information_parquet_file_path: ${..with_protein_information.dataset_parquet_file_path}
+  similarity_cache_path: ${..with_protein_information.sequence_split.output_dir}/max_fident_similarities.tsv
+  output_dir: ${paths.enzyme_retrieval_dataset_path}/enzyme_sequence_splits
+  threshold_label: "0.4"
+
+collapsed_structure_split:
+  input_with_protein_information_parquet_file_path: ${..with_protein_information.dataset_parquet_file_path}
+  similarity_cache_path: ${..with_protein_information.structure_split.output_dir}/max_lddt_similarities.tsv
+  output_dir: ${paths.enzyme_retrieval_dataset_path}/enzyme_structure_splits
+  threshold_label: "0.86"

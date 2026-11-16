@@ -1,0 +1,264 @@
+# Run profile for XGBoost regression over materialized baseline features.
+# CPU profile for the small regression endpoints. Same HPO, search space, splits and seeds as the GPU profile.
+
+run:
+  # Unique run directory name under output_root. Reusing it resumes/skips completed jobs.
+  pipeline_id: xgboost_cpu_optuna100
+  # Root directory for status CSVs, Optuna DBs, logs, best params, and aggregates.
+  output_root: outputs/baselines/XGBoost
+  # Optional explicit data/embedding roots if running from a nonstandard checkout.
+  # data_root: outputs/baselines/MLP/data/regression
+  # embeddings_root: data/intermediate/embeddings
+  # Short backend label used in W&B tags and resolved run metadata.
+  label: xgboost
+  # Prefix for endpoint Optuna studies, producing e.g. baseline_xgboost_kcat_structure.
+  study_prefix: baseline_xgboost
+  # Base W&B tags. Stage, endpoint, split, and seed tags are appended by the orchestrator.
+  tags: [baseline_regression, xgboost]
+  # Endpoints to schedule. Valid baseline endpoints: ec50, ic50, kcat, kd, ki, km.
+  endpoints: [ec50, kcat, kd, ki, km]
+  # Split families for final runs. HPO split is configured separately under stages.hpo.split.
+  splits:
+    - random_splits_grouped_sequence
+    - random_splits_grouped_smiles
+    - uniprot_time_splits
+    - substrate_splits
+    - enzyme_sequence_splits
+    - enzyme_structure_splits
+    - conformer_cosine_splits
+  # Final-run seeds; estimator random_state is tied to ${seed} below.
+  seeds: [666, 777, 888]
+  # Optional shortcut for orchestrator modalities; hydra.common.data.modalities is usually enough.
+  # modalities: [smited, ecfp, molr, esmc, esm3]
+
+resources:
+  # GPU IDs available to the orchestrator. XGBoost uses these via CUDA_VISIBLE_DEVICES.
+  # "-1" hides all GPUs (CUDA_VISIBLE_DEVICES=-1). Each slot is one concurrent CPU job.
+  gpus: ["-1"]
+  # 5 concurrent jobs x n_jobs 9 = 45 threads.
+  max_slots_per_gpu: 5
+  # Concurrent Optuna workers per endpoint study.
+  hpo_workers_per_endpoint: 1
+  # Number of retries for failed subprocess jobs.
+  retry_failed: 0
+  # Per-job timeout in seconds. 0 disables timeout.
+  job_timeout_sec: 0
+
+stages:
+  embeddings:
+    # false means require existing embedding caches; true computes missing embeddings first.
+    enabled: false
+    # Recompute the global deduplicated embedding superset instead of reusing cached inputs.
+    refresh_superset: false
+  materialization:
+    # Build/reuse train/val/test .npy feature caches before HPO and final runs.
+    enabled: true
+    # Force recomputation of materialized features even when a valid cache exists.
+    refresh: false
+    # metadata validates cache hits without loading full embedding indexes; use full or trust_complete for debugging/speed tradeoffs.
+    validation: metadata
+    # float32 is safer for XGBoost than float16.
+    feature_dtype: float32
+    # Rows per sequential write/read block during materialization.
+    block_rows: 65536
+    # null uses output_root/_cache/materialized_features, shared across pipeline runs.
+    cache_root: null
+  hpo:
+    # Run endpoint-level Optuna studies before final training.
+    enabled: true
+    # Split family used to tune hparams. Best params are reused for all final splits.
+    split: enzyme_structure_splits
+    # Trial cap per endpoint study.
+    n_trials: 100
+    # Estimator path does not train by epochs, but this stays in generated Hydra overrides.
+    max_epochs: 1
+    # Base seed for Optuna samplers; each parallel worker gets base + worker_index.
+    sampler_seed_base: 42
+    # worker_offset avoids duplicate startup suggestions across parallel workers.
+    sampler_seed_strategy: worker_offset
+    # Estimator HPO does not use Lightning checkpoints.
+    checkpoints: false
+  final:
+    # Run all endpoint x split x seed final jobs after HPO.
+    enabled: true
+    # Estimator path does not train by epochs, but this stays in generated Hydra overrides.
+    max_epochs: 1
+    # Estimator profiles do not create Lightning checkpoints; kept for schema parity.
+    checkpoints: false
+    # true skips final jobs already marked success in final_status.csv.
+    reuse_existing_successes: true
+
+  cleanup:
+    # Cleanup is enabled by default; use --no-cleanup for debugging artifacts.
+    enabled: true
+    # true reports cleanup candidates without deleting them.
+    dry_run: false
+
+wandb:
+  # W&B project used by all child training jobs.
+  project: Leak-CURBER
+  # W&B entity/team. Set null or override from CLI if needed.
+  entity: bisect-group
+  # true writes offline W&B runs; useful for smoke tests and disconnected runs.
+  offline: false
+  # true skips W&B auth preflight even when offline is false.
+  skip_check: true
+
+ui:
+  # rich gives live dashboards; plain is best for logs and CI.
+  progress_backend: rich
+  # Print one-line trial completion events in addition to dashboard summaries.
+  hpo_trial_log: false
+  # Stream all child subprocess stdout/stderr to the terminal.
+  stream_all_jobs: false
+  # Disable terminal progress rendering entirely.
+  no_progress: false
+
+storage:
+  shared_materialized_cache:
+    # Shared fingerprinted feature cache under output_root/_cache/materialized_features.
+    enabled: true
+    # Soft cap across shared cache entries; least-recently-used unprotected entries are pruned.
+    max_total_gb: 500
+    # Warn when one cache entry is unusually large.
+    max_entry_gb: 75
+    # Current pruning mode. Only lru is implemented.
+    prune_policy: lru
+    # Warn/fail before materialization if free disk under the cache root is too low.
+    min_free_gb: 500
+    # false warns on budget pressure; true turns budget violations into errors.
+    fail_if_exceeded: false
+  job_artifacts:
+    # Delete per-job output_dir/materialized_features. The shared cache is never touched by this.
+    delete_job_materialized_features: true
+    # HPO metrics are enough for Optuna; prediction arrays are large and are deleted.
+    delete_hpo_predictions: true
+    # Keep HPO estimator artifacts unless you explicitly want to reclaim more space.
+    delete_hpo_models: false
+  checkpoints:
+    # Delete HPO checkpoints after HPO finishes. Final checkpoints are kept by default.
+    prune_hpo_checkpoints: true
+    keep_hpo_best_checkpoint: false
+    keep_hpo_last_checkpoint: false
+    prune_final_checkpoints: false
+    keep_final_best_checkpoint: true
+    keep_final_last_checkpoint: false
+    max_checkpoint_total_gb: 150
+  logs:
+    # Report top run/cache disk consumers before and after the pipeline.
+    max_run_root_gb: 2000
+    fail_if_exceeded: false
+    write_disk_report: true
+
+hydra:
+  config_groups:
+    # Base datamodule config used by every child job.
+    data: baseline_regression
+    # Start from baseline_regression model config, then replace _target_ below with estimator wrapper.
+    model: baseline_regression
+    # W&B logger config; logger.wandb.* is overridden from the wandb section above.
+    logger: wandb
+    # Estimator profiles do not load Lightning callbacks. For a Torch profile, use:
+    # callbacks: [default, model_checkpoint, early_stopping]
+
+  common:
+    # Fixed Hydra overrides shared by HPO trials and final runs.
+    data:
+      # Modalities are concatenated in this order. ESM3 uses mean-pooled pdb_ids per row.
+      modalities: [smited, ecfp, molr, esmc, esm3]
+      # Materialization batch size. Estimator fit consumes memmaps rather than Torch batches.
+      batch_size: 8192
+      # Must match stages.materialization.feature_dtype for the intended materialized cache.
+      materialized_feature_dtype: float32
+      # Optional materialization/loader options.
+      # num_workers: 0
+      # pin_memory: false
+    model:
+      # Non-Lightning wrapper that calls estimator.fit/predict and writes metrics/artifacts.
+      _target_: src.models.baseline_regression_module.BaselineRegressionEstimatorModule
+      # Metadata label stored with estimator artifacts.
+      backend: xgboost
+      estimator:
+        # Hydra target for XGBoost regressor.
+        _target_: xgboost.XGBRegressor
+        # Number of boosting rounds/trees. HPO searches this below.
+        n_estimators: 500
+        # Maximum tree depth. HPO searches this below.
+        max_depth: 6
+        # Boosting step size. HPO searches this below.
+        learning_rate: 0.05
+        # Row subsampling fraction per tree.
+        subsample: 0.9
+        # Column subsampling fraction per tree.
+        colsample_bytree: 0.9
+        # CPU hist training; n_jobs bounds threads per job.
+        tree_method: hist
+        device: cpu
+        n_jobs: 9
+        # Regression objective.
+        objective: reg:squarederror
+        # Per-final-seed estimator RNG. The orchestrator injects seed for final jobs.
+        random_state: ${seed}
+        # Optional XGBoost options.
+        # max_bin: 256
+        # reg_alpha: 0.0
+        # reg_lambda: 1.0
+        # min_child_weight: 1.0
+      # Save fitted estimator with joblib when available.
+      save_model: true
+      # Save train/val/test prediction arrays.
+      save_predictions: true
+      # Predict large splits in chunks to avoid XGBoost GPU prediction OOMs.
+      predict_batch_rows: 32768
+      # Regression metrics written for train/val/test. pcc mirrors pearson; scc is Spearman.
+      metrics: [mse, rmse, mae, r2, pearson, pcc, scc]
+
+  hpo:
+    # Local Optuna-4-compatible Hydra sweeper config.
+    hparams_search: baseline_regression_optuna4
+    # Metric returned to Optuna from estimator validation metrics.
+    optimized_metric: val/r2
+    # Maximize val/r2. Use minimize for loss-style objectives.
+    direction: maximize
+    search_space:
+      # Discrete choices for boosting rounds/trees.
+      model.estimator.n_estimators: "choice(200,400,600,800)"
+      # Discrete choices for tree depth.
+      model.estimator.max_depth: "choice(3,4,5,6,8)"
+      # Discrete histogram bin count; lower values reduce GPU memory.
+      model.estimator.max_bin: "choice(64,128)"
+      # Log-uniform learning-rate search.
+      model.estimator.learning_rate: "tag(log, interval(1e-3, 0.2))"
+      # Row subsampling fraction search.
+      model.estimator.subsample: "interval(0.6, 1.0)"
+      # Column subsampling fraction search.
+      model.estimator.colsample_bytree: "interval(0.6, 1.0)"
+      # Optional regularization searches.
+      # model.estimator.reg_alpha: "tag(log, interval(1e-8, 1e-1))"
+      # model.estimator.reg_lambda: "tag(log, interval(1e-3, 10.0))"
+
+  final:
+    # Final runs keep fitted estimators and predictions unless storage pressure requires otherwise.
+    model:
+      save_model: true
+      save_predictions: true
+  # final can hold fixed final-only overrides after best HPO params are applied.
+  # final:
+  #   model:
+  #     estimator:
+  #       n_jobs: -1
+
+  raw_overrides:
+    # Advanced escape hatch: appended after structured common/HPO/final overrides.
+    common: []
+    hpo:
+      - "hydra.sweeper.sampler.n_startup_trials=20"
+      - "hydra.sweeper.sampler.multivariate=true"
+      - "hydra.sweeper.sampler.constant_liar=true"
+      - "hydra.sweeper.max_consecutive_failed_trials=5"
+      - "hydra.sweeper.stale_trial_timeout_sec=43200"
+      - "hydra.sweeper.stale_trial_check_interval_sec=300"
+      - "hydra.sweeper.fail_stale_running_trials=true"
+      - "++model.save_predictions=false"
+    final: []
+    # Example: hpo: ["++hydra.sweeper.sampler.n_startup_trials=20"]

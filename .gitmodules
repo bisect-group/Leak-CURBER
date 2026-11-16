@@ -1,0 +1,76 @@
+[submodule "baselines/BACPI"]
+	path = baselines/BACPI
+	url = https://github.com/bisect-group/BACPI.git
+	shallow = true
+[submodule "baselines/BIND"]
+	path = baselines/BIND
+	url = https://github.com/bisect-group/BIND.git
+	shallow = true
+[submodule "baselines/CARE"]
+	path = baselines/CARE
+	url = https://github.com/bisect-group/CARE.git
+	shallow = true
+[submodule "baselines/CLEAN"]
+	path = baselines/CLEAN
+	url = https://github.com/bisect-group/CLEAN.git
+	shallow = true
+[submodule "baselines/CatPred"]
+	path = baselines/CatPred
+	url = https://github.com/bisect-group/CatPred.git
+	shallow = true
+[submodule "baselines/CataPro"]
+	path = baselines/CataPro
+	url = https://github.com/bisect-group/CataPro.git
+	shallow = true
+[submodule "baselines/Clipzyme"]
+	path = baselines/Clipzyme
+	url = https://github.com/bisect-group/clipzyme.git
+	shallow = true
+[submodule "baselines/DEKP"]
+	path = baselines/DEKP
+	url = https://github.com/bisect-group/DEKP.git
+	shallow = true
+[submodule "baselines/DLKcat"]
+	path = baselines/DLKcat
+	url = https://github.com/bisect-group/DLKcat.git
+	shallow = true
+[submodule "baselines/EITLEM-Kinetics"]
+	path = baselines/EITLEM-Kinetics
+	url = https://github.com/bisect-group/EITLEM-Kinetics.git
+	shallow = true
+[submodule "baselines/GraphEC"]
+	path = baselines/GraphEC
+	url = https://github.com/bisect-group/GraphEC.git
+	shallow = true
+[submodule "baselines/HITEC"]
+	path = baselines/HITEC
+	url = https://github.com/bisect-group/HIT-EC.git
+	shallow = true
+[submodule "baselines/Horizon"]
+	path = baselines/Horizon
+	url = https://github.com/bisect-group/horizyn.git
+	shallow = true
+[submodule "baselines/KcatNet"]
+	path = baselines/KcatNet
+	url = https://github.com/bisect-group/KcatNet.git
+	shallow = true
+[submodule "baselines/StructureFree-DTA"]
+	path = baselines/StructureFree-DTA
+	url = https://github.com/bisect-group/StructureFree-DTA.git
+	shallow = true
+[submodule "baselines/UniKP"]
+	path = baselines/UniKP
+	url = https://github.com/bisect-group/UniKP.git
+	shallow = true
+[submodule "baselines/eMOSAIC"]
+	path = baselines/eMOSAIC
+	url = https://github.com/bisect-group/eMOSAIC.git
+	shallow = true
+[submodule "baselines/mpek"]
+	path = baselines/mpek
+	url = https://github.com/bisect-group/mpek.git
+	shallow = true
+[submodule "baselines/syntheseus"]
+	path = baselines/syntheseus
+	url = https://github.com/bisect-group/syntheseus.git
+	shallow = true

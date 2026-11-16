@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use Leak-CURBER, please cite the paper."
+title: "Leak-CURBER: A Leakage-Controlled Multimodal Evaluation Benchmark for Enzymatic Reaction Tasks"
+type: software
+authors:
+  - family-names: Ahmed
+    given-names: Adhil
+  - family-names: Balaji
+    given-names: Roshan
+  - family-names: Bhatt
+    given-names: Nirav Pravinbhai
+repository-code: "https://github.com/bisect-group/Leak-CURBER"
+license: MIT
+preferred-citation:
+  type: conference-paper
+  title: "Leak-CURBER: A Leakage-Controlled Multimodal Evaluation Benchmark for Enzymatic Reaction Tasks"
+  authors:
+    - family-names: Ahmed
+      given-names: Adhil
+    - family-names: Balaji
+      given-names: Roshan
+    - family-names: Bhatt
+      given-names: Nirav Pravinbhai
+  collection-title: "Advances in Neural Information Processing Systems (NeurIPS), Evaluations & Datasets Track"
+  year: 2026
+  conference:
+    name: "Conference on Neural Information Processing Systems (NeurIPS 2026)"

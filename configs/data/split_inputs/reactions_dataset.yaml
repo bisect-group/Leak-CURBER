@@ -1,0 +1,6 @@
+# Keys that split configs read from `reactions_dataset`.
+reactions_dataset_path: ${paths.reactions_dataset_path}
+reaction_outcome_dataset_path: ${paths.reaction_outcome_dataset_path}
+unified_reactions_1d_parquet_file_path: ${.reactions_dataset_path}/unified_reactions_1d.parquet
+unified_reactions_3d_parquet_file_path: ${.reactions_dataset_path}/unified_reactions_3d.parquet
+reaction_outcome_dataset_parquet_file_path: ${.reaction_outcome_dataset_path}/reaction_outcome_dataset.parquet

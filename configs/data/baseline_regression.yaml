@@ -1,0 +1,48 @@
+_target_: src.data.baseline_regression_datamodule.BaselineRegressionDataModule
+
+data_root: ${paths.root_dir}/outputs/baselines/MLP/data/regression
+endpoint: ki
+split: random_splits_grouped_smiles
+threshold: null
+
+label_col: log10_value
+modalities:
+  - smited
+  - ecfp
+  - molr
+  - esmc
+  - esm3
+
+cache_roots:
+  smited: ${paths.embeddings_path}/smited/materials_smi_ted_fork/v1
+  ecfp: ${paths.embeddings_path}/ecfp/radius2_nbits1024/v1
+  molr: ${paths.embeddings_path}/molr/2d/v1
+  esmc: ${paths.embeddings_path}/esmc/ESMC-6B/hf_v1
+  esm3: ${paths.embeddings_path}/esm3/open_small_structure/v1
+
+key_columns:
+  smited: smiles
+  ecfp: smiles
+  molr: smiles
+  esmc: sequence
+  esm3: pdb_ids
+
+batch_size: 4096
+parquet_batch_size: ${.batch_size}
+num_workers: 4
+pin_memory: true
+feature_dtype: float32
+shard_cache_size: 4
+use_materialized_features: true
+materialize_if_missing: true
+refresh_materialized_features: false
+materialized_cache_root: ${paths.output_dir}/materialized_features
+materialized_validation: metadata
+materialized_feature_dtype: float16
+materialized_block_rows: 65536
+materialized_shuffle: block
+persistent_workers: true
+prefetch_factor: 2
+pooled_list_cache_size: 100000
+materialization_max_gb: 10000.0
+seed: ${seed}

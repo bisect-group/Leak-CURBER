@@ -1,0 +1,44 @@
+_target_: src.data.baseline_classification_datamodule.BaselineClassificationDataModule
+
+endpoint: classification
+data_root: ${paths.root_dir}/outputs/baselines/MLP/data/classification
+data_roots:
+  classification: ${paths.root_dir}/outputs/baselines/MLP/data/classification/enzyme_classification_dataset
+  retrieval: ${paths.root_dir}/outputs/baselines/MLP/data/classification/enzyme_retrieval_dataset
+split: random_splits_grouped_sequence
+threshold: null
+
+label_col: ec_number
+modalities:
+  - esmc
+  - esm3
+
+cache_roots:
+  drfp: ${paths.embeddings_path}/drfp/radius3_min0_len2048_rings0_h0/v1
+  esmc: ${paths.embeddings_path}/esmc/ESMC-6B/hf_v1
+  esm3: ${paths.embeddings_path}/esm3/open_small_structure/v1
+
+key_columns:
+  drfp: rxn_key
+  esmc: sequence
+  esm3: pdb_ids
+
+batch_size: 1024
+parquet_batch_size: ${.batch_size}
+num_workers: 4
+pin_memory: true
+feature_dtype: float32
+shard_cache_size: 4
+use_materialized_features: true
+materialize_if_missing: true
+refresh_materialized_features: false
+materialized_cache_root: ${paths.output_dir}/materialized_features
+materialized_validation: metadata
+materialized_feature_dtype: float16
+materialized_block_rows: 65536
+materialized_shuffle: block
+persistent_workers: true
+prefetch_factor: 2
+pooled_list_cache_size: 100000
+materialization_max_gb: 10000.0
+seed: ${seed}

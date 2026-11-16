@@ -1,0 +1,307 @@
+# Run profile for the full Torch MLP baseline pipeline.
+# Launch with:
+#   python scripts/run_baseline_mlp_pipeline.py --run_config configs/pipeline/baseline_mlp_optuna100.yaml
+# CLI flags override values in this file, so this can be a stable default profile.
+
+run:
+  # Unique run directory name under output_root. Reusing it resumes/skips completed jobs.
+  pipeline_id: mlp_optuna100
+  # Root directory for status CSVs, Optuna DBs, logs, best params, and aggregates.
+  output_root: outputs/baselines/MLP
+  # Optional explicit data root; default comes from the orchestrator if omitted.
+  # data_root: outputs/baselines/MLP/data/regression
+  # Optional explicit embedding cache root; default is data/intermediate/embeddings.
+  # embeddings_root: data/intermediate/embeddings
+  # Short backend label used in W&B tags and resolved run metadata.
+  label: mlp
+  # Prefix for endpoint Optuna studies, producing e.g. baseline_mlp_kcat_structure.
+  study_prefix: baseline_mlp
+  # Base W&B tags. Stage, endpoint, split, and seed tags are appended by the orchestrator.
+  tags: [baseline_regression, mlp]
+  # Endpoints to schedule. Valid baseline endpoints: ec50, ic50, kcat, kd, ki, km.
+  endpoints: [ec50, ic50, kcat, kd, ki, km]
+  # Split families for final runs. HPO split is configured separately under stages.hpo.split.
+  splits:
+    - random_splits_grouped_sequence
+    - random_splits_grouped_smiles
+    - uniprot_time_splits
+    - substrate_splits
+    - enzyme_sequence_splits
+    - enzyme_structure_splits
+    - conformer_cosine_splits
+  # Final-run seeds. HPO uses the training config seed unless overridden in hydra.common.
+  seeds: [666, 777, 888]
+  # Optional shortcut for orchestrator modalities; hydra.common.data.modalities is usually enough.
+  # modalities: [smited, ecfp, molr, esmc, esm3]
+
+resources:
+  # GPU IDs visible to the orchestrator. Each child training job sees its assigned GPU as cuda:0.
+  gpus: [0]
+  # Concurrent job processes per GPU.
+  max_slots_per_gpu: 4
+  # Concurrent Optuna workers per endpoint study. >1 shares the same SQLite study.
+  hpo_workers_per_endpoint: 5
+  # Number of retries for failed subprocess jobs.
+  retry_failed: 0
+  # Per-job timeout in seconds. 0 disables timeout.
+  job_timeout_sec: 0
+  # Example: allow two small jobs per GPU after confirming memory headroom.
+  # max_slots_per_gpu: 2
+
+stages:
+  embeddings:
+    # false means require existing embedding caches; true computes missing embeddings first.
+    enabled: false
+    # Recompute the global deduplicated embedding superset instead of reusing cached inputs.
+    refresh_superset: false
+  materialization:
+    # Build/reuse train/val/test .npy feature caches before HPO and final runs.
+    enabled: true
+    # Force recomputation of materialized features even when a valid cache exists.
+    refresh: false
+    # metadata validates cache hits without loading full embedding indexes; use full or trust_complete for debugging/speed tradeoffs.
+    validation: metadata
+    # Feature dtype on disk and in memmap loaders. float16 is faster/smaller for Torch MLP.
+    feature_dtype: float16
+    # Rows per sequential write/read block during materialization and block-shuffle loading.
+    block_rows: 65536
+    # null uses output_root/_cache/materialized_features, shared across pipeline runs.
+    cache_root: null
+    # Example: isolate caches for an experiment.
+    # cache_root: outputs/baselines/MLP/_cache/materialized_features_mlp_fp16
+  hpo:
+    # Run endpoint-level Optuna studies before final training.
+    enabled: true
+    # Split family used to tune hparams. Best params are reused for all final splits.
+    split: enzyme_structure_splits
+    # Trial cap per endpoint study.
+    n_trials: 100
+    # Max epochs for each HPO trial.
+    max_epochs: 200
+    # Base seed for Optuna samplers; each parallel worker gets base + worker_index.
+    sampler_seed_base: 42
+    # worker_offset avoids duplicate startup suggestions across parallel workers.
+    sampler_seed_strategy: worker_offset
+    # HPO checkpoint files are off by default; metrics/progress are enough for trial selection.
+    checkpoints: false
+  final:
+    # Run all endpoint x split x seed final jobs after HPO.
+    enabled: true
+    # Max epochs for final training. null would reuse stages.hpo.max_epochs.
+    max_epochs: 200
+    # Keep final checkpoints by default for downstream inference/backfill/recovery.
+    checkpoints: true
+    # Best HPO params CSV used when stages.hpo.enabled is false.
+    # null means ${run_root}/hpo_best_params.csv.
+    best_params_path: outputs/baselines/MLP/_runs/mlp_optuna100/hpo_best_params.csv
+    # true skips final jobs already marked success in final_status.csv.
+    reuse_existing_successes: true
+  cleanup:
+    # Cleanup is enabled by default; use --no-cleanup for debugging artifacts.
+    enabled: true
+    # true reports cleanup candidates without deleting them.
+    dry_run: false
+
+wandb:
+  # W&B project used by all child training jobs.
+  project: Leak-CURBER
+  # W&B entity/team. Set null or override from CLI if needed.
+  entity: bisect-group
+  # true writes offline W&B runs; useful for smoke tests and disconnected runs.
+  offline: false
+  # true skips W&B auth preflight even when offline is false.
+  skip_check: false
+
+ui:
+  # rich gives live dashboards; plain is best for logs and CI.
+  progress_backend: rich
+  # Print one-line trial completion events in addition to dashboard summaries.
+  hpo_trial_log: false
+  # Stream all child subprocess stdout/stderr to the terminal. Default keeps HPO/final logs file-only.
+  stream_all_jobs: false
+  # Disable terminal progress rendering entirely.
+  no_progress: false
+
+storage:
+  shared_materialized_cache:
+    # Shared fingerprinted feature cache under output_root/_cache/materialized_features.
+    enabled: true
+    # Soft cap across shared cache entries; least-recently-used unprotected entries are pruned.
+    max_total_gb: 500
+    # Warn when one cache entry is unusually large.
+    max_entry_gb: 75
+    # Current pruning mode. Only lru is implemented.
+    prune_policy: lru
+    # Warn/fail before materialization if free disk under the cache root is too low.
+    min_free_gb: 500
+    # false warns on budget pressure; true turns budget violations into errors.
+    fail_if_exceeded: false
+  job_artifacts:
+    # Delete per-job output_dir/materialized_features. The shared cache is never touched by this.
+    delete_job_materialized_features: true
+    # HPO metrics are enough for Optuna; prediction arrays are deleted for estimator profiles.
+    delete_hpo_predictions: true
+    # Keep HPO estimator artifacts unless you explicitly want to reclaim more space.
+    delete_hpo_models: false
+  checkpoints:
+    # Delete HPO checkpoints after HPO finishes. Final checkpoints are kept by default.
+    prune_hpo_checkpoints: true
+    keep_hpo_best_checkpoint: false
+    keep_hpo_last_checkpoint: false
+    prune_final_checkpoints: false
+    keep_final_best_checkpoint: true
+    keep_final_last_checkpoint: false
+    max_checkpoint_total_gb: 150
+  logs:
+    # Report top run/cache disk consumers before and after the pipeline.
+    max_run_root_gb: 2000
+    fail_if_exceeded: false
+    write_disk_report: true
+
+hydra:
+  config_groups:
+    # Base datamodule config used by every child job.
+    data: baseline_regression
+    # Base Lightning MLP model config.
+    model: baseline_regression
+    # Torch optimizer factory config.
+    optimizer: adamw
+    # CosineAnnealingWarmRestarts scheduler factory config.
+    scheduler: cosine_warm_restarts
+    # GPU trainer config; orchestrator still pins CUDA_VISIBLE_DEVICES per subprocess.
+    trainer: gpu
+    # W&B logger config; logger.wandb.* is overridden from the wandb section above.
+    logger: wandb
+    # Callback configs loaded for Torch jobs. default is generic UI/progress/model-summary;
+    # checkpointing and early stopping are opted in here instead of callbacks/default.
+    callbacks: [default, model_checkpoint, early_stopping]
+
+  common:
+    # Fixed Hydra overrides shared by HPO trials and final runs. The orchestrator also injects
+    # endpoint, split, threshold, seed, output_dir, W&B metadata, and materialized cache settings.
+    data:
+      # Modalities are concatenated in this order. ESM3 uses mean-pooled pdb_ids per row.
+      modalities: [smited, ecfp, molr, esmc, esm3]
+      # Training batch size. HPO may override this via hydra.hpo.search_space.
+      batch_size: 1024
+      # DataLoader workers for materialized Torch datasets.
+      num_workers: 2
+      # Must match stages.materialization.feature_dtype for the intended materialized cache.
+      materialized_feature_dtype: float16
+      # Optional loader options when debugging throughput.
+      pin_memory: true
+      persistent_workers: true
+      prefetch_factor: 2
+    model:
+      # MLP hidden widths. This is also included in the Optuna search space below.
+      # hidden_dims: [1024, 512, 256]
+      # Dropout after each hidden activation.
+      # dropout: 0.1
+      # Hidden activation: relu, gelu, silu, or tanh.
+      # activation: gelu
+      # null preserves feature dtype; set float32/float16/bfloat16 to force an input cast.
+      input_cast_dtype: null
+      # Regression metrics logged for train/val/test. pcc mirrors pearson; scc is Spearman.
+      metrics: [mse, rmse, mae, r2, pcc, scc]
+      # Optional Torch compile switch for the MLP.
+      # compile: false
+    # optimizer:
+      # AdamW learning rate fallback when Optuna does not override it.
+      # lr: 0.0003
+      # AdamW decoupled weight-decay fallback when Optuna does not override it.
+      # weight_decay: 0.000001
+    # scheduler:
+      # CosineAnnealingWarmRestarts first restart period.
+      # T_0: 20
+      # Multiplicative factor for subsequent restart periods.
+      # T_mult: 2
+      # Minimum learning rate reached by cosine annealing.
+      # eta_min: 0.0000001
+    trainer:
+      # Lightning precision. bf16-mixed usually works well on modern NVIDIA GPUs.
+      precision: bf16-mixed
+      # Optional trainer options commonly overridden during debugging.
+      # accelerator: gpu
+      # devices: 1
+      check_val_every_n_epoch: 1
+      # gradient_clip_val: 1.0
+    callbacks:
+      model_checkpoint:
+        # Save checkpoints under each Hydra output directory.
+        dirpath: ${paths.output_dir}/checkpoints
+        # Filename pattern; metric name insertion is disabled below to keep paths short.
+        filename: "epoch_{epoch:03d}"
+        # Checkpoint the model with the best validation R2.
+        monitor: val/r2
+        # Higher val/r2 is better.
+        mode: max
+        # Also keep last.ckpt for resume/debug workflows.
+        save_last: true
+        # Do not prefix filename with monitor names like val/r2=...
+        auto_insert_metric_name: false
+      early_stopping:
+        # Stop based on the same validation metric used for HPO/checkpointing.
+        monitor: val/r2
+        # Patience for final runs; HPO uses the same value below.
+        patience: 20
+        # Higher val/r2 is better.
+        mode: max
+
+  hpo:
+    # Local Optuna-4-compatible Hydra sweeper config.
+    hparams_search: baseline_regression_optuna4
+    # Metric returned to Optuna and used by checkpoint/early stopping configs.
+    optimized_metric: val/r2
+    # Maximize val/r2. Use minimize for loss-style objectives.
+    direction: maximize
+    callbacks:
+      early_stopping:
+        # HPO should stop unpromising trials sooner than final training.
+        patience: 20
+    search_space:
+      # Discrete AdamW LR choices. This keeps the old log-scale range but samples only named values.
+      optimizer.lr: "choice(1e-5,5e-5,1e-4,5e-4,1e-3)"
+      # Discrete AdamW decoupled weight-decay choices. 0.0 lets Optuna try no regularization.
+      optimizer.weight_decay: "choice(0.0,1e-6,1e-5,1e-4,1e-3,1e-2)"
+      # Batch size choices; these override hydra.common.data.batch_size per trial.
+      # data.batch_size: "choice(2048,4096,8192)"
+      # Candidate MLP widths, serialized as Hydra list values.
+      model.hidden_dims: "choice([512,256],[1024,512,256],[2048,1024,512],[4096,2048,1024,512])"
+      # Dropout probability choices.
+      model.dropout: "choice(0.0,0.01,0.05,0.1)"
+      # Activation choices.
+      model.activation: "choice(relu,gelu,silu)"
+      # Scheduler restart period choices.
+      scheduler.T_0: "choice(10,20,40)"
+      # Scheduler restart multiplier choices.
+      scheduler.T_mult: "choice(1,2)"
+      # Discrete scheduler minimum-LR choices.
+      scheduler.eta_min: "choice(1e-7,5e-7,1e-6,5e-6)"
+
+  final:
+    data:
+      # Disable pinned-memory DataLoader handoff during high-concurrency final recovery.
+      pin_memory: false
+      # Avoid worker subprocess CUDA pinned-memory teardown failures with many concurrent jobs.
+      num_workers: 0
+      # Must be false when num_workers is 0.
+      persistent_workers: false
+      # Must be null when num_workers is 0.
+      prefetch_factor: null
+  # Additional final-only fixed overrides can be added here, for example:
+  # trainer:
+  #   deterministic: true
+
+  raw_overrides:
+    # Advanced escape hatch: appended after structured common/HPO/final overrides.
+    common: []
+    hpo:
+      - "hydra.sweeper.sampler.n_startup_trials=20"
+      - "hydra.sweeper.sampler.multivariate=true"
+      - "hydra.sweeper.sampler.constant_liar=true"
+      - "hydra.sweeper.max_consecutive_failed_trials=5"
+      - "hydra.sweeper.stale_trial_timeout_sec=43200"
+      - "hydra.sweeper.stale_trial_check_interval_sec=300"
+      - "hydra.sweeper.fail_stale_running_trials=true"
+    final: []
+    # Example: common: ["++callbacks.early_stopping.patience=25"]

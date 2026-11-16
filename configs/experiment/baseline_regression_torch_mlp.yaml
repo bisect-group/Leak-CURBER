@@ -1,0 +1,20 @@
+# @package _global_
+
+defaults:
+  - override /data: baseline_regression
+  - override /model: baseline_regression
+  # `logger: []` cannot merge into the logger group (DictConfig vs ListConfig).
+  - override /logger: null
+  - override /trainer: gpu
+
+tags: ["baseline_regression", "torch_mlp"]
+
+data:
+  endpoint: ki
+  split: random_splits_grouped_smiles
+  modalities:
+    - smited
+    - esmc
+
+trainer:
+  max_epochs: 10

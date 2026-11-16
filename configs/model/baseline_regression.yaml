@@ -1,0 +1,24 @@
+_target_: src.models.baseline_regression_module.BaselineRegressionLightningModule
+
+input_dim: null
+architecture: mlp
+hidden_dims:
+  - 1024
+  - 512
+  - 256
+dropout: 0.1
+activation: relu
+input_cast_dtype: null
+metrics:
+  - mse
+  - rmse
+  - mae
+  - r2
+  - pearson
+  - pcc
+  - scc
+
+optimizer: ${optimizer}
+# Use the composed scheduler node; train.yaml provides it (cosine_warm_restarts).
+scheduler: ${scheduler}
+compile: false

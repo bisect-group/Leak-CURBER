@@ -1,0 +1,79 @@
+defaults:
+  - _self_
+  - /data/splits_dataset@dataset: kinetic_params_kcat
+
+# Dataset config names in configs/data/splits_dataset/*.yaml
+datasets:
+  - kinetic_params_kcat
+  - kinetic_params_ki
+  - kinetic_params_km
+  - binding_affinity_ec50
+  - binding_affinity_ic50
+  - binding_affinity_kd
+  # - binding_affinity_unified
+  # - enzyme_retrieval
+  # - enzyme_substrate
+  # - kinetic_params_unified
+  # - reactions_unified
+  - reaction_outcome_dataset
+
+# Logging configuration
+log_dir: ${paths.log_dir}
+log_file_name: splits.log
+
+# Base paths
+intermediate_data_dir: ${paths.intermediate_data_dir}
+af_pdb_path: ${paths.af_pdb_path}
+esm_pdb_path: ${paths.esm_pdb_path}
+esmfold2_pdb_path: ${paths.intermediate_data_dir}/esmfold2_pdb
+mmcif_path: ${paths.mmcif_path}
+
+# pandarallel configuration
+pandarallel:
+  progress_bar: false
+  nb_workers: 112
+
+# Random seed for reproducibility
+random_seed: 42
+
+# Dataset split fractions
+train_frac: 0.9
+valid_frac: 0.05
+test_frac: 0.05
+
+# Similarity caching controls
+similarity_cache_overwrite: false
+
+# Random grouped split
+random_unique_cols:
+  - smiles
+  - sequence
+
+# UniProt time-based split (optional)
+time_split_enabled: false
+time_split_dataset_date_column: uniprot_date
+time_split_date_field: date_created
+time_split_missing_date_split: train
+time_split_output_dir_name: uniprot_time_splits
+
+# Foldseek (protein structure similarity); scratch dirs live under each split output_dir
+foldseek_bin: ${paths.foldseek_bin}
+# GPU mode runs the ungapped all-pairs prefilter on the visible CUDA devices (CUDA_VISIBLE_DEVICES).
+foldseek_gpu: false
+
+# MMseqs2 (protein sequence similarity); scratch dirs live under each split output_dir
+mmseqs_bin: ${paths.mmseqs_bin}
+# GPU mode runs the ungapped all-pairs prefilter on the visible CUDA devices (CUDA_VISIBLE_DEVICES).
+mmseqs_gpu: false
+
+plot_names:
+  unique_smiles_similarity: tanimoto_similarity_distribution_all_thresholds.png
+  full_smiles_similarity: full_dataset_smiles_tanimoto_similarity_distribution.png
+  unique_enzyme_sequence_similarity: unique_enzyme_sequence_test_train_similarity_distribution.png
+  full_enzyme_sequence_similarity: full_dataset_enzyme_sequence_test_train_similarity_distribution.png
+  unique_enzyme_structure_similarity: unique_enzyme_structure_test_train_similarity_distribution.png
+  full_enzyme_structure_similarity: full_dataset_enzyme_structure_test_train_similarity_distribution.png
+  unique_conformer_similarity: unique_conformer_cosine_similarity_distribution.png
+  full_conformer_similarity: full_dataset_conformer_cosine_similarity_distribution.png
+  unique_uniprot_time_distribution: unique_uniprot_time_distribution.png
+  full_uniprot_time_distribution: full_dataset_uniprot_time_distribution.png

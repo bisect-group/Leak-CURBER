@@ -1,0 +1,85 @@
+run:
+  pipeline_id: classification_xgboost_optuna100
+  output_root: outputs/baselines/XGBoost
+  data_root: outputs/baselines/MLP/data/classification_protein
+  label: xgboost
+  study_prefix: baseline_classification_xgboost
+  tags: [baseline_classification, xgboost]
+  endpoints: [retrieval]
+  # EC-removal: the EC hierarchy split family was dropped with the EC splitter, so it is no longer listed.
+  splits: [random_splits_grouped_rxn_key, uniprot_time_splits, reaction_drfp_tanimoto_splits]
+  seeds: [666, 777, 888]
+
+resources:
+  gpus: [0]
+  max_slots_per_gpu: 1
+  hpo_workers_per_endpoint: 1
+  retry_failed: 3
+  job_timeout_sec: 0
+
+stages:
+  embeddings: {enabled: false, refresh_superset: false}
+  materialization: {enabled: true, refresh: false, validation: metadata, feature_dtype: float32, block_rows: 65536, cache_root: null}
+  hpo: {enabled: true, split: auto, n_trials: 100, max_epochs: 1, sampler_seed_base: 42, sampler_seed_strategy: worker_offset, checkpoints: false}
+  final: {enabled: true, max_epochs: 1, checkpoints: false, reuse_existing_successes: true}
+  cleanup: {enabled: true, dry_run: false}
+
+wandb: {project: Leak-CURBER, entity: bisect-group, offline: false, skip_check: false}
+ui: {progress_backend: rich, hpo_trial_log: false, stream_all_jobs: false, no_progress: false}
+
+hydra:
+  config_groups:
+    data: baseline_classification
+    model: baseline_classification
+    logger: wandb
+  common:
+    data:
+      endpoint_modalities:
+        classification: [esmc, esm3]
+        retrieval: [drfp]
+      batch_size: 8192
+      materialized_feature_dtype: float32
+    model:
+      _target_: src.models.baseline_classification_module.BaselineClassificationEstimatorModule
+      backend: xgboost
+      estimator:
+        _target_: xgboost.XGBClassifier
+        n_estimators: 500
+        max_depth: 6
+        learning_rate: 0.05
+        subsample: 0.9
+        colsample_bytree: 0.9
+        tree_method: hist
+        device: cuda
+        objective: multi:softprob
+        eval_metric: mlogloss
+        random_state: ${seed}
+      save_model: true
+      save_predictions: true
+      predict_batch_rows: 32768
+      metrics: [accuracy, balanced_accuracy, macro_f1, weighted_f1, top_5_accuracy, exact_match, ec_l1_exact_match, ec_l2_exact_match, ec_l3_exact_match, ec_l4_exact_match]
+  hpo:
+    hparams_search: baseline_classification_optuna4
+    optimized_metric: val/macro_f1
+    direction: maximize
+    search_space:
+      model.estimator.n_estimators: "choice(200,400,600,800)"
+      model.estimator.max_depth: "choice(3,4,5,6,8)"
+      model.estimator.max_bin: "choice(64,128)"
+      model.estimator.learning_rate: "tag(log, interval(1e-3, 0.2))"
+      model.estimator.subsample: "interval(0.6, 1.0)"
+      model.estimator.colsample_bytree: "interval(0.6, 1.0)"
+  final: {}
+  raw_overrides:
+    common: []
+    hpo:
+      - "hydra.sweeper.sampler.n_startup_trials=20"
+      - "hydra.sweeper.sampler.multivariate=true"
+      - "hydra.sweeper.sampler.constant_liar=true"
+      - "hydra.sweeper.max_consecutive_failed_trials=5"
+      - "hydra.sweeper.stale_trial_timeout_sec=43200"
+      - "hydra.sweeper.stale_trial_check_interval_sec=300"
+      - "hydra.sweeper.fail_stale_running_trials=true"
+      - "++model.save_predictions=false"
+      - "++model.save_model=false"
+    final: []

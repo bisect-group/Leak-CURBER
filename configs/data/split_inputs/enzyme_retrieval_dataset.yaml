@@ -1,0 +1,10 @@
+# Keys that split configs and scripts/generate_splits.py read from `enzyme_retrieval_dataset`.
+enzyme_retrieval_dataset_path: ${paths.enzyme_retrieval_dataset_path}
+enzyme_retrieval_dataset_with_protein_information_path: ${.enzyme_retrieval_dataset_path}/with_protein_information
+
+# Build the protein-aware variant with sequence and pdbs columns.
+include_protein_information: false
+
+enzyme_retrieval_dataset_parquet_file_path: ${.enzyme_retrieval_dataset_path}/enzyme_retrieval_dataset.parquet
+enzyme_retrieval_dataset_with_protein_information_1d_parquet_file_path: ${.enzyme_retrieval_dataset_with_protein_information_path}/enzyme_retrieval_dataset_1d.parquet
+enzyme_retrieval_dataset_with_protein_information_3d_parquet_file_path: ${.enzyme_retrieval_dataset_with_protein_information_path}/enzyme_retrieval_dataset_3d.parquet

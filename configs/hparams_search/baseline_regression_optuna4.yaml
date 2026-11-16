@@ -1,0 +1,40 @@
+# @package _global_
+
+defaults:
+  - override /hydra/sweeper: optuna4
+  - override /scheduler: cosine_warm_restarts
+
+optimized_metric: "val/r2"
+
+hydra:
+  mode: "MULTIRUN"
+  sweeper:
+    study_name: baseline_regression_${data.endpoint}_${data.split}
+    # Not ${paths.output_dir}: it is ${hydra:runtime.output_dir}, which a standalone -m run lacks.
+    storage: sqlite:///${paths.log_dir}/${task_name}/optuna/${hydra.sweeper.study_name}.db
+    direction: maximize
+    n_trials: 50
+    n_jobs: 1
+    sampler:
+      _target_: optuna.samplers.TPESampler
+      seed: ${seed}
+      n_startup_trials: 10
+      multivariate: true
+      constant_liar: true
+    max_consecutive_failed_trials: 5
+    params:
+      optimizer.lr: choice(1e-5,3e-5,1e-4,3e-4,1e-3,3e-3)
+      optimizer.weight_decay: choice(0.0,1e-6,1e-5,1e-4,1e-3,1e-2)
+      data.batch_size: choice(2048,4096,8192)
+      model.hidden_dims: choice([512,256],[1024,512,256],[2048,1024,512])
+      model.dropout: choice(0.0,0.05,0.1,0.2)
+      model.activation: choice(relu,gelu,silu)
+      scheduler.T_0: choice(10,20,40)
+      scheduler.T_mult: choice(1,2)
+      scheduler.eta_min: choice(1e-7,3e-7,1e-6,3e-6,1e-5)
+
+trainer:
+  max_epochs: 200
+
+model:
+  scheduler: ${scheduler}

@@ -1,0 +1,9 @@
+defaults:
+  - model_summary
+  - rich_progress_bar
+  - warmup_loader
+  - orchestrator_progress
+  - _self_
+
+model_summary:
+  max_depth: -1

@@ -1,0 +1,17 @@
+# Install after environment.yaml with: pip install --no-deps -r requirements-nodeps.txt
+# DGL 2.4.0 declares torch<=2.4 but runs with the pinned torch 2.12. dgllife also needs hyperopt, which LocalMapper does not use.
+# The git packages declare dependency ranges that conflict with the pins (esm wants torch<2.12; unimol_tools wants numpy<2.3).
+# Their runtime dependencies are pinned in environment.yaml, so they install without dependencies here.
+--find-links https://data.dgl.ai/wheels/torch-2.4/cu124/repo.html
+dgl==2.4.0+cu124
+dgllife==0.3.2
+localmapper @ git+https://github.com/bisect-group/LocalMapper@df8bf1947d4eda43894935348f9d56f0e5739ee5
+esm @ git+https://github.com/Biohub/esm.git@43b4548b86762edfa747b07d5f440aad3c33acee
+chemeq @ git+https://github.com/bisect-group/chemeq.git@ae3bbe1a920fcba50cceb2dd952ca6d54baa87e4
+unimol_tools @ git+https://github.com/bisect-group/unimol_tools.git@88e1920abaf361a059d13bfe3628c2d5116d9af6
+rxnfp @ git+https://github.com/bisect-group/rxnfp.git@e008ce3460d11b016e87430995ff32da3e4d36cc
+smi-ted @ git+https://github.com/bisect-group/materials-smi-ted-fork.git@917d8c1b1ac28351e98fdd6cdd18030d4cdda1b2
+pytorch-fast-transformers @ git+https://github.com/bisect-group/fast-transformers.git@244d80605be825b23fc96289bdefd59c9f8c91c8
+# MolR embeddings need this pysmiles fork and MolR.
+pysmiles @ git+https://github.com/bisect-group/pysmiles.git@eea506845faa28632d53eda4e1720e301ba7d7c9
+MolR @ git+https://github.com/bisect-group/MolR.git@c6d157b34f141b32558dbe075ef2570627238028

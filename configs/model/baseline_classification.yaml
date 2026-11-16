@@ -1,0 +1,29 @@
+_target_: src.models.baseline_classification_module.BaselineClassificationLightningModule
+
+input_dim: null
+num_classes: null
+class_labels: null
+architecture: mlp
+hidden_dims:
+  - 1024
+  - 512
+  - 256
+dropout: 0.1
+activation: relu
+input_cast_dtype: null
+metrics:
+  - accuracy
+  - balanced_accuracy
+  - macro_f1
+  - weighted_f1
+  - top_5_accuracy
+  - exact_match
+  - ec_l1_exact_match
+  - ec_l2_exact_match
+  - ec_l3_exact_match
+  - ec_l4_exact_match
+
+optimizer: ${optimizer}
+# Use the composed scheduler node; train.yaml provides it (cosine_warm_restarts).
+scheduler: ${scheduler}
+compile: false

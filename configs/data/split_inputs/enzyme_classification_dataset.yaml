@@ -1,0 +1,4 @@
+# Keys that split configs read from `enzyme_classification_dataset`.
+enzyme_classification_dataset_path: ${paths.enzyme_classification_dataset_path}
+enzyme_classification_dataset_1d_parquet_file_path: ${.enzyme_classification_dataset_path}/enzyme_classification_dataset_1d.parquet
+enzyme_classification_dataset_3d_parquet_file_path: ${.enzyme_classification_dataset_path}/enzyme_classification_dataset_3d.parquet

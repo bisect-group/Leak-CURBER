@@ -1,0 +1,34 @@
+# @package _global_
+
+defaults:
+  - override /data: baseline_regression
+  - override /model: baseline_regression
+  # `logger: []` cannot merge into the logger group (DictConfig vs ListConfig).
+  - override /logger: null
+
+tags: ["baseline_regression", "xgboost"]
+
+data:
+  endpoint: ki
+  split: random_splits_grouped_smiles
+  modalities:
+    - smited
+    - esmc
+
+model:
+  _target_: src.models.baseline_regression_module.BaselineRegressionEstimatorModule
+  backend: xgboost
+  estimator:
+    _target_: xgboost.XGBRegressor
+    n_estimators: 500
+    max_depth: 6
+    learning_rate: 0.05
+    subsample: 0.9
+    colsample_bytree: 0.9
+    objective: reg:squarederror
+    tree_method: hist
+    device: cuda
+    random_state: ${seed}
+  save_model: true
+  save_predictions: true
+  predict_batch_rows: 32768
