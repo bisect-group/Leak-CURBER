@@ -55,14 +55,14 @@
       <span class="lc-btn is-disabled" aria-disabled="true"><i class="fa-solid fa-file-lines"></i> Paper <small>(soon)</small></span>
       <a class="lc-btn" href="https://github.com/bisect-group/Leak-CURBER"><i class="fa-brands fa-github"></i> Code</a>
       <span class="lc-btn is-disabled" aria-disabled="true"><i class="fa-solid fa-database"></i> Data <small>(coming soon)</small></span>
-      <a class="lc-btn" href="https://huggingface.co/spaces/starkAhmed43/leak-curber-leaderboard"><i class="fa-solid fa-trophy"></i> Leaderboard</a>
+      <a class="lc-btn" href="https://huggingface.co/collections/bisectgroup/leak-curber"><i class="fa-solid fa-trophy"></i> Leaderboard</a>
     </div>
     <p class="lc-tagline">Random splits let models reuse similar proteins, molecules and reactions. Leak-CURBER removes that overlap and measures what is left.</p>
   </div>
 </header>
 
 <main>
-<section class="lc-section lc-hero">
+<section class="lc-section lc-hero" id="hero">
   <div class="lc-wrap">
     <img src="static/img/overview.webp" alt="Overview of Leak-CURBER: unified data, four task families, leakage-controlled splits and multimodal inputs" width="1800" height="1149">
     <p class="lc-caption"><strong>Overview of Leak-CURBER.</strong> <strong>(A)</strong> It joins enzymatic reactions, enzymes, molecules, kinetic parameters and binding records in one schema. <strong>(B)</strong> It supports four task families (ten subtasks): reaction outcome, enzyme function, kinetic parameters and protein–ligand binding affinity. <strong>(C)</strong> It provides grouped-random, temporal and similarity-based splits. <strong>(D)</strong> Ready-to-use multimodal inputs support sequence, structure and reaction-aware learning.</p>
@@ -99,6 +99,43 @@
   </div>
 </section>
 
+<section class="lc-section" id="primer">
+  <div class="lc-wrap">
+    <h2>New here? Start here</h2>
+    <div class="lc-primer-grid">
+      <article class="lc-primer-card">
+        <h3>Enzymes</h3>
+        <p>Amylase, an <button type="button" class="lc-term" data-term="enzyme">enzyme</button> in your saliva, cuts starch, its <span class="lc-nw"><button type="button" class="lc-term" data-term="substrate">substrate</button>,</span> into sugar. Without enzymes, reactions in our bodies are far too slow. People also use enzymes in medicine, food and detergents.</p>
+        <figure class="lc-primer-fig"><img class="lc-art" src="static/img/amylase.webp" alt="Three steps of an amylase enzyme. It binds a long starch chain, cuts the chain, and releases short sugar pieces." width="1000" height="451" loading="lazy"></figure>
+      </article>
+      <article class="lc-primer-card">
+        <h3>Why use machine learning</h3>
+        <p>A lab measures one enzyme and one molecule at a time, so few get measured. Models learn from those results and predict the rest. They predict what an enzyme makes, how fast it works and which molecules bind to it.</p>
+        <figure class="lc-primer-fig"><svg class="lc-svg" viewBox="0 0 290 270" role="img" aria-labelledby="why-t why-d"><title id="why-t">Why we need machine learning</title><desc id="why-d">A grid of known enzymes. Only three are measured in the lab. An arrow leads to an ML model. The model predicts what an enzyme makes, how fast it works and which molecules bind.</desc><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="s-head"/></marker></defs><rect class="s-cell" x="5.0" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="22.2" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="39.4" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="56.6" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="73.8" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="91.0" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="108.2" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="125.4" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="142.6" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="159.8" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="177.0" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="194.2" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="211.4" y="56.0" width="12" height="12" rx="2"/><rect class="s-meas" x="228.6" y="56.0" width="12" height="12" rx="2"/><path class="s-chk" d="M231.0 62.5l3 3.2l5-6.2"/><rect class="s-cell" x="245.8" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="263.0" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="5.0" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="22.2" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="39.4" y="73.2" width="12" height="12" rx="2"/><rect class="s-meas" x="56.6" y="73.2" width="12" height="12" rx="2"/><path class="s-chk" d="M59.0 79.7l3 3.2l5-6.2"/><rect class="s-cell" x="73.8" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="91.0" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="108.2" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="125.4" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="142.6" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="159.8" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="177.0" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="194.2" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="211.4" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="228.6" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="245.8" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="263.0" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="5.0" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="22.2" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="39.4" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="56.6" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="73.8" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="91.0" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="108.2" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="125.4" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="142.6" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="159.8" y="90.4" width="12" height="12" rx="2"/><rect class="s-meas" x="177.0" y="90.4" width="12" height="12" rx="2"/><path class="s-chk" d="M179.4 96.9l3 3.2l5-6.2"/><rect class="s-cell" x="194.2" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="211.4" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="228.6" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="245.8" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="263.0" y="90.4" width="12" height="12" rx="2"/><text class="s-b" x="5" y="18">Known enzymes</text><rect class="s-cell" x="5" y="30" width="12" height="12" rx="2"/><text x="23" y="40">Not measured</text><rect class="s-meas" x="137" y="30" width="12" height="12" rx="2"/><path class="s-chk" d="M139.4 36.5l3 3.2l5-6.2"/><text x="155" y="40">Measured in lab</text><path class="s-arr" d="M140 112V142" marker-end="url(#ah)"/><rect class="s-ml" x="92" y="146" width="96" height="28" rx="8"/><text class="s-b s-dark" x="140" y="165" text-anchor="middle">ML model</text><path class="s-arr" d="M140 176V188H48V202" marker-end="url(#ah)"/><rect class="s-out" x="6" y="204" width="84" height="60" rx="8"/><text class="s-b s-dark" text-anchor="middle"><tspan x="48" y="226">What it</tspan><tspan x="48" y="242">makes</tspan></text><path class="s-arr" d="M140 176V188H140V202" marker-end="url(#ah)"/><rect class="s-out" x="98" y="204" width="84" height="60" rx="8"/><text class="s-b s-dark" text-anchor="middle"><tspan x="140" y="226">How fast</tspan><tspan x="140" y="242">it works</tspan></text><path class="s-arr" d="M140 176V188H232V202" marker-end="url(#ah)"/><rect class="s-out" x="190" y="204" width="84" height="60" rx="8"/><text class="s-b s-dark" text-anchor="middle"><tspan x="232" y="218">Which</tspan><tspan x="232" y="234">molecules</tspan><tspan x="232" y="250">bind</tspan></text></svg></figure>
+      </article>
+      <article class="lc-primer-card">
+        <h3>Scattered data</h3>
+        <p>One reaction appears in six databases under six different names. Every lab builds its own dataset from these sources, so results cannot be compared.</p>
+        <figure class="lc-primer-fig" role="group" aria-label="One reaction and its identifier in six databases"><ul class="lc-dbs"><li><span class="lc-db">UniProt</span><code>P00330</code></li><li><span class="lc-db">Rhea</span><code>RHEA:10736</code></li><li><span class="lc-db">BRENDA</span><code>EC 1.1.1.1</code></li><li><span class="lc-db">KEGG</span><code>C00469</code></li><li><span class="lc-db">SABIO-RK</span><code>ethanol</code></li><li><span class="lc-db">BindingDB</span><code>CCO</code></li></ul></figure>
+      </article>
+      <article class="lc-primer-card">
+        <h3>Leakage</h3>
+        <p><button type="button" class="lc-term" data-term="leakage">Data leakage</button> happens when close matches, such as related proteins or similar molecules, land in both train and test. In a random <span class="lc-nw"><button type="button" class="lc-term" data-term="split">split</button>,</span> the model remembers the answer, so the score looks too high. In a similarity split, the test holds no close matches, so the score is fair.</p>
+        <figure class="lc-primer-fig"><svg class="lc-svg" viewBox="0 0 316 384" role="img" aria-labelledby="lk-t lk-d"><title id="lk-t">Random split compared with similarity split</title><desc id="lk-d">In a random split, shapes in the test set have close matches in the training set. These close matches leak, so the score looks too high. In a similarity split, the test set holds only new shapes, so the score is fair.</desc><circle class="s-A" cx="10.2" cy="54.4" r="7.2"/><rect class="s-B" x="21.7" y="47.9" width="13.0" height="13.0"/><path class="s-C" d="M46.2 46.1L37.9 60.5L54.5 60.5z"/><path class="s-D" d="M64.2 45.4L73.2 54.4L64.2 63.4L55.2 54.4z"/><text x="89.39999999999999" y="58.9">Same shape = close matches</text><text class="s-b" x="3" y="98.5">Random split</text><text class="s-b" x="3" y="118.3">Train</text><text class="s-b" x="165.0" y="118.3">Test</text><rect class="s-panel" x="3" y="130.0" width="147.6" height="43.199999999999996" rx="8"/><rect class="s-panel" x="165.0" y="130.0" width="147.6" height="43.199999999999996" rx="8"/><circle class="s-A" cx="26.4" cy="142.6" r="7.2"/><rect class="s-B" x="45.1" y="136.1" width="13.0" height="13.0"/><path class="s-C" d="M76.8 134.3L68.5 148.7L85.1 148.7z"/><path class="s-D" d="M102.0 133.6L111.0 142.6L102.0 151.6L93.0 142.6z"/><rect class="s-B" x="120.7" y="136.1" width="13.0" height="13.0"/><path class="s-D" d="M26.4 153.4L35.4 162.4L26.4 171.4L17.4 162.4z"/><circle class="s-A" cx="51.6" cy="162.4" r="7.2"/><path class="s-C" d="M102.0 154.1L93.7 168.5L110.3 168.5z"/><path class="s-C" d="M127.2 154.1L118.9 168.5L135.5 168.5z"/><rect class="s-B" x="70.3" y="155.9" width="13.0" height="13.0"/><circle class="s-A" cx="199.2" cy="142.6" r="7.2"/><rect class="s-B" x="217.9" y="136.1" width="13.0" height="13.0"/><path class="s-D" d="M199.2 153.4L208.2 162.4L199.2 171.4L190.2 162.4z"/><path class="s-C" d="M224.4 154.1L216.1 168.5L232.7 168.5z"/><circle class="s-ring" cx="199.2" cy="142.6" r="9.7"/><circle class="s-ring" cx="224.4" cy="142.6" r="9.7"/><circle class="s-ring" cx="199.2" cy="162.4" r="9.7"/><circle class="s-ring" cx="224.4" cy="162.4" r="9.7"/><circle class="s-ring" cx="118.2" cy="182.20000000000002" r="4.5"/><text x="129.2" y="186.70000000000002">close matches leak into test</text><text class="s-b" x="312.59999999999997" y="204.70000000000002" text-anchor="end">→ score looks too high</text><text class="s-b" x="3" y="242.5">Similarity split</text><text class="s-b" x="3" y="262.29999999999995">Train</text><text class="s-b" x="165.0" y="262.29999999999995">Test</text><rect class="s-panel" x="3" y="274.0" width="147.6" height="43.199999999999996" rx="8"/><rect class="s-panel" x="165.0" y="274.0" width="147.6" height="43.199999999999996" rx="8"/><circle class="s-A" cx="26.4" cy="286.6" r="7.2"/><circle class="s-A" cx="51.6" cy="286.6" r="7.2"/><circle class="s-A" cx="76.8" cy="286.6" r="7.2"/><rect class="s-B" x="95.5" y="280.1" width="13.0" height="13.0"/><rect class="s-B" x="120.7" y="280.1" width="13.0" height="13.0"/><circle class="s-A" cx="26.4" cy="306.4" r="7.2"/><rect class="s-B" x="45.1" y="299.9" width="13.0" height="13.0"/><rect class="s-B" x="70.3" y="299.9" width="13.0" height="13.0"/><rect class="s-B" x="95.5" y="299.9" width="13.0" height="13.0"/><rect class="s-B" x="120.7" y="299.9" width="13.0" height="13.0"/><path class="s-C" d="M199.2 278.3L190.9 292.7L207.5 292.7z"/><path class="s-C" d="M224.4 278.3L216.1 292.7L232.7 292.7z"/><path class="s-D" d="M199.2 297.4L208.2 306.4L199.2 315.4L190.2 306.4z"/><path class="s-D" d="M224.4 297.4L233.4 306.4L224.4 315.4L215.4 306.4z"/><text x="129.2" y="330.7">no close matches in test</text><text class="s-b" x="312.59999999999997" y="348.7" text-anchor="end">→ score is fair</text></svg></figure>
+        <p class="lc-primer-link"><a href="#splits-demo">See it animated <span aria-hidden="true">↑</span></a></p>
+      </article>
+    </div>
+    <p class="lc-primer-lead">Leak-CURBER fixes both: it joins <span data-fact="stats.scale.databases"></span> public databases into one dataset and builds splits that keep close matches out of the test.</p>
+    <div class="lc-talk">
+      <h3>Talk and slides</h3>
+      <div class="lc-buttons">
+        <a class="lc-btn" href="static/slides/leak-curber-slides.pdf"><i class="fa-solid fa-file-pdf"></i> Slides (PDF)</a>
+        <a class="lc-btn" id="lc-video" href="#" hidden><i class="fa-solid fa-circle-play"></i> Watch the talk</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="lc-section" id="abstract">
   <div class="lc-wrap narrow">
     <h2>Abstract</h2>
@@ -124,6 +161,7 @@
   <div class="lc-wrap">
     <h2>Multimodal inputs</h2>
     <div class="lc-figure" data-figure="modalities"></div>
+    <p>Models need numbers as input. An <button type="button" class="lc-term" data-term="embedding">embedding</button> turns a protein or molecule into numbers. We compute these once, so users can skip that costly step.</p>
   </div>
 </section>
 
@@ -133,10 +171,10 @@
     <div class="lc-figure" data-figure="tasks"></div>
     <p>Leak-CURBER has four task families and ten subtasks.</p>
     <ul class="lc-list">
-      <li><strong>Reaction outcome (2).</strong> Forward reaction prediction and single-step retrosynthesis. Metric: top-<i>k</i> exact match.</li>
-      <li><strong>Enzyme function (2).</strong> Enzyme classification and reaction-to-enzyme retrieval. Both use EC levels 4, 3, 2 and 1.</li>
-      <li><strong>Kinetic parameters (3).</strong> Turnover rate <i>k</i><sub>cat</sub>, Michaelis constant <i>K</i><sub>M</sub> and inhibition strength <i>K</i><sub>i</sub>.</li>
-      <li><strong>Protein–ligand binding (3).</strong> Binding affinity <i>K</i><sub>d</sub>, IC<sub>50</sub> and EC<sub>50</sub>.</li>
+      <li><strong>Reaction outcome (2).</strong> Forward reaction prediction and single-step retrosynthesis. Metric: <button type="button" class="lc-term" data-term="topk">top-<i>k</i></button> exact match.</li>
+      <li><strong>Enzyme function (2).</strong> Enzyme classification and reaction-to-enzyme <span class="lc-nw"><button type="button" class="lc-term" data-term="retrieval">retrieval</button>.</span> Both use <button type="button" class="lc-term" data-term="ec">EC number</button> levels 4, 3, 2 and 1.</li>
+      <li><strong>Kinetic parameters (3).</strong> Turnover rate <button type="button" class="lc-term" data-term="kcat"><i>k</i><sub>cat</sub></button>, Michaelis constant <button type="button" class="lc-term" data-term="km"><i>K</i><sub>M</sub></button> and inhibition strength <button type="button" class="lc-term" data-term="ki"><i>K</i><sub>i</sub></button>.</li>
+      <li><strong>Protein–ligand binding (3).</strong> Binding affinity <button type="button" class="lc-term" data-term="kd"><i>K</i><sub>d</sub></button>, <button type="button" class="lc-term" data-term="ic50">IC<sub>50</sub></button> and <button type="button" class="lc-term" data-term="ec50">EC<sub>50</sub></button>.</li>
     </ul>
     <p>Regression subtasks use standardized units and log-transformed labels. Enzyme function subtasks use hierarchical EC evaluation.</p>
   </div>
@@ -163,6 +201,8 @@
 <section class="lc-section" id="results">
   <div class="lc-wrap">
     <h2>Results</h2>
+    <p>Pick a task to see how the <button type="button" class="lc-term" data-term="baseline">baselines</button> score on each split. Regression tasks report <span class="lc-nw"><button type="button" class="lc-term" data-term="r2">R²</button>.</span></p>
+    <p class="lc-takeaway" id="lc-takeaway"><strong>Takeaway.</strong> <span></span></p>
     <div id="results-explorer"></div>
   </div>
 </section>
@@ -170,13 +210,15 @@
 <section class="lc-section" id="leaderboard">
   <div class="lc-wrap narrow">
     <h2>Leaderboard</h2>
-    <p>The public leaderboard reports every applicable evaluation axis. It does not rank models by grouped-random performance alone. MetaCyc records form the private test set.</p>
-    <p>For a subtask <i>t</i> with applicable axes <span>\(A_t\)</span>, let <span class="math-inline">\(N_{\mathrm{test}}(t,a)\)</span> be the test size of axis <span class="math-inline">\(a \in A_t\)</span>. The axis weight is</p>
-    <p>\[ w_{ta} = \frac{N_{\mathrm{test}}(t,a)}{\sum_{b \in A_t} N_{\mathrm{test}}(t,b)}. \]</p>
-    <p>For a metric <i>m</i>, let <span>\(M_{tam}\)</span> be the model's performance on subtask <i>t</i>, axis <i>a</i> and metric <i>m</i>. The aggregate score is</p>
-    <p>\[ S_{tm} = \sum_{a \in A_t} w_{ta}\, M_{tam}. \]</p>
-    <p>Scores stay separate by metric and keep each metric's usual ranking direction. A submission must report every axis in <span>\(A_t\)</span> to receive <span class="math-inline">\(S_{tm}\)</span>. All per-axis results stay visible.</p>
-    <div class="lc-buttons"><a class="lc-btn" href="https://huggingface.co/spaces/starkAhmed43/leak-curber-leaderboard"><i class="fa-solid fa-trophy"></i> Open the leaderboard</a></div>
+    <p>The leaderboard has one board per subtask. Each board scores the hardest leakage-controlled split of that subtask. We call it the leaderboard split. It is the split, other than grouped-random, with the lowest mean score over the baselines in the paper. MetaCyc records are a licensed private test set.</p>
+    <p>Each subtask has two metrics. Regression uses SCC and MSE on log<sub>10</sub> targets. Enzyme classification and retrieval use EC level accuracy at Level 4 and Level 1 (<i>k</i> = 1). Forward prediction and retrosynthesis use Top-1 and Top-10 exact match.</p>
+    <p>A reference predictor <i>B</i> sets the zero point. For SCC, <i>B</i> is 0. For MSE, <i>B</i> is the training-mean predictor. For EC level accuracy, <i>B</i> always predicts the most frequent training EC. For Top-<i>k</i>, <i>B</i> is 0. The perfect value <span class="math-inline">\(P_m\)</span> is 1, or 0 for MSE.</p>
+    <p>Let <span class="math-inline">\(\mathcal{M}_t\)</span> be the two metrics of subtask <i>t</i>, and let <i>m</i> be one of them. The score is</p>
+    <p>\[ s_{tm} = \max\!\left(\frac{M_{tm} - B_{tm}}{P_m - B_{tm}},\, -1\right) \]</p>
+    <p>\[ S_t = \frac{1}{|\mathcal{M}_t|} \sum_{m \in \mathcal{M}_t} s_{tm} \]</p>
+    <p>Here <span class="math-inline">\(M_{tm}\)</span> is the model result and <span class="math-inline">\(B_{tm}\)</span> is the reference result. A score of 0 equals the reference. A score of 1 is perfect. A negative score is worse than the reference.</p>
+    <table class="lc-ex-table"><thead><tr><th scope="col">Subtask</th><th scope="col">Leaderboard split</th></tr></thead><tbody><tr><td><i>k</i><sub>cat</sub></td><td>P-seq</td></tr><tr><td><i>K</i><sub>M</sub></td><td>P-struct</td></tr><tr><td><i>K</i><sub>i</sub></td><td>P-struct</td></tr><tr><td><i>K</i><sub>d</sub></td><td>P-seq</td></tr><tr><td>EC<sub>50</sub></td><td>P-seq</td></tr><tr><td>IC<sub>50</sub></td><td>Time</td></tr><tr><td>Enzyme classification</td><td>P-seq</td></tr><tr><td>Enzyme retrieval</td><td>DRFP</td></tr><tr><td>Forward reaction prediction</td><td>DRFP</td></tr><tr><td>Retrosynthesis</td><td>DRFP</td></tr></tbody></table>
+    <div class="lc-buttons"><a class="lc-btn" href="https://huggingface.co/collections/bisectgroup/leak-curber"><i class="fa-solid fa-trophy"></i> Open the leaderboard</a></div>
   </div>
 </section>
 
@@ -201,7 +243,7 @@
   <div class="lc-wrap">
     <p>Contact: <a href="mailto:da24s023@smail.iitm.ac.in">da24s023@smail.iitm.ac.in</a>, <a href="mailto:roshan@smail.iitm.ac.in">roshan@smail.iitm.ac.in</a>, <a href="mailto:niravbhatt@iitm.ac.in">niravbhatt@iitm.ac.in</a></p>
     <p><a href="https://bisect-group.github.io">BiSECt Lab</a></p>
-    <p>We thank WSAI (IIT Madras), RBCDSAI and IBSE. Roshan Balaji is supported by the Prime Minister's Research Fellowship (PMRF).</p>
+    <p>We thank WSAI (IIT Madras), RBCDSAI and IBSE. Adhil Ahmed is supported by WSAI, and Roshan Balaji is supported by the Prime Minister's Research Fellowship (PMRF).</p>
     <p>Figures created with BioRender.com</p>
     <p>Page based on the <a href="https://github.com/nerfies/nerfies.github.io">Nerfies template</a> (CC BY-SA 4.0)</p>
   </div>
@@ -214,7 +256,12 @@
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha384-bs/nf9FbdNouRbMiFcrcZfLXYPKiPaGVGplVbv7dLGECccEXDW+S3zjqSKR5ZEaD" crossorigin="anonymous"></script>
 <script defer src="static/js/explorer.js"></script>
 <script defer src="static/js/splits-demo.js"></script>
+<script defer src="static/js/glossary.js"></script>
 <script>
+  document.addEventListener("lc:facts", (e) => {
+    const link = document.getElementById("lc-video");
+    if (e.detail.video_url) { link.href = e.detail.video_url; link.hidden = false; }
+  });
   document.addEventListener("DOMContentLoaded", () => renderMathInElement(document.getElementById("leaderboard"), {
     delimiters: [{left: "\\[", right: "\\]", display: true}, {left: "\\(", right: "\\)", display: false}]
   }));

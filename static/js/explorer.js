@@ -33,7 +33,19 @@
     forward_synthesis: ['Root-aligned SMILES', 'MEGAN', 'Chemformer'],
     retrosynthesis: ['Root-aligned SMILES', 'MEGAN', 'Chemformer'],
   };
-  const SEEDS = { forward_synthesis: 'two seeds', retrosynthesis: 'two seeds (DRFP retrosynthesis: one seed)' };
+  // Plain takeaway per subtask, checked against data/results/<task>.csv (shown baselines only).
+  const TAKEAWAY = {
+    kcat: 'Scores drop, most on new proteins. Newer records also hurt KcatNet and EITLEM. KcatNet is best on most splits, but it drops too.',
+    km: 'The best model depends on the split.',
+    ki: 'The best model depends on the split.',
+    kd: 'On new proteins, both models score about zero or below. New molecules are easier for BIND.',
+    ic50: 'New molecules score higher than new proteins. On new proteins, BIND falls below zero.',
+    ec50: 'New molecules score higher than new proteins. On the P-seq split, both models score near zero or below.',
+    ec_classification: 'The exact function (level 4) drops on new proteins and newer records. Broad classes (level 1) drop less, though HIT-EC still falls to 48% on P-seq.',
+    retrieval: 'At the exact function (level 4), Time is the hardest split for CLIPZyme and Horizyn. CREEP stays near zero on every split.',
+    forward_synthesis: 'On new reactions (DRFP split), forward prediction keeps more of its score than retrosynthesis does.',
+    retrosynthesis: 'On new reactions (DRFP split), retrosynthesis loses a larger share of its score than forward prediction.',
+  };
   const REFERENCES = ['XGBoost', 'MLP', 'BLASTP', 'Foldseek'];
   const MODEL_LABEL = { EITLEM: 'EITLEM-Kinetics', HitEC: 'HIT-EC' };
 
@@ -48,6 +60,7 @@
   const PALETTE = ['#0072B2', '#E69F00', '#009E73', '#CC79A7', '#56B4E9', '#D55E00', '#F0E442'];
   const REF_COLORS = { XGBoost: '#999999', MLP: '#4d4d4d', BLASTP: '#a6761d', Foldseek: '#8c8c8c' };
 
+  const takeaway = document.getElementById('lc-takeaway');
   const state = { task: 'kcat', metric: 'R2', view: 'bars', paper: true, refs: false };
   const cache = {};
   let chart = null;
@@ -306,8 +319,9 @@
     }
     metricSelect.replaceChildren(...metrics.map((m) => el('option', { value: m }, METRIC_LABEL[m] || m)));
     metricSelect.value = state.metric;
+    takeaway.querySelector('span').textContent = TAKEAWAY[state.task];
     viewButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === state.view)));
-    note.textContent = `${LOWER_IS_BETTER.has(state.metric) ? 'Lower' : 'Higher'} is better. Values are means over ${SEEDS[state.task] || 'three seeds'}; error bars show the standard deviation. `
+    note.textContent = `${LOWER_IS_BETTER.has(state.metric) ? 'Lower' : 'Higher'} is better. Values are means over three seeds; error bars show the standard deviation. `
       + (state.paper ? 'Hatched bars and italic values are numbers reported in the original papers.' : '');
     chart?.destroy();
     chart = null;

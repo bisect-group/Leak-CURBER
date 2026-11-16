@@ -1,11 +1,12 @@
 {
+  "video_url": "",
   "stats": {
     "scale": {
-      "reactions": 60961,
+      "reactions": 68180,
       "enzymes": 213785,
       "metabolites": 1125707,
       "properties": 1915255,
-      "pairs": 657349,
+      "pairs": 623190,
       "databases": 10,
       "subtasks": 10,
       "baselines": 17
