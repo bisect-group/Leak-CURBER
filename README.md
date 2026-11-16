@@ -1,6 +1,6 @@
 # Leak-CURBER
 
-Leak-CURBER is a leakage-controlled benchmark for machine learning models of enzymatic reactions. It is a NeurIPS 2026 Evaluations & Datasets paper: *Leak-CURBER: A Leakage-Controlled Multimodal Evaluation Benchmark for Enzymatic Reaction Tasks*.
+Leak-CURBER is a leakage-controlled benchmark for machine learning models of enzymatic reactions. It is a NeurIPS 2026 Evaluations & Datasets paper: [*Leak-CURBER: A Leakage-Controlled Multimodal Evaluation Benchmark for Enzymatic Reaction Tasks*](https://neurips.cc/virtual/2026/loc/sydney/poster/139384).
 
 The benchmark merges data from 10 biochemical databases. It covers 4 tasks and 10 subtasks:
 
