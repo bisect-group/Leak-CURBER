@@ -2,8 +2,8 @@
 # DGL 2.4.0 declares torch<=2.4 but runs with the pinned torch 2.12. dgllife also needs hyperopt, which LocalMapper does not use.
 # The git packages declare dependency ranges that conflict with the pins (esm wants torch<2.12; unimol_tools wants numpy<2.3).
 # Their runtime dependencies are pinned in environment.yaml, so they install without dependencies here.
---find-links https://data.dgl.ai/wheels/torch-2.4/cu124/repo.html
-dgl==2.4.0+cu124
+# data.dgl.ai is unreachable, so DGL comes from a mirror of the official wheel (Python 3.12, Linux x86_64).
+dgl @ https://github.com/bisect-group/Leak-CURBER/releases/download/dgl-2.4.0-cu124/dgl-2.4.0%2Bcu124-cp312-cp312-manylinux1_x86_64.whl#sha256=1e2d6fad4885e0b5645f051276e146009e4bd424546c69851d07c361b04dbb63
 dgllife==0.3.2
 localmapper @ git+https://github.com/bisect-group/LocalMapper@df8bf1947d4eda43894935348f9d56f0e5739ee5
 esm @ git+https://github.com/Biohub/esm.git@43b4548b86762edfa747b07d5f440aad3c33acee
