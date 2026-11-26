@@ -1,0 +1,145 @@
+{
+  "video_url": "",
+  "stats": {
+    "scale": {
+      "reactions": 68180,
+      "enzymes": 213785,
+      "metabolites": 1125707,
+      "properties": 1915255,
+      "pairs": 623190,
+      "databases": 10,
+      "subtasks": 10,
+      "baselines": 17
+    },
+    "regression": [
+      {
+        "label": "IC<sub>50</sub> · BIND",
+        "task": "ic50",
+        "metric": "R2",
+        "method": "BIND",
+        "from_split": "GR-SMILES",
+        "to_splits": [
+          "P-seq",
+          "Time"
+        ],
+        "source": "ic50.csv",
+        "from": "GR-SMILES 0.67 ± 0.00",
+        "to": [
+          "P-seq −0.10 ± 0.03",
+          "Time −0.05 ± 0.03"
+        ]
+      },
+      {
+        "label": "k<sub>cat</sub> · KcatNet",
+        "task": "kcat",
+        "metric": "R2",
+        "method": "KcatNet",
+        "from_split": "GR-seq",
+        "to_splits": [
+          "P-seq",
+          "Time"
+        ],
+        "paper_reported": true,
+        "source": "kcat.csv",
+        "from": "GR-seq 0.49 ± 0.02",
+        "to": [
+          "P-seq 0.13 ± 0.01",
+          "Time 0.19 ± 0.01"
+        ],
+        "note": "Original paper (other data): R² 0.70"
+      },
+      {
+        "label": "K<sub>d</sub> · Structure-Free DTA",
+        "task": "kd",
+        "metric": "R2",
+        "method": "Structure-Free DTA",
+        "from_split": "GR-SMILES",
+        "to_splits": [
+          "Mol-2D",
+          "P-seq"
+        ],
+        "source": "kd.csv",
+        "from": "GR-SMILES 0.66 ± 0.01",
+        "to": [
+          "Mol-2D 0.14 ± 0.04",
+          "P-seq 0.03 ± 0.03"
+        ]
+      },
+      {
+        "label": "K<sub>M</sub> · EITLEM-Kinetics",
+        "task": "km",
+        "metric": "R2",
+        "method": "EITLEM",
+        "from_split": "GR-SMILES",
+        "to_splits": [
+          "Mol-2D",
+          "Mol-3D"
+        ],
+        "paper_reported": true,
+        "source": "km.csv",
+        "from": "GR-SMILES 0.49 ± 0.03",
+        "to": [
+          "Mol-2D 0.24 ± 0.04",
+          "Mol-3D 0.18 ± 0.02"
+        ],
+        "note": "Original paper (other data): R² 0.69"
+      }
+    ],
+    "retrieval": [
+      {
+        "label": "Enzyme retrieval · Horizyn",
+        "task": "retrieval",
+        "metric": "L4",
+        "method": "Horizyn",
+        "from_split": "GR-rxnsmi",
+        "to_splits": [
+          "Time",
+          "DRFP"
+        ],
+        "source": "retrieval.csv",
+        "from": "GR-rxnsmi 43.5 ± 0.6",
+        "to": [
+          "Time 18.1 ± 0.3",
+          "DRFP 30.8 ± 0.5"
+        ]
+      },
+      {
+        "label": "Enzyme classification · CLEAN",
+        "task": "ec_classification",
+        "metric": "L4",
+        "method": "CLEAN",
+        "from_split": "GR-seq",
+        "to_splits": [
+          "P-struct",
+          "Time"
+        ],
+        "source": "ec_classification.csv",
+        "from": "GR-seq 78.4 ± 0.2",
+        "to": [
+          "P-struct 49.7 ± 0.3",
+          "Time 58.2 ± 0.6"
+        ]
+      },
+      {
+        "label": "Enzyme classification · GraphEC / HIT-EC",
+        "task": "ec_classification",
+        "metric": "L4",
+        "method": [
+          "GraphEC",
+          "HitEC"
+        ],
+        "from_split": "GR-seq",
+        "to_splits": [
+          "P-struct"
+        ],
+        "source": "ec_classification.csv",
+        "from": "GR-seq 88.8 ± 0.1 / 86.2 ± 0.4",
+        "to": [
+          "P-struct 56.0 ± 0.0 / 28.0 ± 1.9"
+        ]
+      }
+    ],
+    "regression_metric": "R² (mean ± SD)",
+    "retrieval_metric": "EC level 4 accuracy, % (mean ± SD)"
+  }
+}

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Leak-CURBER: A Leakage-Controlled Multimodal Evaluation Benchmark for Enzymatic Reaction Tasks</title>
+  <meta name="description" content="Leak-CURBER is a leakage-controlled benchmark for enzymatic reaction models. It covers four task families, ten subtasks and 17 baselines.">
+  <meta property="og:title" content="Leak-CURBER">
+  <meta property="og:description" content="A leakage-controlled multimodal evaluation benchmark for enzymatic reaction tasks. NeurIPS 2026, Evaluations and Datasets Track.">
+  <link rel="canonical" href="https://bisect-group.github.io/Leak-CURBER/">
+  <meta property="og:url" content="https://bisect-group.github.io/Leak-CURBER/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://bisect-group.github.io/Leak-CURBER/static/img/social.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://bisect-group.github.io/Leak-CURBER/static/img/social.jpg">
+  <link rel="icon" href="static/img/favicon.svg" type="image/svg+xml">
+  <script>
+    const t = localStorage.getItem("lc-theme");
+    if (t) document.documentElement.dataset.theme = t;
+    document.documentElement.classList.add("lc-panels");
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css" integrity="sha384-HmYpsz2Aa9Gh3JlkCoh8kUJ2mUKJKTnkyC2Lzt8aLzpPOpnDe8KpFE2xNiBpMDou" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  <link rel="stylesheet" href="static/css/site.css?v=results-families">
+  <link rel="stylesheet" href="static/css/figures.css?v=rank-highlights">
+</head>
+<body>
+<button class="lc-theme" id="theme-toggle" type="button" aria-label="Dark mode" aria-pressed="false"></button>
+
+<header class="lc-header">
+  <div class="lc-wrap">
+    <span class="lc-venue">NeurIPS 2026 · Evaluations &amp; Datasets Track</span>
+    <h1 class="lc-title">Leak-CURBER: A Leakage-Controlled Multimodal Evaluation Benchmark for Enzymatic Reaction Tasks</h1>
+    <div class="lc-authors">
+      <span>Adhil Ahmed<sup>1,2,4*</sup></span>
+      <span>Roshan Balaji<sup>1,2,3,4*,†</sup></span>
+      <span>Nirav Pravinbhai Bhatt<sup>1,2,3,4,†</sup></span>
+    </div>
+    <div class="lc-affils">
+      <span>*Equal contribution · †Corresponding authors</span>
+      <span><sup>1</sup>BioSystems Engineering and Control (BiSECt) Lab, <sup>2</sup>Robert Bosch Centre for Data Science and AI (RBCDSAI),</span>
+      <span><sup>3</sup>Centre for Integrative Biology and Systems mEdicine (IBSE), <sup>4</sup>Wadhwani School of Data Science and AI,</span>
+      <span>IIT Madras</span>
+    </div>
+    <div class="lc-logos">
+      <img src="static/img/iitm.webp" alt="IIT Madras" width="78" height="78">
+      <img src="static/img/wsai.webp" alt="Wadhwani School of Data Science and AI" width="67" height="78">
+      <img src="static/img/bisect.webp" alt="BiSECt Lab" width="91" height="78">
+      <img src="static/img/rbcdsai.webp" alt="RBCDSAI" width="58" height="78">
+      <img src="static/img/ibse.webp" alt="IBSE" width="78" height="78">
+    </div>
+    <div class="lc-buttons">
+      <a class="lc-btn" href="static/paper/leak-curber-neurips2026.pdf"><i class="fa-solid fa-file-lines"></i> Paper</a>
+      <a class="lc-btn" href="https://openreview.net/forum?id=Tn4JHggWJI"><i class="fa-solid fa-comments"></i> OpenReview</a>
+      <a class="lc-btn" href="static/slides/leak-curber-slides.pdf"><i class="fa-solid fa-file-lines"></i> Slides</a>
+      <a class="lc-btn" href="https://github.com/bisect-group/Leak-CURBER"><i class="fa-brands fa-github"></i> Code</a>
+      <a class="lc-btn" href="https://huggingface.co/collections/bisectgroup/leak-curber"><img src="static/img/huggingface.svg" width="20" height="19" alt=""> HuggingFace</a>
+      <a class="lc-btn" href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/CZW47K"><i class="fa-solid fa-database"></i> Data</a>
+    </div>
+  </div>
+</header>
+
+<nav class="lc-nav" aria-label="Sections">
+  <div class="lc-nav-brand"><strong>Leak-CURBER</strong><span>NeurIPS 2026 E&amp;D</span></div>
+  <ul>
+    <li><a href="#tldr"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M4 10h16M4 15h10"/></svg>TL;DR</a></li>
+    <li><a href="#problem"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 20h20L12 3ZM12 9v4m0 3v.5"/></svg>Problem</a></li>
+    <li><a href="#dataset"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6c0-4 18-4 18 0s-18 4-18 0Zm0 0v12c0 4 18 4 18 0V6M3 12c0 4 18 4 18 0"/></svg>Dataset</a></li>
+    <li><a href="#splits"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h4c5 0 4-7 9-7h3m-3-3 3 3-3 3M8 12c5 0 4 7 9 7h3m-3-3 3 3-3 3"/></svg>Splits</a></li>
+    <li><a href="#setup"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h5m4 0h9M3 17h11m4 0h3M8 4h4v6H8zM14 14h4v6h-4z"/></svg>Setup</a></li>
+    <li><a href="#results"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M7 17v-4m5 4V9m5 8V5"/></svg>Results</a></li>
+    <li><a href="#use"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg>Use it</a></li>
+  </ul>
+  <div class="lc-nav-logos">
+      <img src="static/img/iitm.webp" alt="IIT Madras" width="78" height="78">
+      <img src="static/img/wsai.webp" alt="Wadhwani School of Data Science and AI" width="67" height="78">
+      <img src="static/img/bisect.webp" alt="BiSECt Lab" width="91" height="78">
+      <img src="static/img/rbcdsai.webp" alt="RBCDSAI" width="58" height="78">
+      <img src="static/img/ibse.webp" alt="IBSE" width="78" height="78">
+    </div>
+</nav>
+
+<main>
+<div class="lc-viewport"><div class="lc-track">
+<section class="lc-section lc-panel" id="tldr">
+  <div class="lc-wrap narrow">
+    <h2>TL;DR</h2>
+    <p class="lc-tldr">KcatNet estimates how fast an enzyme turns substrate into product when substrate is plentiful. When its training data could include close relatives of the test proteins, it scored 0.49 (<button type="button" class="lc-term" data-term="r2">R²</button>).</p>
+    <p class="lc-tldr">When we tested it on proteins with sequences unlike those it had trained on, its score fell to 0.13. If you’re working with an unfamiliar protein, that second score tells you more about what to expect.</p>
+    <p class="lc-tldr">We integrated records from <span data-fact="stats.scale.databases"></span> databases into Leak-CURBER and retrained <span data-fact="stats.scale.baselines"></span> published models to see how their predictions held up on unfamiliar proteins, molecules and reactions.</p>
+    <div class="lc-cards lc-cards-8">
+      <div class="lc-card"><div class="lc-value" data-fact="stats.scale.reactions"></div><div class="lc-label">Reactions</div></div>
+      <div class="lc-card"><div class="lc-value" data-fact="stats.scale.enzymes"></div><div class="lc-label">Enzymes</div><div class="lc-sub">protein sequences</div></div>
+      <div class="lc-card"><div class="lc-value" data-fact="stats.scale.metabolites"></div><div class="lc-label">Metabolites</div></div>
+      <div class="lc-card"><div class="lc-value" data-fact="stats.scale.properties"></div><div class="lc-label">Measured values</div><div class="lc-sub">k<sub>cat</sub>, K<sub>M</sub>, K<sub>i</sub>, K<sub>d</sub>, EC<sub>50</sub> and IC<sub>50</sub> rows</div></div>
+      <div class="lc-card"><div class="lc-value" data-fact="stats.scale.pairs"></div><div class="lc-label">Enzyme–reaction pairs</div></div>
+      <div class="lc-card"><div class="lc-value" data-fact="stats.scale.databases"></div><div class="lc-label">Databases</div></div>
+      <div class="lc-card"><div class="lc-value" data-fact="stats.scale.subtasks"></div><div class="lc-label">Subtasks</div></div>
+      <div class="lc-card"><div class="lc-value" data-fact="stats.scale.baselines"></div><div class="lc-label"><button type="button" class="lc-term" data-term="baseline">Baselines</button></div></div>
+    </div>
+
+    <details class="lc-fold" id="abstract">
+      <summary><span class="lc-fold-title">Read the full abstract</span></summary>
+      <div class="lc-fold-body">
+        <p class="lc-abstract">We present <strong>Leak-CURBER</strong>, the largest multimodal, leakage-controlled benchmark for evaluating machine learning and deep learning models for enzymatic reactions. Leak-CURBER standardizes data from 10 biochemical databases and curates datasets with multimodal inputs, metrics, and leakage-controlled splits for 4 tasks. The benchmark comprises 10 subtasks: prediction of reaction outcomes (2), enzyme function (2), kinetic parameters (3), and protein–ligand binding (3). Leak-CURBER establishes new evaluation protocols that control for train/validation/test overlap across protein sequences and structures, molecule strings and structures, and reaction similarity, thereby exposing generalization failures of learning methods. Evaluating the state-of-the-art (SOTA) models on Leak-CURBER shows that their strong performance degrades sharply under these splits, often approaching random classification or retrieval performance, and near-zero regression performance. Leak-CURBER includes precomputed embeddings, continual benchmark releases, reproducible curation scripts, and a public leaderboard to support reliable comparison of enzymatic-reaction models. Leak-CURBER is publicly available at <a href="https://github.com/bisect-group/Leak-CURBER">https://github.com/bisect-group/Leak-CURBER</a>.</p>
+      </div>
+    </details>
+  </div>
+
+<section class="lc-section lc-hero" id="hero">
+  <div class="lc-wrap">
+    <a href="static/img/overview.webp?v=intro-2" aria-label="Open the overview figure in full size"><img src="static/img/overview.webp?v=intro-2" alt="Overview of Leak-CURBER: unified data, four task families, leakage-controlled splits and model inputs" width="1803" height="1150"></a>
+    <p class="lc-caption"><strong>Overview.</strong> Follow the data from the source databases through ten prediction tasks. Panels: (A) data, (B) tasks, (C) splits, (D) model inputs. <a class="lc-open" href="static/img/overview.webp?v=intro-2"><i class="fa-solid fa-up-right-and-down-left-from-center" aria-hidden="true"></i> Open full size</a></p>
+  </div>
+</section>
+</section>
+
+<section class="lc-section lc-panel" id="problem">
+  <div class="lc-wrap">
+    <h2>The problem</h2>
+    <details class="lc-fold" id="basics">
+      <summary><span class="lc-fold-title">New to enzymes?</span></summary>
+      <div class="lc-fold-body">
+        <div class="lc-primer-grid">
+          <article class="lc-primer-card">
+            <h3>Enzymes</h3>
+            <p>An enzymatic reaction begins in your mouth when you chew bread. Your saliva contains an enzyme called <button type="button" class="lc-term" data-term="amylase">amylase</button> that breaks down starch in the bread, releasing smaller sugars such as maltose. Starch is the <button type="button" class="lc-term" data-term="substrate">substrate</button> for this reaction. Other <button type="button" class="lc-term" data-term="enzyme">enzymes</button> help us make medicines, food, biofuels and detergents.</p>
+            <figure class="lc-primer-fig lc-amylase">
+              <svg class="lc-svg" viewBox="0 0 500 209" role="img" aria-labelledby="amyl-title amyl-desc" style="display:block;width:100%;max-width:100%;height:auto">
+                <title id="amyl-title">How amylase breaks down starch</title>
+                <desc id="amyl-desc">Starch binds to amylase. The enzyme cuts the starch chain and releases smaller sugars.</desc>
+                <g fill="var(--lc-text)" font-size="16" text-anchor="middle">
+                  <text class="s-b" x="85" y="20">Starch (substrate)</text><text class="s-b" x="420" y="20">Sugars (products)</text>
+                  <svg y="30" width="500" height="140" viewBox="0 66 1000 280" overflow="hidden"><image href="static/img/amylase.webp" width="1000" height="462"/></svg>
+                  <rect class="s-ml" x="48" y="112" width="74" height="24" rx="7"/><text class="s-b s-dark" x="85" y="130">Amylase</text><rect class="s-ml" x="213" y="112" width="74" height="24" rx="7"/><text class="s-b s-dark" x="250" y="130">Amylase</text><rect class="s-ml" x="383" y="112" width="74" height="24" rx="7"/><text class="s-b s-dark" x="420" y="130">Amylase</text>
+                  <rect class="s-out" x="17" y="177" width="136" height="28" rx="8"/><text class="s-b s-dark" font-size="14" x="85" y="196">1. Starch binds</text><rect class="s-out" x="171" y="177" width="158" height="28" rx="8"/><text class="s-b s-dark" font-size="14" x="250" y="196">2. Starch breaks down</text><rect class="s-out" x="352" y="177" width="136" height="28" rx="8"/><text class="s-b s-dark" font-size="14" x="420" y="196">3. Sugars leave</text>
+                </g>
+              </svg>
+            </figure>
+          </article>
+          <article class="lc-primer-card">
+            <h3>Why use machine learning</h3>
+            <p>In a wet lab, researchers test which molecules bind to an enzyme, identify the products of a reaction and measure how fast it runs. Each experiment takes time and materials, so testing every enzyme with every candidate molecule is impractical. Researchers use results from the pairs they have tested to train models and choose which pairs to test next.</p>
+            <figure class="lc-primer-fig"><svg class="lc-svg" viewBox="0 0 290 270" role="img" aria-labelledby="why-t why-d"><title id="why-t">Why we need machine learning</title><desc id="why-d">A grid of known enzymes. Only three are measured in the lab. An arrow leads to an ML model. The model predicts what an enzyme makes, how fast it works and which molecules bind.</desc><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="s-head"/></marker></defs><rect class="s-cell" x="5.0" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="22.2" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="39.4" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="56.6" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="73.8" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="91.0" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="108.2" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="125.4" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="142.6" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="159.8" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="177.0" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="194.2" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="211.4" y="56.0" width="12" height="12" rx="2"/><rect class="s-meas" x="228.6" y="56.0" width="12" height="12" rx="2"/><path class="s-chk" d="M231.0 62.5l3 3.2l5-6.2"/><rect class="s-cell" x="245.8" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="263.0" y="56.0" width="12" height="12" rx="2"/><rect class="s-cell" x="5.0" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="22.2" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="39.4" y="73.2" width="12" height="12" rx="2"/><rect class="s-meas" x="56.6" y="73.2" width="12" height="12" rx="2"/><path class="s-chk" d="M59.0 79.7l3 3.2l5-6.2"/><rect class="s-cell" x="73.8" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="91.0" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="108.2" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="125.4" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="142.6" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="159.8" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="177.0" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="194.2" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="211.4" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="228.6" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="245.8" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="263.0" y="73.2" width="12" height="12" rx="2"/><rect class="s-cell" x="5.0" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="22.2" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="39.4" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="56.6" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="73.8" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="91.0" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="108.2" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="125.4" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="142.6" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="159.8" y="90.4" width="12" height="12" rx="2"/><rect class="s-meas" x="177.0" y="90.4" width="12" height="12" rx="2"/><path class="s-chk" d="M179.4 96.9l3 3.2l5-6.2"/><rect class="s-cell" x="194.2" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="211.4" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="228.6" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="245.8" y="90.4" width="12" height="12" rx="2"/><rect class="s-cell" x="263.0" y="90.4" width="12" height="12" rx="2"/><text class="s-b" x="5" y="18">Known enzymes</text><rect class="s-cell" x="5" y="30" width="12" height="12" rx="2"/><text x="23" y="40">Not measured</text><rect class="s-meas" x="137" y="30" width="12" height="12" rx="2"/><path class="s-chk" d="M139.4 36.5l3 3.2l5-6.2"/><text x="155" y="40">Measured in lab</text><path class="s-arr" d="M140 112V142" marker-end="url(#ah)"/><rect class="s-ml" x="92" y="146" width="96" height="28" rx="8"/><text class="s-b s-dark" x="140" y="165" text-anchor="middle">ML model</text><path class="s-arr" d="M140 176V188H48V202" marker-end="url(#ah)"/><rect class="s-out" x="6" y="204" width="84" height="60" rx="8"/><text class="s-b s-dark" text-anchor="middle"><tspan x="48" y="226">What it</tspan><tspan x="48" y="242">makes</tspan></text><path class="s-arr" d="M140 176V188H140V202" marker-end="url(#ah)"/><rect class="s-out" x="98" y="204" width="84" height="60" rx="8"/><text class="s-b s-dark" text-anchor="middle"><tspan x="140" y="226">How fast</tspan><tspan x="140" y="242">it works</tspan></text><path class="s-arr" d="M140 176V188H232V202" marker-end="url(#ah)"/><rect class="s-out" x="190" y="204" width="84" height="60" rx="8"/><text class="s-b s-dark" text-anchor="middle"><tspan x="232" y="218">Which</tspan><tspan x="232" y="234">molecules</tspan><tspan x="232" y="250">bind</tspan></text></svg></figure>
+          </article>
+        </div>
+      </div>
+    </details>
+    <div class="lc-primer-grid lc-top">
+      <article class="lc-primer-card">
+        <h3>Data leakage</h3>
+        <p>Suppose two nearly identical enzymes appear in a dataset. A random <button type="button" class="lc-term" data-term="split">split</button> can put one in training and the other in the test set. A high score on that test tells us little about a protein from a different family.</p>
+        <dl class="lc-dl lc-gloss">
+          <dt>Proteins</dt><dd>A similar sequence, or the same fold.</dd>
+          <dt>Molecules</dt><dd>The same scaffold, the core ring structure.</dd>
+          <dt>Reactions</dt><dd>The same reaction center, the atoms that change.</dd>
+        </dl>
+      </article>
+      <article class="lc-primer-card">
+        <h3>Data fragmentation</h3>
+        <p>A reaction may have an entry in one database, a kinetic measurement in another and a different protein identifier in each. When researchers link these records independently, differences in the resulting datasets make model scores hard to compare.</p>
+        <figure class="lc-primer-fig" role="group" aria-label="One reaction and its identifier in six databases"><ul class="lc-dbs"><li><span class="lc-db">UniProt</span><code>P00330</code></li><li><span class="lc-db">Rhea</span><code>RHEA:10736</code></li><li><span class="lc-db">BRENDA</span><code>EC 1.1.1.1</code></li><li><span class="lc-db">KEGG</span><code>C00469</code></li><li><span class="lc-db">SABIO-RK</span><code>ethanol</code></li><li><span class="lc-db">BindingDB</span><code>CCO</code></li></ul></figure>
+      </article>
+    </div>
+
+    <details class="lc-fold" data-tex="app:leakage app:splitting">
+      <summary><span class="lc-fold-title">More detail: how leakage happens</span></summary>
+      <div class="lc-fold-body">
+        <figure class="lc-primer-fig lc-leak-example">
+          <figcaption><span><svg class="lc-svg" viewBox="0 43 76 23" aria-hidden="true"><circle class="s-A" cx="10.2" cy="54.4" r="7.2"/><rect class="s-B" x="21.7" y="47.9" width="13.0" height="13.0"/><path class="s-C" d="M46.2 46.1L37.9 60.5L54.5 60.5z"/><path class="s-D" d="M64.2 45.4L73.2 54.4L64.2 63.4L55.2 54.4z"/></svg>Same shape = close matches</span><a href="#splits-demo">Compare the splits →</a></figcaption>
+          <svg class="lc-svg" viewBox="-2 83 320 126" role="img" aria-label="Random split: training and test sets contain similar shapes."><text class="s-b" x="3" y="98.5">Random split</text><text class="s-b" x="3" y="118.3">Train</text><text class="s-b" x="165.0" y="118.3">Test</text><rect class="s-panel" x="3" y="130.0" width="147.6" height="43.199999999999996" rx="8"/><rect class="s-panel" x="165.0" y="130.0" width="147.6" height="43.199999999999996" rx="8"/><circle class="s-A" cx="26.4" cy="142.6" r="7.2"/><rect class="s-B" x="45.1" y="136.1" width="13.0" height="13.0"/><path class="s-C" d="M76.8 134.3L68.5 148.7L85.1 148.7z"/><path class="s-D" d="M102.0 133.6L111.0 142.6L102.0 151.6L93.0 142.6z"/><rect class="s-B" x="120.7" y="136.1" width="13.0" height="13.0"/><path class="s-D" d="M26.4 153.4L35.4 162.4L26.4 171.4L17.4 162.4z"/><circle class="s-A" cx="51.6" cy="162.4" r="7.2"/><path class="s-C" d="M102.0 154.1L93.7 168.5L110.3 168.5z"/><path class="s-C" d="M127.2 154.1L118.9 168.5L135.5 168.5z"/><rect class="s-B" x="70.3" y="155.9" width="13.0" height="13.0"/><circle class="s-A" cx="199.2" cy="142.6" r="7.2"/><rect class="s-B" x="217.9" y="136.1" width="13.0" height="13.0"/><path class="s-D" d="M199.2 153.4L208.2 162.4L199.2 171.4L190.2 162.4z"/><path class="s-C" d="M224.4 154.1L216.1 168.5L232.7 168.5z"/><circle class="s-ring" cx="199.2" cy="142.6" r="9.7"/><circle class="s-ring" cx="224.4" cy="142.6" r="9.7"/><circle class="s-ring" cx="199.2" cy="162.4" r="9.7"/><circle class="s-ring" cx="224.4" cy="162.4" r="9.7"/><circle class="s-ring" cx="118.2" cy="182.20000000000002" r="4.5"/><text x="129.2" y="186.70000000000002">close matches leak into test</text><text class="s-b" x="312.59999999999997" y="204.70000000000002" text-anchor="end">→ score looks too high</text></svg>
+          <svg class="lc-svg" viewBox="-2 227 320 126" role="img" aria-label="Similarity split: test shapes have no close training match."><text class="s-b" x="3" y="242.5">Similarity split</text><text class="s-b" x="3" y="262.29999999999995">Train</text><text class="s-b" x="165.0" y="262.29999999999995">Test</text><rect class="s-panel" x="3" y="274.0" width="147.6" height="43.199999999999996" rx="8"/><rect class="s-panel" x="165.0" y="274.0" width="147.6" height="43.199999999999996" rx="8"/><circle class="s-A" cx="26.4" cy="286.6" r="7.2"/><circle class="s-A" cx="51.6" cy="286.6" r="7.2"/><circle class="s-A" cx="76.8" cy="286.6" r="7.2"/><rect class="s-B" x="95.5" y="280.1" width="13.0" height="13.0"/><rect class="s-B" x="120.7" y="280.1" width="13.0" height="13.0"/><circle class="s-A" cx="26.4" cy="306.4" r="7.2"/><rect class="s-B" x="45.1" y="299.9" width="13.0" height="13.0"/><rect class="s-B" x="70.3" y="299.9" width="13.0" height="13.0"/><rect class="s-B" x="95.5" y="299.9" width="13.0" height="13.0"/><rect class="s-B" x="120.7" y="299.9" width="13.0" height="13.0"/><path class="s-C" d="M199.2 278.3L190.9 292.7L207.5 292.7z"/><path class="s-C" d="M224.4 278.3L216.1 292.7L232.7 292.7z"/><path class="s-D" d="M199.2 297.4L208.2 306.4L199.2 315.4L190.2 306.4z"/><path class="s-D" d="M224.4 297.4L233.4 306.4L224.4 315.4L215.4 306.4z"/><text x="129.2" y="330.7">no close matches in test</text><text class="s-b" x="312.59999999999997" y="348.7" text-anchor="end">→ score is fair</text></svg>
+        </figure>
+        <p>Two records can share a biochemical clue even when their identifiers differ. Related proteins may have similar binding pockets, molecules may share a scaffold, and reactions may involve the same substrates. Each relationship gives a model a different shortcut.</p>
+        <div class="lc-scroll"><table class="lc-table lc-text lc-leak-table" aria-label="Examples of data leakage"><thead><tr><th scope="col">Source of leakage</th><th scope="col">How it happens</th></tr></thead><tbody>
+          <tr><th scope="row">Protein sequence</th><td>A test protein is a close <button type="button" class="lc-term" data-term="homolog">homolog</button> of a training protein. It often shares catalytic residues, domains and binding pockets.</td></tr>
+          <tr><th scope="row">Protein structure</th><td>A test protein has the same fold or active-site shape as a training protein, even when the sequence identity is low.</td></tr>
+          <tr><th scope="row">Molecule and reaction</th><td>Test molecules or reactions share scaffolds or reaction centers with training ones, even when the strings differ.</td></tr>
+          <tr><th scope="row">Molecule 3D shape</th><td>Test molecules lie close to training molecules in a conformer embedding space, even when 2D fingerprints differ.</td></tr>
+          <tr><th scope="row">Annotation time</th><td>The training data holds knowledge that did not exist yet when a test record was made.</td></tr>
+          <tr><th scope="row">Exact entities</th><td>One sequence, molecule, reaction or assay key fills several rows. A random split by row puts copies on both sides.</td></tr>
+        </tbody></table></div>
+        <p>Each task family has its own leakage routes. For kinetics, the same accession, mutants of an enzyme, the same substrate and the same publication can appear on both sides. For binding, they are recurring targets and <button type="button" class="lc-term" data-term="ligand">ligand</button> <button type="button" class="lc-term" data-term="analog">analog</button> series. For classification, they are <button type="button" class="lc-term" data-term="homologous">homologous</button> proteins and related <button type="button" class="lc-term" data-term="ec">EC</button> annotations. For retrieval, the test reaction can resemble training reactions, and the correct enzyme can be a homolog of a training enzyme.</p>
+        <p>Researchers have tested models on several kinds of unfamiliar data. For enzyme turnover (<i>k</i><sub>cat</sub>), DLKcat split the data at random. TurNuP, CatPred and CataPro tested how well their models predicted turnover for enzymes whose sequences differed from those in training. ColdDTA held out drugs and proteins in binding tests. CARE and ReactZyme used more demanding splits for enzyme classification and retrieval.</p>
+        <p>The choice of split matters. If we group enzymes by sequence, a test enzyme can still act on a substrate the model has seen. If we group molecules by scaffold, a test protein can still belong to a familiar enzyme family.</p>
+      </div>
+    </details>
+
+    <h3 id="benchmark-comparison">How current benchmarks fall short</h3>
+    <p>EnzymeMap and ECREACT focus on reaction modeling. CARE and ReactZyme cover enzyme classification and retrieval. ProteinShake includes a binding affinity task among its protein structure tasks. In this comparison, Leak-CURBER alone includes kinetics and covers all five tasks.</p>
+    <div class="lc-scroll" tabindex="0" role="region" aria-label="Comparison with existing benchmarks, scrolls sideways" data-tex="tab:comparison"><table class="lc-table lc-compare"><thead><tr><th scope="col" rowspan="2">Dataset</th><th scope="col" rowspan="2">Reactions</th><th scope="col" rowspan="2">Enzymes</th><th scope="col" rowspan="2">Pairs</th><th scope="colgroup" colspan="5">Tasks</th><th scope="colgroup" colspan="2">Inputs</th><th scope="col" rowspan="2">Leakage control</th></tr><tr><th scope="col">Enzyme classification</th><th scope="col">Enzyme retrieval</th><th scope="col">Reaction outcome</th><th scope="col">Kinetics</th><th scope="col">Affinity</th><th scope="col">Sequence</th><th scope="col">Structure</th></tr></thead><tbody><tr><th scope="row">ESP</th><td class="n">1,379</td><td class="n">12,156</td><td class="n">18,351</td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td></tr><tr><th scope="row">EnzymeMap</th><td class="n">16,776</td><td class="n">12,749</td><td class="n">46,356</td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td></tr><tr><th scope="row">ECREACT</th><td class="n">62,222</td><td class="n">6,289</td><td class="n">62,222</td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td></tr><tr><th scope="row">CARE</th><td class="n">48,392</td><td class="n">174,744</td><td class="n">–</td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td></tr><tr><th scope="row">ReactZyme</th><td class="n">7,726</td><td class="n">178,327</td><td class="n">178,463</td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td></tr><tr><th scope="row">ProteinShake</th><td class="n">–</td><td class="n">97,930</td><td class="n">–</td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-no" title="No"><span aria-hidden="true">✗</span><span class="lc-sr">No</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td></tr><tr class="lc-mine"><th scope="row">Leak-CURBER</th><td class="n">68,180</td><td class="n">213,785</td><td class="n">623,190</td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td><td><span class="lc-yes" title="Yes"><span aria-hidden="true">✓</span><span class="lc-sr">Yes</span></span></td></tr></tbody></table></div>
+  </div>
+</section>
+
+<section class="lc-section lc-panel" id="dataset">
+  <div class="lc-wrap">
+    <h2>The Leak-CURBER dataset</h2>
+    <h3>Tasks</h3>
+    <div class="lc-tasks">
+      <section class="lc-task lc-task-kinetics" id="task-kinetics">
+        <h4 class="lc-pill">Kinetic parameters</h4>
+        <p class="lc-task-ask">How efficiently does the enzyme act?</p>
+        <img class="lc-art" src="static/img/art/task-kinetics.webp" alt="An enzyme binds a substrate and releases a product, with the labels K_m, k_cat and K_i." width="560" height="245" loading="lazy">
+        <div class="lc-subtasks">
+<details class="lc-fold lc-subtask"><summary><span class="lc-fold-title"><i>k</i><sub>cat</sub></span><span class="lc-fold-line">Enzyme, substrate → Turnover rate</span></summary><div class="lc-fold-body"><p>Turnover rate: how many reactions one enzyme does each second.</p><dl class="lc-dl"><dt>Rows</dt><dd>55,878</dd><dt>Entities</dt><dd>20,593 proteins; 8,963 molecules; 3,054 ECs</dd><dt>Inputs</dt><dd>Enzyme sequence and structure; substrate SMILES, molecular graph, and conformer.</dd><dt>Splits</dt><dd>GR-seq, GR-SMILES, Time, P-seq, P-struct, Mol-2D, Mol-3D</dd><dt>Metrics</dt><dd>RMSE, MAE, <i>R</i>², PCC, SCC. We use standardized units and log-transform the measured values before scoring.</dd><dt>Sources</dt><dd>SABIO-RK, BRENDA</dd><dt>Notes</dt><dd>Among duplicate rows, we keep the highest value (in log<sub>10</sub>). The value of <i>k</i><sub>cat</sub> varies a lot with assay conditions, and the highest value is the best-measured catalytic rate. The proteins in the molecule splits stay familiar to the model.</dd></dl></div></details>
+<details class="lc-fold lc-subtask"><summary><span class="lc-fold-title"><i>K</i><sub>M</sub></span><span class="lc-fold-line">Enzyme, substrate → Substrate concentration at half the maximum reaction rate</span></summary><div class="lc-fold-body"><p>The substrate concentration at which the enzyme reaches half its maximum reaction rate.</p><dl class="lc-dl"><dt>Rows</dt><dd>78,831</dd><dt>Entities</dt><dd>29,085 proteins; 12,118 molecules; 3,941 ECs</dd><dt>Inputs</dt><dd>Enzyme sequence and structure; substrate SMILES, molecular graph, and conformer.</dd><dt>Splits</dt><dd>GR-seq, GR-SMILES, Time, P-seq, P-struct, Mol-2D, Mol-3D</dd><dt>Metrics</dt><dd>RMSE, MAE, <i>R</i>², PCC, SCC. We use standardized units and log-transform the measured values before scoring.</dd><dt>Sources</dt><dd>SABIO-RK, BRENDA</dd><dt>Notes</dt><dd>We average duplicate rows in log space. This is the kinetic subtask most sensitive to the substrate.</dd></dl></div></details>
+<details class="lc-fold lc-subtask"><summary><span class="lc-fold-title"><i>K</i><sub>i</sub></span><span class="lc-fold-line">Enzyme, inhibitor → Inhibition constant</span></summary><div class="lc-fold-body"><p>Inhibition constant: how strongly an inhibitor blocks the enzyme.</p><dl class="lc-dl"><dt>Rows</dt><dd>177,793</dd><dt>Entities</dt><dd>5,936 proteins; 100,029 molecules; 1,548 ECs</dd><dt>Inputs</dt><dd>Enzyme sequence and structure; inhibitor SMILES, molecular graph, and conformer.</dd><dt>Splits</dt><dd>GR-seq, GR-SMILES, Time, P-seq, P-struct, Mol-2D, Mol-3D</dd><dt>Metrics</dt><dd>RMSE, MAE, <i>R</i>², PCC, SCC. We use standardized units and log-transform the measured values before scoring.</dd><dt>Sources</dt><dd>BRENDA, SABIO-RK, BindingDB</dd><dt>Notes</dt><dd>We average duplicate rows in log space.</dd></dl></div></details>
+</div>
+      </section>
+      <section class="lc-task lc-task-binding" id="task-binding-affinity">
+        <h4 class="lc-pill">Binding affinity</h4>
+        <p class="lc-task-ask">How strongly does a molecule interact with the protein?</p>
+        <img class="lc-art" src="static/img/art/task-binding.webp" alt="A protein ribbon holding a small molecule." width="420" height="354" loading="lazy">
+        <div class="lc-subtasks">
+<details class="lc-fold lc-subtask"><summary><span class="lc-fold-title"><i>K</i><sub>d</sub></span><span class="lc-fold-line">Protein, ligand → Binding strength</span></summary><div class="lc-fold-body"><p>Binding strength: how tightly a molecule binds the protein. Smaller means tighter.</p><dl class="lc-dl"><dt>Rows</dt><dd>58,675</dd><dt>Entities</dt><dd>3,811 proteins; 31,750 molecules</dd><dt>Inputs</dt><dd>Protein sequence and structure; ligand representation, molecular graph, and conformer.</dd><dt>Splits</dt><dd>GR-seq, GR-SMILES, Time, P-seq, P-struct, Mol-2D, Mol-3D</dd><dt>Metrics</dt><dd>RMSE, MAE, <i>R</i>², PCC, SCC. We use standardized units and log-transform the measured values before scoring.</dd><dt>Sources</dt><dd>BindingDB</dd><dt>Notes</dt><dd>We average duplicate rows in log space.</dd></dl></div></details>
+<details class="lc-fold lc-subtask"><summary><span class="lc-fold-title">IC<sub>50</sub></span><span class="lc-fold-line">Protein, ligand → Concentration for half of the inhibition</span></summary><div class="lc-fold-body"><p>The concentration that gives half of the maximum inhibition. Like EC<sub>50</sub>, it is a measure of potency and depends on the assay.</p><dl class="lc-dl"><dt>Rows</dt><dd>1,374,479</dd><dt>Entities</dt><dd>5,839 proteins; 866,094 molecules</dd><dt>Inputs</dt><dd>Protein sequence and structure; ligand representation, molecular graph, and conformer.</dd><dt>Splits</dt><dd>GR-seq, GR-SMILES, Time, P-seq, P-struct, Mol-2D, Mol-3D</dd><dt>Metrics</dt><dd>RMSE, MAE, <i>R</i>², PCC, SCC. We use standardized units and log-transform the measured values before scoring.</dd><dt>Sources</dt><dd>BindingDB</dd><dt>Notes</dt><dd>This is the largest binding subtask.</dd></dl></div></details>
+<details class="lc-fold lc-subtask"><summary><span class="lc-fold-title">EC<sub>50</sub></span><span class="lc-fold-line">Protein, ligand → Concentration for half of the effect</span></summary><div class="lc-fold-body"><p>The concentration that gives half of the maximum effect. It is a measure of potency and depends on the assay.</p><dl class="lc-dl"><dt>Rows</dt><dd>169,599</dd><dt>Entities</dt><dd>1,779 proteins; 123,839 molecules</dd><dt>Inputs</dt><dd>Protein sequence and structure; ligand representation, molecular graph, and conformer.</dd><dt>Splits</dt><dd>GR-seq, GR-SMILES, Time, P-seq, P-struct, Mol-2D, Mol-3D</dd><dt>Metrics</dt><dd>RMSE, MAE, <i>R</i>², PCC, SCC. We use standardized units and log-transform the measured values before scoring.</dd><dt>Sources</dt><dd>BindingDB</dd><dt>Notes</dt><dd>We average duplicate rows in log space.</dd></dl></div></details>
+</div>
+      </section>
+      <section class="lc-task lc-task-function" id="task-enzyme-function">
+        <h4 class="lc-pill">Enzyme function</h4>
+        <p class="lc-task-ask">Which enzymatic function is associated with the reaction?</p>
+        <img class="lc-art" src="static/img/art/task-function.webp" alt="An enzyme binds a substrate; question marks ask for the function." width="560" height="239" loading="lazy">
+        <div class="lc-ec" aria-label="EC levels 1 to 4"><span class="lc-ec-1">EC1</span><span class="lc-ec-2">EC2</span><span class="lc-ec-3">EC3</span><span class="lc-ec-4">EC4</span></div><div class="lc-subtasks">
+<details class="lc-fold lc-subtask"><summary><span class="lc-fold-title">Enzyme classification</span><span class="lc-fold-line">Enzyme → EC label</span></summary><div class="lc-fold-body"><p>Given an enzyme, predict its <button type="button" class="lc-term" data-term="ec">EC label</button>.</p><dl class="lc-dl"><dt>Rows</dt><dd>296,345</dd><dt>Entities</dt><dd>213,785 proteins; 6,182 ECs</dd><dt>Inputs</dt><dd>Enzyme sequence and structure.</dd><dt>Splits</dt><dd>GR-seq, Time, P-seq, P-struct</dd><dt>Metrics</dt><dd>EC level accuracy at Levels 1–4, from broad class to exact function.</dd><dt>Sources</dt><dd>Rhea, KEGG, SABIO-RK, BRENDA, UniProt</dd></dl></div></details>
+<details class="lc-fold lc-subtask"><summary><span class="lc-fold-title">Enzyme retrieval</span><span class="lc-fold-line">Reaction → EC label</span></summary><div class="lc-fold-body"><p>For a given reaction, rank the candidate enzyme functions by <button type="button" class="lc-term" data-term="ec">EC label</button>. The candidate labels come from the proteins in that split.</p><dl class="lc-dl"><dt>Rows</dt><dd>110,501</dd><dt>Entities</dt><dd>60,961 reactions; 7,064 ECs</dd><dt>Inputs</dt><dd>Reaction SMILES as the query.</dd><dt>Splits</dt><dd>GR-rxnsmi, Time, DRFP, P-seq, P-struct</dd><dt>Metrics</dt><dd>EC level accuracy at Levels 1–4, from broad class to exact function.</dd><dt>Sources</dt><dd>Rhea, KEGG, SABIO-RK, BRENDA</dd></dl></div></details>
+</div>
+      </section>
+      <section class="lc-task lc-task-outcome" id="task-reaction-outcome">
+        <h4 class="lc-pill">Reaction outcome</h4>
+        <p class="lc-task-ask">What transformation occurs?</p>
+        <img class="lc-art" src="static/img/art/task-outcome.webp" alt="Four colored building blocks join into one product." width="900" height="72" loading="lazy">
+        <div class="lc-subtasks">
+<details class="lc-fold lc-subtask"><summary><span class="lc-fold-title">Forward prediction</span><span class="lc-fold-line">Reactants → Products</span></summary><div class="lc-fold-body"><dl class="lc-dl"><dt>Rows</dt><dd>85,972</dd><dt>Entities</dt><dd>68,180 reactions</dd><dt>Inputs</dt><dd>Reactant-side SMILES.</dd><dt>Splits</dt><dd>GR-rxnsmi, Time, DRFP</dd><dt>Metrics</dt><dd>Top-1 and <button type="button" class="lc-term" data-term="top10">top-10 exact match</button> after SMILES canonicalization. Invalid predictions count as incorrect.</dd><dt>Sources</dt><dd>Rhea, KEGG, SABIO-RK, BRENDA</dd></dl></div></details>
+<details class="lc-fold lc-subtask"><summary><span class="lc-fold-title">Retrosynthesis</span><span class="lc-fold-line">Products → Reactants</span></summary><div class="lc-fold-body"><dl class="lc-dl"><dt>Rows</dt><dd>85,972</dd><dt>Entities</dt><dd>68,180 reactions</dd><dt>Inputs</dt><dd>Product-side SMILES.</dd><dt>Splits</dt><dd>GR-rxnsmi, Time, DRFP</dd><dt>Metrics</dt><dd>Top-1 and <button type="button" class="lc-term" data-term="top10">top-10 exact match</button> after SMILES canonicalization. Invalid predictions count as incorrect.</dd><dt>Sources</dt><dd>Rhea, KEGG, SABIO-RK, BRENDA</dd></dl></div></details>
+</div>
+      </section>
+    </div>
+    <h3 id="dataset-sources">Data sources and curation</h3>
+    <p>We start with Rhea and add reactions from KEGG, SABIO-RK and BRENDA, along with enzyme records, kinetic measurements and references. We merge duplicate records, standardize four-level EC numbers and <button type="button" class="lc-term" data-term="smiles">SMILES</button> strings, and check reaction balance. Each row links one reaction to one EC number.</p>
+    <div class="lc-figure" data-figure="pipeline"></div>
+
+    <details class="lc-fold" data-tex="tab:data_source">
+      <summary><span class="lc-fold-title">More detail: data sources and counts</span></summary>
+      <div class="lc-fold-body">
+        <div class="lc-scroll" tabindex="0" role="region" aria-label="Data sources, scrolls sideways" data-tex="tab:data_source"><table class="lc-table lc-text lc-sources"><thead><tr><th scope="col">Database</th><th scope="col">Data</th><th scope="col">Used for</th><th scope="col">Entries</th></tr></thead><tbody><tr class="lc-group"><th scope="colgroup" colspan="4">Bio-catalytic chemical transformations</th></tr><tr><th scope="row">Rhea</th><td>Reactions</td><td>Enzyme Classification; Enzyme Retrieval; Reaction Outcome</td><td class="n">73,896</td></tr><tr><th scope="row">KEGG</th><td>Reactions, Metabolites</td><td>Enzyme Classification; Enzyme Retrieval; Reaction Outcome</td><td class="n">22,096</td></tr><tr><th scope="row">SABIO-RK</th><td>Reactions, Metabolites</td><td>Enzyme Classification; Enzyme Retrieval; Reaction Outcome</td><td class="n">20,634</td></tr><tr><th scope="row">MetaCyc</th><td>Reactions, Metabolites</td><td>Enzyme Classification; Enzyme Retrieval; Reaction Outcome</td><td class="n">42,060</td></tr><tr><th scope="row">BRENDA</th><td>Reactions</td><td>Enzyme Classification; Enzyme Retrieval; Reaction Outcome</td><td class="n">74,069</td></tr><tr class="lc-group"><th scope="colgroup" colspan="4">Enzyme–substrate measured values</th></tr><tr><th scope="row">BRENDA</th><td><i>k</i><sub>cat</sub>, <i>K</i><sub>M</sub>, <i>K</i><sub>i</sub></td><td>Kinetic Parameter Prediction</td><td class="n">187,262</td></tr><tr><th scope="row">SABIO-RK</th><td><i>k</i><sub>cat</sub>, <i>K</i><sub>M</sub>, <i>K</i><sub>i</sub></td><td>Kinetic Parameter Prediction</td><td class="n">108,276</td></tr><tr><th scope="row">MetaCyc</th><td><i>k</i><sub>cat</sub>, <i>K</i><sub>M</sub></td><td>Kinetic Parameter Prediction</td><td class="n">11,999</td></tr><tr><th scope="row">BindingDB</th><td><i>K</i><sub>d</sub>, EC<sub>50</sub>, IC<sub>50</sub></td><td>Protein–Ligand Affinity</td><td class="n">2,089,527</td></tr><tr><th scope="row">BindingDB</th><td><i>K</i><sub>i</sub></td><td>Kinetic Parameter Prediction</td><td class="n">564,940</td></tr><tr class="lc-group"><th scope="colgroup" colspan="4">Entity cross-references</th></tr><tr><th scope="row">UniProt</th><td>Protein Sequences</td><td>Core Data for All Tasks</td><td class="n">250,510</td></tr><tr><th scope="row">PDBe</th><td>Protein Structures</td><td>Core Data for All Tasks</td><td class="n">120,611</td></tr><tr><th scope="row">AlphaFoldDB</th><td>Protein Structures</td><td>Core Data for All Tasks</td><td class="n">248,187</td></tr><tr><th scope="row">ESMFold2</th><td>Protein Structures</td><td>Core Data for All Tasks</td><td class="n">11,131</td></tr><tr><th scope="row">ESM3</th><td>Protein Structures</td><td>Core Data for All Tasks</td><td class="n">758</td></tr><tr><th scope="row">ChEBI</th><td>Metabolite Structures</td><td>Core Data for All Tasks</td><td class="n">32,765</td></tr><tr><th scope="row">PubChem</th><td>Metabolite Structures</td><td>Core Data for All Tasks</td><td class="n">1,156,582</td></tr></tbody></table></div>
+        <p>We reserve licensed MetaCyc records for leaderboard testing and exclude them from training and public downloads.</p>
+        <p>AlphaFoldDB, ESMFold2 and ESM3 only supply structures. They are not among the <span data-fact="stats.scale.databases"></span> databases.</p>
+      </div>
+    </details>
+
+    <h3 id="multimodal">Multimodal inputs</h3>
+    <p>An <button type="button" class="lc-term" data-term="embedding">embedding</button> represents a protein, molecule or reaction as a set of numbers a model can use. We release the embeddings we computed so others can reuse them.</p>
+    <div class="lc-figure" data-figure="modalities"></div>
+    <details class="lc-fold" data-tex="tab:multimodal_embedders">
+      <summary><span class="lc-fold-title">More detail: the embedders</span></summary>
+      <div class="lc-fold-body">
+        <div class="lc-scroll" tabindex="0" role="region" aria-label="Precomputed embedders, scrolls sideways" data-tex="tab:multimodal_embedders"><table class="lc-table lc-text"><thead><tr><th scope="col">Embedder</th><th scope="col">Input</th><th scope="col">Output</th></tr></thead><tbody><tr><th scope="row">ESMC</th><td>Protein sequence</td><td>Mean-pooled protein embedding</td></tr><tr><th scope="row">ESM3</th><td>Protein structure</td><td>Mean-pooled protein embedding</td></tr><tr><th scope="row">SMI-TED</th><td>Molecule (SMILES)</td><td>Molecule embedding</td></tr><tr><th scope="row">MolR</th><td>2D molecular graph</td><td>Molecular graph embedding</td></tr><tr><th scope="row">Uni-Mol2</th><td>3D molecular conformer</td><td>Mean embedding across conformers</td></tr><tr><th scope="row">ECFP</th><td>2D molecular fingerprint</td><td>1024-bit molecular fingerprint</td></tr><tr><th scope="row"><button type="button" class="lc-term lc-citation" data-term="drfp">DRFP</button></th><td>Reaction fingerprint</td><td>2048-bit reaction fingerprint</td></tr></tbody></table></div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section class="lc-section lc-panel" id="splits">
+  <div class="lc-wrap">
+    <h2>Leakage-controlled splits</h2>
+    <p>Leak-CURBER offers seven ways to split the data. Grouped random (GR) keeps identical keys together, whether the key is a sequence (GR-seq), molecule (GR-SMILES) or reaction (GR-rxnsmi). Time holds out newer records. The five similarity splits hold out proteins by sequence or structure (P-seq, P-struct), molecules by fingerprint or shape (Mol-2D, Mol-3D), or reactions by fingerprint (DRFP).</p>
+    <details class="lc-fold">
+      <summary><span class="lc-fold-title">Try a split on a toy dataset</span></summary>
+      <div class="lc-fold-body">
+        <p>Imagine six proteins. Each letter stands for one amino acid.</p>
+        <div id="splits-demo">
+          <div class="lc-demo-buttons" role="group" aria-label="Split type">
+            <button type="button" data-mode="random">Random</button>
+            <button type="button" data-mode="similarity">Similarity</button>
+            <button type="button" data-mode="time">Time</button>
+          </div>
+          <table class="lc-table lc-demo-table" aria-label="Six example proteins and their split assignments">
+            <thead><tr><th scope="col">Protein</th><th scope="col">Sequence</th><th scope="col">Year added</th><th scope="col">Set</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">A</th><td><code>MAGKT</code></td><td>2019</td><td class="lc-demo-set"></td></tr>
+              <tr><th scope="row">B</th><td><code>MAGKS</code></td><td>2022</td><td class="lc-demo-set"></td></tr>
+              <tr><th scope="row">C</th><td><code>PLVNA</code></td><td>2020</td><td class="lc-demo-set"></td></tr>
+              <tr><th scope="row">D</th><td><code>PLVNT</code></td><td>2024</td><td class="lc-demo-set"></td></tr>
+              <tr><th scope="row">E</th><td><code>FGDYS</code></td><td>2021</td><td class="lc-demo-set"></td></tr>
+              <tr><th scope="row">F</th><td><code>TQHLP</code></td><td>2024</td><td class="lc-demo-set"></td></tr>
+            </tbody>
+          </table>
+          <p class="lc-demo-caption" aria-live="polite"></p>
+        </div>
+      </div>
+    </details>
+
+    <h3>The seven split types</h3>
+    <div class="lc-figure" data-figure="splits"></div>
+    <h4>Grouped-random (GR)</h4>
+    <p>We use GR as the reference for performance on familiar data. Each subtask also has splits that reflect the inputs a model might encounter in a new application.</p>
+    <p>Rows that share a protein sequence (GR-seq), molecule (GR-SMILES) or reaction SMILES (GR-rxnsmi) go to the same set. A reaction and its reverse form one group. This removes exact repeats but keeps related rows close.</p>
+    <h4 id="similarity-splits">Similarity splits</h4>
+    <div class="lc-scroll"><table class="lc-table lc-text lc-sim-methods" aria-labelledby="similarity-splits">
+      <thead><tr><th scope="col">Split</th><th scope="col">How similarity is measured</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">P-seq</th><td><strong>Protein sequences.</strong> MMseqs2 compares sequence identity. Even the closest training match has low identity to the test protein.</td></tr>
+        <tr><th scope="row">P-struct</th><td><strong>Protein structures.</strong> Foldseek detects shared folds even in distantly related proteins. We use an experimental structure when available, followed by AlphaFold, ESMFold2 and ESM3 in that order.</td></tr>
+        <tr><th scope="row">Mol-2D</th><td><strong>2D molecular structure.</strong> We measure <button type="button" class="lc-term" data-term="tanimoto">Tanimoto similarity</button> between Morgan fingerprints.</td></tr>
+        <tr><th scope="row">Mol-3D</th><td><strong>3D molecular shape.</strong> We compare Uni-Mol2 embeddings of molecular conformers.</td></tr>
+        <tr><th scope="row">DRFP</th><td><strong>Reactions.</strong> <button type="button" class="lc-term lc-citation" data-term="drfp">Differential reaction fingerprints</button> describe which parts of the molecules change from reactants to products.</td></tr>
+      </tbody>
+    </table></div>
+    <p>For every similarity split, a test entity must fall below the threshold to all other entities. Above-threshold overlap is 0% by construction. The <button type="button" class="lc-term" data-term="validation">validation set</button> takes the next most dissimilar entities, so it is slightly easier than the test set.</p>
+    <h4>Time</h4>
+    <p>We order records by the protein’s UniProt annotation date. Later records go into validation and test.</p>
+
+    <h3>Do the splits work?</h3>
+    <p>Each split removes overlap on its own axis, and the other axis can still overlap. The table gives the share of test rows whose exact enzyme sequence or molecule key also appears in training. Each cell reads sequence overlap / molecule overlap, in %. Highlighted zeros mark the feature held out.</p>
+    <div class="lc-scroll" tabindex="0" role="region" aria-label="Train-test overlap, scrolls sideways" data-tex="tab:split_overlap"><table class="lc-table lc-overlap"><thead><tr><th scope="col">Split</th><th scope="col"><i>k</i><sub>cat</sub></th><th scope="col"><i>K</i><sub>M</sub></th><th scope="col"><i>K</i><sub>i</sub></th><th scope="col"><i>K</i><sub>d</sub></th><th scope="col">EC<sub>50</sub></th><th scope="col">IC<sub>50</sub></th></tr></thead><tbody><tr><th scope="row">GR-seq</th><td class="n"><span class="lc-zero">0.0</span> / <span class="">91.7</span></td><td class="n"><span class="lc-zero">0.0</span> / <span class="">92.1</span></td><td class="n"><span class="lc-zero">0.0</span> / <span class="">91.8</span></td><td class="n"><span class="lc-zero">0.0</span> / <span class="">59.3</span></td><td class="n"><span class="lc-zero">0.0</span> / <span class="">24.7</span></td><td class="n"><span class="lc-zero">0.0</span> / <span class="">56.2</span></td></tr><tr><th scope="row">GR-SMILES</th><td class="n"><span class="">80.2</span> / <span class="lc-zero">0.0</span></td><td class="n"><span class="">82.1</span> / <span class="lc-zero">0.0</span></td><td class="n"><span class="">97.6</span> / <span class="lc-zero">0.0</span></td><td class="n"><span class="">99.5</span> / <span class="lc-zero">0.0</span></td><td class="n"><span class="">99.8</span> / <span class="lc-zero">0.0</span></td><td class="n"><span class="">99.9</span> / <span class="lc-zero">0.0</span></td></tr><tr><th scope="row">Time</th><td class="n"><span class="">0.5</span> / <span class="">78.2</span></td><td class="n"><span class="">0.4</span> / <span class="">83.1</span></td><td class="n"><span class="">0.9</span> / <span class="">45.7</span></td><td class="n"><span class="">0.3</span> / <span class="">38.3</span></td><td class="n"><span class="lc-zero">0.0</span> / <span class="">26.1</span></td><td class="n"><span class="">0.1</span> / <span class="">33.1</span></td></tr><tr><th scope="row">P-seq</th><td class="n"><span class="lc-zero">0.0</span> / <span class="">78.5</span></td><td class="n"><span class="lc-zero">0.0</span> / <span class="">79.9</span></td><td class="n"><span class="lc-zero">0.0</span> / <span class="">40.5</span></td><td class="n"><span class="lc-zero">0.0</span> / <span class="">76.6</span></td><td class="n"><span class="lc-zero">0.0</span> / <span class="">25.5</span></td><td class="n"><span class="lc-zero">0.0</span> / <span class="">38.0</span></td></tr><tr><th scope="row">P-struct</th><td class="n"><span class="lc-zero">0.0</span> / <span class="">70.9</span></td><td class="n"><span class="lc-zero">0.0</span> / <span class="">71.1</span></td><td class="n"><span class="lc-zero">0.0</span> / <span class="">27.0</span></td><td class="n"><span class="lc-zero">0.0</span> / <span class="">40.3</span></td><td class="n"><span class="lc-zero">0.0</span> / <span class="">7.4</span></td><td class="n"><span class="lc-zero">0.0</span> / <span class="">36.6</span></td></tr><tr><th scope="row">Mol-2D</th><td class="n"><span class="">73.9</span> / <span class="lc-zero">0.0</span></td><td class="n"><span class="">74.3</span> / <span class="lc-zero">0.0</span></td><td class="n"><span class="">91.2</span> / <span class="lc-zero">0.0</span></td><td class="n"><span class="">94.1</span> / <span class="lc-zero">0.0</span></td><td class="n"><span class="">97.3</span> / <span class="lc-zero">0.0</span></td><td class="n"><span class="">99.4</span> / <span class="lc-zero">0.0</span></td></tr><tr><th scope="row">Mol-3D</th><td class="n"><span class="">76.8</span> / <span class="lc-zero">0.0</span></td><td class="n"><span class="">75.5</span> / <span class="lc-zero">0.0</span></td><td class="n"><span class="">91.5</span> / <span class="lc-zero">0.0</span></td><td class="n"><span class="">93.9</span> / <span class="lc-zero">0.0</span></td><td class="n"><span class="">97.9</span> / <span class="lc-zero">0.0</span></td><td class="n"><span class="">99.3</span> / <span class="lc-zero">0.0</span></td></tr></tbody></table></div>
+
+    <details class="lc-fold" data-tex="app:splitting_prior">
+      <summary><span class="lc-fold-title">More detail: comparison with earlier splitting strategies</span></summary>
+      <div class="lc-fold-body">
+        <p>Random splits measure interpolation. GR splits remove exact identifier overlap but allow <button type="button" class="lc-term" data-term="homologous">homologous</button> proteins, related folds, scaffold <button type="button" class="lc-term" data-term="analog">analogs</button> and near-duplicate reactions on both sides.</p>
+        <p>Cluster-based splits do better. Sequence clusters group homologs, and Butina or BitBIRCH clustering groups similar fingerprints. These methods reduce redundancy, but cluster membership does not show that every pair across clusters is below a threshold.</p>
+        <p>ProteinShake and Leak-CURBER both use Foldseek, for different goals. ProteinShake builds structure clusters and samples clusters up to the split size. We compute the maximum LDDT of each protein against the whole dataset and fill the test set with the most isolated proteins.</p>
+        <p>DataSAIL assigns examples to folds to lower the total similarity across folds. We define novelty for each entity instead. No held-out protein has a sequence neighbor above the sequence threshold, and the same holds for structures, molecules and reactions.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section class="lc-section lc-panel" id="setup">
+  <div class="lc-wrap">
+    <h2>Experimental setup</h2>
+    <p>We retrained <span data-fact="stats.scale.baselines"></span> published <button type="button" class="lc-term" data-term="baseline">baselines</button> on Leak-CURBER. We chose models with public code that could run on at least one subtask using their original inputs and architecture.</p>
+
+    <h3>Baselines by task</h3>
+    <dl id="baseline-models" class="lc-kinds lc-models">
+      <dt>Kinetics</dt><dd><span>KcatNet</span><span>EITLEM-Kinetics</span><span>CataPro</span><span>DEKP</span><span>eMOSAIC-T</span><span>BIND</span><span>BACPI</span></dd>
+      <dt>Binding affinity</dt><dd><span>Structure-Free DTA</span><span>BIND</span><span>BACPI</span></dd>
+      <dt>Enzyme function</dt><dd><span>CLEAN</span><span>GraphEC</span><span>HIT-EC</span><span>CREEP</span><span>CLIPZyme</span><span>Horizyn</span></dd>
+      <dt>Reaction outcome</dt><dd><span>Root-aligned SMILES</span><span>MEGAN</span><span>Chemformer</span></dd>
+    </dl>
+    <p>The three reaction outcome models were originally evaluated on USPTO patent reactions. We fine-tuned them on enzymatic reactions. Additional results are available for DLKcat, UniKP, MPEK and CatPred.</p>
+
+    <h3>Training and scoring</h3>
+    <div class="lc-scroll"><table class="lc-table lc-text lc-leak-table" aria-label="Training and scoring" data-tex="sec:experimental_setup"><thead><tr><th scope="col">Protocol</th><th scope="col">How we evaluated the models</th></tr></thead><tbody>
+      <tr><th scope="row">Model settings</th><td>We kept the published settings without a new hyperparameter search. For CREEP and CLIPZyme, we kept the encoders frozen.</td></tr>
+      <tr><th scope="row">Data splits</th><td>Each model read the supplied training, validation and test files through a wrapper. We checked that each wrapper reproduced the original code’s outputs within numerical tolerance.</td></tr>
+      <tr><th scope="row">Reported scores</th><td>We report the mean and standard deviation from three runs on each split, using different random <button type="button" class="lc-term" data-term="seed">seeds</button>. Rows labeled “Original paper (other data)” give the published scores on other datasets and splits.</td></tr>
+    </tbody></table></div>
+
+    <h3>Reference predictors</h3>
+    <p>We ran six simpler predictors on the same splits to see how much of the performance a standard method could explain.</p>
+    <div class="lc-scroll"><table class="lc-table lc-text lc-leak-table lc-reference-table" aria-label="Reference predictors"><thead><tr><th scope="col">Predictor type</th><th scope="col">How it works</th></tr></thead><tbody>
+      <tr><th scope="row">Embedding models</th><td>XGBoost and MLP use the same precomputed embeddings.</td></tr>
+      <tr><th scope="row">Protein search</th><td>BLASTP searches by sequence and Foldseek by structure. Each assigns a test protein the EC labels of its closest training matches.</td></tr>
+      <tr><th scope="row">Feature-free predictors</th><td>For regression, one predictor uses the training mean. The other draws values from the training targets.</td></tr>
+    </tbody></table></div>
+
+    <details class="lc-fold" data-tex="tab:feature_free_references">
+      <summary><span class="lc-fold-title">More detail: feature-free predictors</span></summary>
+      <div class="lc-fold-body">
+        <p>Both predictors use the same P-seq rows as each regression subtask. The training mean predicts the mean training log<sub>10</sub> target. The expected-random predictor draws predictions from the training targets. Neither uses biochemical features. The strongest published baseline beats both predictors on all six subtasks.</p>
+        <div class="lc-scroll" tabindex="0" role="region" aria-label="Feature-free predictors, scrolls sideways" data-tex="tab:feature_free_references"><table class="lc-table lc-small"><thead><tr><th scope="col">Subtask</th><th scope="col">Learned <i>R</i>² range</th><th scope="col">Training-mean <i>R</i>²</th><th scope="col">Expected random <i>R</i>²</th></tr></thead><tbody><tr><th scope="row"><i>k</i><sub>cat</sub></th><td class="n">−0.04 to 0.13</td><td class="n">−0.0017</td><td class="n">−0.9363</td></tr><tr><th scope="row"><i>K</i><sub>M</sub></th><td class="n">0.14 to 0.23</td><td class="n">−0.0125</td><td class="n">−1.0320</td></tr><tr><th scope="row"><i>K</i><sub>i</sub></th><td class="n">0.20 to 0.41</td><td class="n">−0.2212</td><td class="n">−1.0127</td></tr><tr><th scope="row"><i>K</i><sub>d</sub></th><td class="n">−0.21 to 0.03</td><td class="n">−0.1594</td><td class="n">−1.2767</td></tr><tr><th scope="row">EC<sub>50</sub></th><td class="n">−0.21 to 0.02</td><td class="n">−0.2261</td><td class="n">−1.4968</td></tr><tr><th scope="row">IC<sub>50</sub></th><td class="n">−0.10 to 0.22</td><td class="n">−0.2008</td><td class="n">−1.1826</td></tr></tbody></table></div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section class="lc-section lc-panel" id="results">
+  <div class="lc-wrap">
+    <h2>Results</h2>
+    <ul class="lc-findings">
+      <li><a href="#results-explorer" data-result="km" aria-label="Explore kinetics results">Kinetics →</a><span>For <i>K</i><sub>M</sub>, XGBoost and MLP each scored higher than every published baseline by <i>R</i>² on all seven splits.</span></li>
+      <li><a href="#results-explorer" data-result="kd" aria-label="Explore binding affinity results">Binding affinity →</a><span>Structure-Free DTA scored 0.66 (<i>R</i>²) on GR-SMILES and 0.20 on GR-seq when predicting <i>K</i><sub>d</sub>.</span></li>
+      <li><a href="#results-explorer" data-result="ec_classification" aria-label="Explore enzyme function results">Enzyme function →</a><span>GraphEC assigned the exact EC label to 88.8% of enzymes on GR-seq and 50.7% on P-seq.</span></li>
+      <li><a href="#results-explorer" data-result="forward_synthesis" aria-label="Explore reaction outcome results">Reaction outcome →</a><span>Chemformer predicted the correct product on its first try in 49.1% of cases on GR-rxnsmi and 23.9% on DRFP.</span></li>
+    </ul>
+    <h3>Explore the results</h3>
+    <div id="results-explorer"></div>
+    <details hidden data-result-tasks="kcat" class="lc-fold" data-tex="tab:mpek_conditions">
+        <summary><span class="lc-fold-title">Control: do assay conditions help?</span></summary>
+        <div class="lc-fold-body">
+          <p>Conditions improve every P-seq metric, but <i>R</i>² stays below the training-mean predictor (−0.002). The gains on Time are close to seed variation.</p>
+          <p>MPEK takes pH and temperature as extra inputs. We trained it with and without them, over three seeds. Each assay is one row (61,131 rows) and keeps the split of its protein–substrate pair. We set missing values to pH 7.0 and 298.15 K. We score the maximum true and predicted log<sub>10</sub> <i>k</i><sub>cat</sub> of each pair (2,777 P-seq and 2,509 Time test pairs), so these values do not compare with the main results.</p>
+          <div class="lc-scroll" tabindex="0" role="region" aria-label="MPEK assay conditions, scrolls sideways" data-tex="tab:mpek_conditions"><table class="lc-table lc-small"><thead><tr><th scope="col">Split</th><th scope="col">Conditions</th><th scope="col">RMSE</th><th scope="col">MAE</th><th scope="col"><i>R</i>²</th><th scope="col">PCC</th><th scope="col">SCC</th></tr></thead><tbody><tr><td>P-seq</td><td>Disabled</td><td class="n">1.900 ± 0.057</td><td class="n">1.396 ± 0.021</td><td class="n">−0.395 ± 0.084</td><td class="n">0.220 ± 0.024</td><td class="n">0.238 ± 0.010</td></tr><tr><td>P-seq</td><td>pH and temperature</td><td class="n">1.696 ± 0.023</td><td class="n">1.273 ± 0.018</td><td class="n">−0.111 ± 0.030</td><td class="n">0.284 ± 0.028</td><td class="n">0.297 ± 0.024</td></tr><tr><td>Time</td><td>Disabled</td><td class="n">1.512 ± 0.038</td><td class="n">1.107 ± 0.021</td><td class="n">0.075 ± 0.047</td><td class="n">0.394 ± 0.041</td><td class="n">0.394 ± 0.042</td></tr><tr><td>Time</td><td>pH and temperature</td><td class="n">1.463 ± 0.027</td><td class="n">1.077 ± 0.016</td><td class="n">0.135 ± 0.031</td><td class="n">0.427 ± 0.024</td><td class="n">0.439 ± 0.022</td></tr></tbody></table></div>
+        </div>
+      </details>
+    <details hidden data-result-tasks="kd ec50" class="lc-fold" data-tex="tab:ec50_kd_target_dist tab:feature_free_references app:tasks_binding_affinity_prediction">
+        <summary><span class="lc-fold-title">Control: does a shift in targets explain the P-seq scores?</span></summary>
+        <div class="lc-fold-body">
+          <p>For both targets, the test mean lies about 0.4 training SDs above the training mean. A training-mean predictor scores <i>R</i>² −0.23 on EC<sub>50</sub> and −0.16 on <i>K</i><sub>d</sub>. On EC<sub>50</sub>, BIND (−0.21) is close to this predictor, and BACPI (0.02) is above it. The shift explains only part of BIND&rsquo;s negative <i>R</i>².</p>
+          <p>How different are the proteins held out on P-seq? The table compares the distributions of measured EC<sub>50</sub> and <i>K</i><sub>d</sub> values in training and test, both on a log<sub>10</sub> scale.</p>
+          <div class="lc-scroll" tabindex="0" role="region" aria-label="Target distributions, scrolls sideways" data-tex="tab:ec50_kd_target_dist"><table class="lc-table lc-small"><thead><tr><th scope="col">P-seq property</th><th scope="col">EC<sub>50</sub></th><th scope="col"><i>K</i><sub>d</sub></th></tr></thead><tbody><tr><th scope="row">Training rows</th><td class="n">152,699</td><td class="n">52,815</td></tr><tr><th scope="row">Test rows</th><td class="n">8,421</td><td class="n">2,927</td></tr><tr><th scope="row">Training-target mean</th><td class="n">−3.69</td><td class="n">−3.70</td></tr><tr><th scope="row">Test-target mean</th><td class="n">−3.08</td><td class="n">−3.08</td></tr><tr><th scope="row">Mean shift</th><td class="n">+0.61</td><td class="n">+0.61</td></tr><tr><th scope="row">Training-target SD</th><td class="n">1.44</td><td class="n">1.63</td></tr><tr><th scope="row">Test-target SD</th><td class="n">1.28</td><td class="n">1.54</td></tr><tr><th scope="row">BIND <i>R</i>²</th><td class="n">−0.21 ± 0.08</td><td class="n">−0.21 ± 0.01</td></tr><tr><th scope="row">BACPI <i>R</i>²</th><td class="n">0.02 ± 0.05</td><td class="n">−0.01 ± 0.01</td></tr></tbody></table></div>
+        </div>
+      </details>
+    <details hidden data-result-tasks="ec_classification retrieval" class="lc-fold" data-tex="tab:unseen_ec">
+        <summary><span class="lc-fold-title">Control: how many test ECs are new?</span></summary>
+        <div class="lc-fold-body">
+          <p>Some test enzymes have EC labels that never appear in training. A classifier restricted to its training labels will miss these cases. A retrieval model can still rank them because its candidates include all proteins in the split. The table shows how often this happens.</p>
+          <div class="lc-scroll" tabindex="0" role="region" aria-label="Unseen ECs, scrolls sideways" data-tex="tab:unseen_ec"><table class="lc-table lc-small"><thead><tr><th scope="col">Subtask</th><th scope="col">GR-seq / GR-rxnsmi</th><th scope="col">DRFP</th><th scope="col">Time</th><th scope="col">P-seq</th><th scope="col">P-struct</th></tr></thead><tbody><tr><th scope="row">Classification</th><td class="n">0.6%</td><td class="n">–</td><td class="n">7.9%</td><td class="n">9.6%</td><td class="n">10.9%</td></tr><tr><th scope="row">Retrieval</th><td class="n">2.1%</td><td class="n">1.9%</td><td class="n">25.3%</td><td class="n">4.3%</td><td class="n">5.0%</td></tr></tbody></table></div>
+        </div>
+      </details>
+    <details hidden data-result-tasks="forward_synthesis retrosynthesis" class="lc-fold" data-tex="tab:pretraining_audit">
+        <summary><span class="lc-fold-title">Control: do the training corpora overlap with our test reactions?</span></summary>
+        <div class="lc-fold-body">
+          <p>These models start from other training corpora. The table gives the share of our test reactions whose maximum <button type="button" class="lc-term lc-citation" data-term="drfp">DRFP</button> similarity to a corpus is at least 0.11. This is the threshold of our DRFP split, used here only as a cutoff. The DRFP split lowers the share sharply for Chemformer, but a high-similarity tail remains for MEGAN. Each corpus holds one exact test match (0.05%), in MEGAN with DRFP and in Chemformer with GR-rxnsmi.</p>
+          <div class="lc-scroll" tabindex="0" role="region" aria-label="Training corpus audit, scrolls sideways" data-tex="tab:pretraining_audit"><table class="lc-table lc-small"><thead><tr><th scope="col">Training corpus</th><th scope="col">Reactions</th><th scope="col">GR-rxnsmi %</th><th scope="col">Time %</th><th scope="col">DRFP %</th></tr></thead><tbody><tr><th scope="row">MEGAN (USPTO-FULL)</th><td class="n">902,559</td><td class="n">34.3</td><td class="n">25.1</td><td class="n">26.1</td></tr><tr><th scope="row">Chemformer (USPTO-50K)</th><td class="n">40,028</td><td class="n">50.9</td><td class="n">54.3</td><td class="n">0.6</td></tr></tbody></table></div>
+        </div>
+      </details>
+    <details id="discussion" class="lc-fold">
+      <summary><span class="lc-fold-title">Limitations</span></summary>
+      <div class="lc-fold-body">
+        <ul class="lc-findings" data-tex="app:limitations">
+          <li><strong>Assay conditions</strong><span>Some enzymes and organisms have far more measurements than others. Most records omit pH and temperature, which makes measurements from different labs harder to compare.</span></li>
+          <li><strong>Protein structures</strong><span>Predicted structures can miss the shape a protein takes when a ligand binds. On P-struct, we cannot tell how much of a score change comes from the source of the structure.</span></li>
+          <li><strong>Pretraining overlap</strong><span>Even on the DRFP split, some test reactions resemble patent reactions the models saw during pretraining. That overlap can raise reaction prediction scores.</span></li>
+        </ul>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section class="lc-section lc-panel" id="use">
+  <div class="lc-wrap narrow">
+    <h2>Use Leak-CURBER</h2>
+    <div class="lc-use-grid">
+      <article class="lc-primer-card">
+        <h3>Download the data</h3>
+        <p>Download the combined <button type="button" class="lc-term" data-term="data_licence">training and validation data</button> for each leaderboard split from Hugging Face. Embeddings are available separately. The full datasets and other splits are not released.</p>
+        <p class="lc-links"><a href="https://huggingface.co/collections/bisectgroup/leak-curber">Hugging Face collection</a></p>
+      </article>
+      <article class="lc-primer-card">
+        <h3>Reproduce an evaluation</h3>
+        <p>Use the <button type="button" class="lc-term" data-term="code_licence">GitHub scripts</button> to build datasets, compute embeddings, create splits and train baselines. Harvard Dataverse provides the released rows, structures, conformers, atom-mapped reactions and baseline checkpoints.</p>
+        <p class="lc-links"><a href="https://github.com/bisect-group/Leak-CURBER">GitHub repository</a> <a href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/CZW47K">Harvard Dataverse</a></p>
+      </article>
+    </div>
+
+    <div id="leaderboard">
+      <h3>Compare a model on the leaderboard</h3>
+      <p>Each subtask has its own leaderboard and fixed test split. A score of 1 is perfect. A score of 0 matches the reference prediction, such as predicting the training mean. The minimum score is −1.</p>
+      <p>To choose each leaderboard split, we compared the published baselines across all eligible splits. After excluding GR, we selected the split with the lowest average leaderboard score. Every submission for that subtask faces the same test.</p>
+      <table class="lc-ex-table"><thead><tr><th scope="col">Subtask</th><th scope="col">Leaderboard split</th></tr></thead><tbody><tr><td><i>k</i><sub>cat</sub></td><td>P-seq</td></tr><tr><td><i>K</i><sub>M</sub></td><td>P-struct</td></tr><tr><td><i>K</i><sub>i</sub></td><td>P-struct</td></tr><tr><td><i>K</i><sub>d</sub></td><td>P-seq</td></tr><tr><td>EC<sub>50</sub></td><td>P-seq</td></tr><tr><td>IC<sub>50</sub></td><td>Time</td></tr><tr><td>Enzyme classification</td><td>P-seq</td></tr><tr><td>Enzyme retrieval</td><td>DRFP</td></tr><tr><td>Forward prediction</td><td>DRFP</td></tr><tr><td>Retrosynthesis</td><td>DRFP</td></tr></tbody></table>
+      <details class="lc-fold">
+        <summary><span class="lc-fold-title">How the score works</span></summary>
+        <div class="lc-fold-body">
+        <p>Each subtask has two metrics. Regression uses SCC and MSE on log<sub>10</sub> targets. Enzyme classification and retrieval use EC level accuracy at Level 4 and Level 1, counting only the first guess. Forward prediction and retrosynthesis use Top-1 and Top-10 exact match.</p>
+        <p>A zero-point predictor <i>B</i> sets the zero point. For SCC, <i>B</i> is 0. For MSE, <i>B</i> is the training-mean predictor. For EC level accuracy, <i>B</i> always predicts the most frequent training EC. For Top-<i>k</i>, <i>B</i> is 0. The perfect value <span class="math-inline">\(P_m\)</span> is 1, or 0 for MSE.</p>
+        <p>Let <span class="math-inline">\(\mathcal{M}_t\)</span> be the two metrics of subtask <i>t</i>, and let <i>m</i> be one of them. The score is</p>
+        <p>\[ s_{tm} = \max\!\left(\frac{M_{tm} - B_{tm}}{P_m - B_{tm}},\, -1\right) \]</p>
+        <p>\[ S_t = \frac{1}{|\mathcal{M}_t|} \sum_{m \in \mathcal{M}_t} s_{tm} \]</p>
+        <p>Here <span class="math-inline">\(M_{tm}\)</span> is the model result and <span class="math-inline">\(B_{tm}\)</span> is the zero-point result. A negative score is worse than the zero-point predictor.</p>
+        </div>
+      </details>
+    </div>
+
+    <div id="bibtex-section">
+      <h3>BibTeX</h3>
+      <div class="lc-bib">
+        <pre id="bibtex">@inproceedings{
+shums2026leakcurber,
+title={Leak-{CURBER}: A Leakage-Controlled Multimodal Evaluation Benchmark for Enzymatic Reaction Tasks},
+author={Adhil Ahmed P M Shums and Roshan Balaji and Nirav Pravinbhai Bhatt},
+booktitle={The Fortieth Annual Conference on Neural Information Processing Systems Evaluations and Datasets Track},
+year={2026},
+url={https://openreview.net/forum?id=Tn4JHggWJI}
+}</pre>
+        <button class="lc-copy" id="copy-bib" type="button" aria-label="Copy BibTeX" title="Copy BibTeX"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M15 5V3H4v13h2"/></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+</div></div>
+</main>
+
+<footer class="lc-footer">
+  <div class="lc-wrap">
+    <p>Contact: <a href="mailto:da24s023@smail.iitm.ac.in">da24s023@smail.iitm.ac.in</a>, <a href="mailto:roshan@smail.iitm.ac.in">roshan@smail.iitm.ac.in</a>, <a href="mailto:niravbhatt@iitm.ac.in">niravbhatt@iitm.ac.in</a></p>
+    <p><a href="https://bisect-group.github.io">BiSECt Lab</a></p>
+    <p>We thank WSAI (IIT Madras), RBCDSAI and IBSE. Adhil Ahmed is supported by WSAI, and Roshan Balaji is supported by the Prime Minister's Research Fellowship (PMRF).</p>
+    <p>Figures created with BioRender.com · Page based on the <a href="https://github.com/nerfies/nerfies.github.io">Nerfies template</a> (CC BY-SA 4.0)</p>
+  </div>
+</footer>
+
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+<script defer src="static/js/facts.js?v=bib-copy"></script>
+<script defer src="static/js/panels.js?v=sticky-brand"></script>
+<script defer src="static/js/figures.js?v=gr-label"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha384-bs/nf9FbdNouRbMiFcrcZfLXYPKiPaGVGplVbv7dLGECccEXDW+S3zjqSKR5ZEaD" crossorigin="anonymous"></script>
+<script defer src="static/js/explorer.js?v=rank-highlights"></script>
+<script defer src="static/js/splits-demo.js?v=brief-captions"></script>
+<script defer src="static/js/glossary.js?v=rank-highlights"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => renderMathInElement(document.getElementById("leaderboard"), {
+    delimiters: [{left: "\\[", right: "\\]", display: true}, {left: "\\(", right: "\\)", display: false}]
+  }));
+</script>
+</body>
+</html>
